@@ -50,12 +50,15 @@ public:
 
     /** Operator overloading **/
     Matrix operator+(const Matrix &m) const;
-
+    Matrix operator-(const Matrix &m) const;
     Matrix operator*(double m) const;
-
     Matrix operator*(const Matrix &m) const;
-
     Vector operator*(const Vector &pd) const;
+
+    Matrix operator+=(const Matrix &m);
+    Matrix operator-=(const Matrix &m);
+    Matrix operator*=(double m);
+    Matrix operator*=(const Matrix &m);
 
     /** Output screen **/
     friend std::ostream &operator<<(std::ostream &os, const Matrix &m);

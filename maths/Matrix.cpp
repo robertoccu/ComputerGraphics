@@ -407,6 +407,18 @@ Matrix Matrix::operator+(const Matrix &m) const{
     return matrixAux;
 }
 
+Matrix Matrix::operator-(const Matrix &m) const{
+    Matrix matrixAux;
+    double value;
+    for(int i = 0; i < 4; i++)
+        for(int j = 0; j < 4; j++){
+            value = this->get(i,j) - m.get(i,j);
+            matrixAux.set(i, j, value);
+        }
+
+    return matrixAux;
+}
+
 Matrix Matrix::operator*(double m) const{
     Matrix product;
     double value;
@@ -446,6 +458,46 @@ Vector Matrix::operator*(const Vector &pd) const{
     }
 
     return result;
+}
+
+/**
+ *
+ * @param m
+ * @return
+ */
+Matrix Matrix::operator+=(const Matrix &m){
+    *this = this->operator+(m);
+    return *this;
+}
+
+/**
+ *
+ * @param m
+ * @return
+ */
+Matrix Matrix::operator-=(const Matrix &m){
+    *this = this->operator-(m);
+    return *this;
+}
+
+/**
+ *
+ * @param m
+ * @return
+ */
+Matrix Matrix::operator*=(double m){
+    *this = this->operator*(m);
+    return *this;
+}
+
+/**
+ *
+ * @param m
+ * @return
+ */
+Matrix Matrix::operator*=(const Matrix &m){
+    *this = this->operator*(m);
+    return *this;
 }
 
 /**
