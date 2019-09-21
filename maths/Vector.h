@@ -50,9 +50,13 @@ public:
     Vector cross(const Vector &v1, const Vector &v2) const;             // Cross product
     double operator*(const Vector &v1) const;                           // Dot product
     // With other types
-    Vector operator*(const double scalar) const;                        // Vector multiplied by scale
-    friend Vector operator*(const double scalar, const Vector &v1);     // Distribution operation
+    Vector operator*(double scalar) const;                              // Vector multiplied by scale
+    friend Vector operator*(double scalar, const Vector &v1);           // Distribution operation
     Vector operator/(const double scalar) const;                        // Vector divide by scale
+    Vector operator+=(const Vector &v1);                                // Vector = Vector + v1
+    Vector operator-=(const Vector &v1);                                // Vector = Vector - v1;
+    Vector operator*=(double scalar);                                   // Vector = Vector * scalar
+    Vector operator/=(double scalar);                                   // Vector = Vector / scalar
 
     /* Compare Operators */
     bool operator==(const Vector &v1) const;

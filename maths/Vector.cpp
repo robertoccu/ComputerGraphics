@@ -205,7 +205,7 @@ double Vector::operator*(const Vector &v1) const{
  * @param scalar
  * @return Vector multiplied
  */
-Vector Vector::operator*(const double scalar) const{
+Vector Vector::operator*(double scalar) const{
     Vector multiplied;
     multiplied.set(0, this->get(0) * scalar);
     multiplied.set(1, this->get(1) * scalar);
@@ -219,23 +219,63 @@ Vector Vector::operator*(const double scalar) const{
  * @param v1
  * @return Vector multiplied
  */
-Vector operator*(const double scalar, const Vector &v1){
+Vector operator*(double scalar, const Vector &v1){
     return v1 * scalar;
 }
 
-// Vector divide by scale
 /**
  * Return the vector divide by a scalar
  * @param scalar
  * @return Vector divided
  */
-Vector Vector::operator/(const double scalar) const{
+Vector Vector::operator/(double scalar) const{
     Vector divided;
     divided.set(0, this->get(0) / scalar);
     divided.set(1, this->get(1) / scalar);
     divided.set(2, this->get(2) / scalar);
     return divided;
 }
+
+/**
+ *
+ * @param v1
+ * @return
+ */
+Vector Vector::operator+=(const Vector &v1){
+    *this = this->operator+(v1);
+    return *this;
+}
+
+/**
+ *
+ * @param v1
+ * @return
+ */
+Vector Vector::operator-=(const Vector &v1){
+    *this = this->operator-(v1);
+    return *this;
+}
+
+/**
+ *
+ * @param scalar
+ * @return
+ */
+Vector Vector::operator*=(double scalar){
+    *this = this->operator*(scalar);
+    return *this;
+}
+
+/**
+ *
+ * @param scalar
+ * @return
+ */
+Vector Vector::operator/=(double scalar){
+    *this = this->operator/(scalar);
+    return *this;
+}
+
 
 /* Compare Operators */
 
