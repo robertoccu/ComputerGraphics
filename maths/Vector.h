@@ -24,7 +24,7 @@ public:
     ~Vector();  // Default destructor
 
     /* Operator Assignment */
-    Vector operator=(const Vector &v1);
+    Vector& operator=(const Vector &v1);
 
     /* Setter and getter operations */
     double get(int position) const;
@@ -52,7 +52,7 @@ public:
     // With other types
     Vector operator*(double scalar) const;                              // Vector multiplied by scale
     friend Vector operator*(double scalar, const Vector &v1);           // Distribution operation
-    Vector operator/(const double scalar) const;                        // Vector divide by scale
+    Vector operator/(double scalar) const;                              // Vector divide by scale
     Vector operator+=(const Vector &v1);                                // Vector = Vector + v1
     Vector operator-=(const Vector &v1);                                // Vector = Vector - v1;
     Vector operator*=(double scalar);                                   // Vector = Vector * scalar

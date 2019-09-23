@@ -39,7 +39,7 @@ Vector::~Vector(){}
   * @param v1 vector to copy
   * @return
   */
-Vector Vector::operator=(const Vector &v1){
+Vector& Vector::operator=(const Vector &v1){
     vector[0] = v1.get(0);
     vector[1] = v1.get(1);
     vector[2] = v1.get(2);
@@ -227,8 +227,13 @@ Vector operator*(double scalar, const Vector &v1){
  * Return the vector divide by a scalar
  * @param scalar
  * @return Vector divided
+ * @throw Error if scalar is 0
  */
 Vector Vector::operator/(double scalar) const{
+    if(scalar == 0){
+        std::string message = "ERROR Vector::operator/: division to 0 !";
+        throw std::out_of_range(message);
+    }
     Vector divided;
     divided.set(0, this->get(0) / scalar);
     divided.set(1, this->get(1) / scalar);

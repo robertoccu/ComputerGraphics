@@ -137,7 +137,10 @@ void Matrix::setVector(Vector &v, int positionVector){
  */
 Vector Matrix::getVector(int positionVector) const{
     if(positionVector > 3 || positionVector < 0){
-        throw std::out_of_range(&"The vector position must be [0, 3]. The position of the vector is: " [ positionVector]);
+        std::string message = "ERROR setVector(Vector v, int positionVector): \n\t The vector position must be [0, 3]. "
+                              "The position of the vector is: ";
+        message.append(std::to_string(positionVector));
+        throw std::out_of_range(message);
     }else{
         return Vector(this->get(0, positionVector),
                       this->get(1, positionVector),
