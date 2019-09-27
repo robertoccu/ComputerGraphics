@@ -4,7 +4,8 @@
 
 #include <iostream>
 #include "maths/Matrix.h"
-#include "geometry/ray.h"
+#include "geometry/Ray.h"
+#include "geometry/Sphere.h"
 
 using namespace std;
 

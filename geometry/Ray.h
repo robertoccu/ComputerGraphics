@@ -6,14 +6,14 @@
 
 #include "../maths/Vector.h"
 
-class ray {
+class Ray {
 private:
     Vector origin;
     Vector direction;
 public:
-    ray();
-    ray(const Vector &origin, const Vector &direction);
-    ray rayFromPoints(const Vector &origin, const Vector &end) const;
+    Ray();
+    Ray(const Vector &origin, const Vector &direction);
+    Ray rayFromPoints(const Vector &origin, const Vector &end) const;
 
     // Setter and getter
     const Vector &getOrigin() const;
@@ -23,7 +23,7 @@ public:
 
     Vector operator*(const float t) const;
 
-    friend std::ostream &operator<<(std::ostream &os, const ray &r);
+    friend std::ostream &operator<<(std::ostream &os, const Ray &r);
 };
 
 

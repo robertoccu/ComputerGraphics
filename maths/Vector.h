@@ -16,10 +16,10 @@
  */
 class Vector {
 private:
-    double vector[4];
+    float vector[4];
 public:
     Vector();   // Default constructor
-    Vector(double x, double y, double z, int homogeneousCoordinate);
+    Vector(float x, float y, float z, int homogeneousCoordinate);
 
     ~Vector();  // Default destructor
 
@@ -27,19 +27,19 @@ public:
     Vector& operator=(const Vector &v1);
 
     /* Setter and getter operations */
-    double get(int position) const;
-    void set(int position, double value);
+    float get(int position) const;
+    void set(int position, float value);
 
     /* Setter on points and directions */
-    void setPoint(double x, double y, double z);
-    void setDirection(double x, double y, double z);
+    void setPoint(float x, float y, float z);
+    void setDirection(float x, float y, float z);
 
     /* Boolean Operations */
     bool isPoint() const { return vector[3] == 1; }     // Returns true if the vector is a point
     bool isDirection() const { return vector[3] == 0; } // Returns true if the vector is a direction
 
     /* Vector operations */
-    double modulus() const;         // Returns the vector modulus
+    float modulus() const;         // Returns the vector modulus
     Vector normalize() const;       // Returns the normalized vector, i.e module 1
     Vector negate() const;          // Returns the negated vector
     Vector perpendicular() const;   // Returns a vector perpendicular to the vector
@@ -48,15 +48,15 @@ public:
     Vector operator+(const Vector &v1) const;                           // Sum of two vectors
     Vector operator-(const Vector &v1) const;                           // Subtraction of two vectors
     Vector cross(const Vector &v1, const Vector &v2) const;             // Cross product
-    double operator*(const Vector &v1) const;                           // Dot product
+    float operator*(const Vector &v1) const;                           // Dot product
     // With other types
-    Vector operator*(double scalar) const;                              // Vector multiplied by scale
-    friend Vector operator*(double scalar, const Vector &v1);           // Distribution operation
-    Vector operator/(double scalar) const;                              // Vector divide by scale
+    Vector operator*(float scalar) const;                              // Vector multiplied by scale
+    friend Vector operator*(float scalar, const Vector &v1);           // Distribution operation
+    Vector operator/(float scalar) const;                              // Vector divide by scale
     Vector operator+=(const Vector &v1);                                // Vector = Vector + v1
     Vector operator-=(const Vector &v1);                                // Vector = Vector - v1;
-    Vector operator*=(double scalar);                                   // Vector = Vector * scalar
-    Vector operator/=(double scalar);                                   // Vector = Vector / scalar
+    Vector operator*=(float scalar);                                   // Vector = Vector * scalar
+    Vector operator/=(float scalar);                                   // Vector = Vector / scalar
 
     /* Compare Operators */
     bool operator==(const Vector &v1) const;

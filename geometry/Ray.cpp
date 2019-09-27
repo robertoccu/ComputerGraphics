@@ -4,12 +4,12 @@
 
 #include <iostream>
 #include <iomanip>
-#include "ray.h"
+#include "Ray.h"
 
 /**
  * Default constructor
  */
-ray::ray() {
+Ray::Ray() {
     origin = direction = Vector();
 }
 
@@ -18,7 +18,7 @@ ray::ray() {
  * @param origin point origin
  * @param direction direction vector
  */
-ray::ray(const Vector &origin, const Vector &direction) {
+Ray::Ray(const Vector &origin, const Vector &direction) {
     this->origin = origin;
     this->direction = direction;
 }
@@ -29,24 +29,24 @@ ray::ray(const Vector &origin, const Vector &direction) {
  * @param end end point
  * @return
  */
-ray ray::rayFromPoints(const Vector &origin, const Vector &end) const {
-    return ray(origin, end-origin);
+Ray Ray::rayFromPoints(const Vector &origin, const Vector &end) const {
+    return Ray(origin, end - origin);
 }
 
-const Vector &ray::getOrigin() const {
+const Vector &Ray::getOrigin() const {
     return origin;
 }
 
-void ray::setOrigin(const Vector &origin) {
-    ray::origin = origin;
+void Ray::setOrigin(const Vector &origin) {
+    Ray::origin = origin;
 }
 
-const Vector &ray::getDirection() const {
+const Vector &Ray::getDirection() const {
     return direction;
 }
 
-void ray::setDirection(const Vector &direction) {
-    ray::direction = direction;
+void Ray::setDirection(const Vector &direction) {
+    Ray::direction = direction;
 }
 
 
@@ -55,7 +55,7 @@ void ray::setDirection(const Vector &direction) {
  * @param t t units to move
  * @return point
  */
-Vector ray::operator*(const float t) const {
+Vector Ray::operator*(const float t) const {
     return this->origin + t * this->direction;
 }
 
@@ -65,7 +65,7 @@ Vector ray::operator*(const float t) const {
  * @param v1
  * @return the output screen
  */
-std::ostream &operator<<(std::ostream &os, const ray &r){
+std::ostream &operator<<(std::ostream &os, const Ray &r){
     os << std::fixed;
     os << std::setprecision(2);     // Number of decimals
 

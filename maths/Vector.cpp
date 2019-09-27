@@ -24,11 +24,11 @@ Vector::Vector(){
  * @param z coordinate
  * @param homogeneousCoordinate
  */
-Vector::Vector(double x, double y, double z, int homogeneousCoordinate){
+Vector::Vector(float x, float y, float z, int homogeneousCoordinate){
     vector[0] = x;
     vector[1] = y;
     vector[2] = z;
-    vector[3] = (double)homogeneousCoordinate;
+    vector[3] = (float)homogeneousCoordinate;
 }
 
 // Default destructor
@@ -52,9 +52,9 @@ Vector& Vector::operator=(const Vector &v1){
 /**
  * Return the value of the position
  * @param position
- * @return double
+ * @return float
  */
-double Vector::get(int position) const{
+float Vector::get(int position) const{
     return vector[position];
 }
 
@@ -63,7 +63,7 @@ double Vector::get(int position) const{
  * @param position  position where write
  * @param value value to write
  */
-void Vector::set(int position, double value){
+void Vector::set(int position, float value){
     vector[position] = value;
 }
 
@@ -75,7 +75,7 @@ void Vector::set(int position, double value){
  * @param y coordinate y
  * @param z coordinate z
  */
-void Vector::setPoint(double x, double y, double z){
+void Vector::setPoint(float x, float y, float z){
     vector[0] = x;
     vector[1] = y;
     vector[2] = z;
@@ -88,7 +88,7 @@ void Vector::setPoint(double x, double y, double z){
  * @param y coordinate y
  * @param z coordinate z
  */
-void Vector::setDirection(double x, double y, double z){
+void Vector::setDirection(float x, float y, float z){
     vector[0] = x;
     vector[1] = y;
     vector[2] = z;
@@ -101,8 +101,8 @@ void Vector::setDirection(double x, double y, double z){
  * Returns the module of the vector, i.e. the square root of the sum of the components squared.
  * @return modulus of the vector
  */
-double Vector::modulus() const{
-    double modulus = 0.0;
+float Vector::modulus() const{
+    float modulus = 0.0;
     for(int i = 0; i < 3; i++){
         modulus += this->get(i) * this->get(i);
     }
@@ -190,10 +190,10 @@ Vector Vector::cross(const Vector &v1, const Vector &v2) const{
 /**
  * Return the dot product
  * @param v1
- * @return dot product double
+ * @return dot product float
  */
-double Vector::operator*(const Vector &v1) const{
-    double dot = 0.0;
+float Vector::operator*(const Vector &v1) const{
+    float dot = 0.0;
     for(int i = 0; i < 4; i++){
         dot += this->get(i) * v1.get(i);
     }
@@ -205,7 +205,7 @@ double Vector::operator*(const Vector &v1) const{
  * @param scalar
  * @return Vector multiplied
  */
-Vector Vector::operator*(double scalar) const{
+Vector Vector::operator*(float scalar) const{
     Vector multiplied;
     multiplied.set(0, this->get(0) * scalar);
     multiplied.set(1, this->get(1) * scalar);
@@ -219,7 +219,7 @@ Vector Vector::operator*(double scalar) const{
  * @param v1
  * @return Vector multiplied
  */
-Vector operator*(double scalar, const Vector &v1){
+Vector operator*(float scalar, const Vector &v1){
     return v1 * scalar;
 }
 
@@ -229,7 +229,7 @@ Vector operator*(double scalar, const Vector &v1){
  * @return Vector divided
  * @throw Error if scalar is 0
  */
-Vector Vector::operator/(double scalar) const{
+Vector Vector::operator/(float scalar) const{
     if(scalar == 0){
         std::string message = "ERROR Vector::operator/: division to 0 !";
         throw std::out_of_range(message);
@@ -266,7 +266,7 @@ Vector Vector::operator-=(const Vector &v1){
  * @param scalar
  * @return
  */
-Vector Vector::operator*=(double scalar){
+Vector Vector::operator*=(float scalar){
     *this = this->operator*(scalar);
     return *this;
 }
@@ -276,7 +276,7 @@ Vector Vector::operator*=(double scalar){
  * @param scalar
  * @return
  */
-Vector Vector::operator/=(double scalar){
+Vector Vector::operator/=(float scalar){
     *this = this->operator/(scalar);
     return *this;
 }
