@@ -125,7 +125,7 @@ void Matrix::setVector(Vector &v, int positionVector){
         this->set(0,positionVector,v.get(0));
         this->set(0,positionVector,v.get(1));
         this->set(0,positionVector,v.get(2));
-        this->set(0,positionVector,1);
+        this->set(0,positionVector,0);
     }
 }
 

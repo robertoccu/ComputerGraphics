@@ -9,4 +9,4 @@ add_executable(ComputerGraphics
         maths/Matrix.cpp
         maths/Matrix.h
         maths/Vector.cpp
-        maths/Vector.h)
+        maths/Vector.h main.cpp)
