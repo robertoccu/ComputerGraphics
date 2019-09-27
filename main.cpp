@@ -4,13 +4,12 @@
 
 #include <iostream>
 #include "maths/Matrix.h"
-#include "maths/Vector.h"
+#include "geometry/ray.h"
+
 using namespace std;
 
 int main(){
-    Vector v(5,0,0,5);
-    Matrix m = Matrix::traslation(0,0,0);
-    cout<<v<<endl;
-    cout<<m*v<<endl;
+    ray r(Vector(0,0,0,1), Vector(0,0,1,0));
+    cout<<r<<endl;
 }
 
