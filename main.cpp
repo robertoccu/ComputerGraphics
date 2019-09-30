@@ -9,7 +9,7 @@
 
 using namespace std;
 
-int main(){
+int not_main(){
     cout<<"Computer graphics"<<endl;
 }
 

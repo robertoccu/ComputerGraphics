@@ -76,6 +76,10 @@ void Matrix::setPoint(float x, float y, float z){
     this->set(3,3,1);
 }
 
+void Matrix::setPoint(const Vector &p) {
+    setPoint(p.get(0), p.get(1), p.get(2));
+}
+
 /**
  * Return the point of the matrix. The point is set in the 3th column starting with 0
  * @return the point of the matrix
@@ -115,7 +119,7 @@ void Matrix::setVector(float x, float y, float z, int positionVector){
  * @param positionVector column to set starting with 0
  * @throw Error if the positionVector not in [0, 3]
  */
-void Matrix::setVector(Vector &v, int positionVector){
+void Matrix::setVector(const Vector &v, int positionVector){
     if(positionVector > 3 || positionVector < 0){
         std::string message = "ERROR setVector(Vector v, int positionVector): \n\t The vector position must be [0, 3]. "
                               "The position of the vector is: ";
@@ -123,10 +127,22 @@ void Matrix::setVector(Vector &v, int positionVector){
         throw std::out_of_range(message);
     }else{
         this->set(0,positionVector,v.get(0));
-        this->set(0,positionVector,v.get(1));
-        this->set(0,positionVector,v.get(2));
-        this->set(0,positionVector,0);
+        this->set(1,positionVector,v.get(1));
+        this->set(2,positionVector,v.get(2));
+        this->set(3,positionVector,0);
     }
+}
+
+/**
+ * Set the vectors.
+ * @param x First column of the matrix.
+ * @param y Second column of the matrix.
+ * @param z Third column of the matrix.
+ */
+void Matrix::setVectors(const Vector &x, const Vector &y, const Vector &z) {
+    this->setVector(x, 0);
+    this->setVector(y, 1);
+    this->setVector(z, 2);
 }
 
 /**

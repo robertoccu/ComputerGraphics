@@ -174,7 +174,7 @@ Vector Vector::operator-(const Vector &v1) const{
  * @param v2
  * @return cross product vector
  */
-Vector Vector::cross(const Vector &v1, const Vector &v2) const{
+Vector Vector::cross(const Vector &v1, const Vector &v2){
     Vector vectorReturned;
     vectorReturned.set(0, (v1.get(1)*v2.get(2) -
                                     v1.get(2)*v2.get(1)) );

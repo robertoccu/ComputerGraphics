@@ -8,7 +8,7 @@
 #include <iostream>
 #include <list>
 
-#endif //RGB_H
+using namespace std;
 
 class RGB {
 private:
@@ -29,3 +29,5 @@ public:
     /* Screen output */
     friend std::ostream &operator<<(std::ostream &os, const RGB &rgb);
 };
+
+#endif //RGB_H

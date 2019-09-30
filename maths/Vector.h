@@ -47,7 +47,7 @@ public:
     /* Operator overload */
     Vector operator+(const Vector &v1) const;                           // Sum of two vectors
     Vector operator-(const Vector &v1) const;                           // Subtraction of two vectors
-    Vector cross(const Vector &v1, const Vector &v2) const;             // Cross product
+    static Vector cross(const Vector &v1, const Vector &v2);             // Cross product
     float operator*(const Vector &v1) const;                           // Dot product
     // With other types
     Vector operator*(float scalar) const;                              // Vector multiplied by scale

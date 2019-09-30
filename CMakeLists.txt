@@ -15,4 +15,5 @@ add_executable(ComputerGraphics
         geometry/Ray.cpp
         geometry/Ray.h
         geometry/Sphere.cpp
-        geometry/Sphere.h)
+        geometry/Sphere.h
+        PlanetaryMaths.cpp)

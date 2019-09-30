@@ -25,9 +25,11 @@ public:
     void set(int row, int column, float value){matrix[row][column] = value;}
 
     void setPoint(float x, float y, float z);
+    void setPoint(const Vector &p);
     Vector getPoint() const;
     void setVector(float x, float y, float z, int positionVector);
-    void setVector(Vector &v, int positionVector);
+    void setVector(const Vector &v, int positionVector);
+    void setVectors(const Vector &x, const Vector &y, const Vector &z);
     Vector getVector(int positionVector) const;
     void setScale(float sx, float sy, float sz);
     void setRotX(float x);
