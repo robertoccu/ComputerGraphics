@@ -69,7 +69,7 @@ bool Matrix::isIdentity(){
  * @param y y coordinate
  * @param z z coordinate
  */
-void Matrix::setPoint(double x, double y, double z){
+void Matrix::setPoint(float x, float y, float z){
     this->set(0,3,x);
     this->set(1,3,y);
     this->set(2,3,z);
@@ -94,7 +94,7 @@ Vector Matrix::getPoint() const{
  * @param z z coordinate
  * @param positionVector column to set the vector starting with 0
  */
-void Matrix::setVector(double x, double y, double z, int positionVector){
+void Matrix::setVector(float x, float y, float z, int positionVector){
     if(positionVector > 3 || positionVector < 0){
         std::string message = "ERROR setVector(Vector v, int positionVector): \n\t The vector position must be [0, 3]. "
                               "The position of the vector is: ";
@@ -125,7 +125,7 @@ void Matrix::setVector(Vector &v, int positionVector){
         this->set(0,positionVector,v.get(0));
         this->set(0,positionVector,v.get(1));
         this->set(0,positionVector,v.get(2));
-        this->set(0,positionVector,1);
+        this->set(0,positionVector,0);
     }
 }
 
@@ -155,7 +155,7 @@ Vector Matrix::getVector(int positionVector) const{
  * @param sy scaling of component y
  * @param sz scaling of component z
  */
-void Matrix::setScale(double sx, double sy, double sz){
+void Matrix::setScale(float sx, float sy, float sz){
     this->set(0, 0, this->get(0,0) * sx);
     this->set(1, 1, this->get(1,1) * sy);
     this->set(2, 2, this->get(2,2) * sz);
@@ -165,7 +165,7 @@ void Matrix::setScale(double sx, double sy, double sz){
  * Set the rotation matrix in the X-axis in radians
  * @param x radians to rotate in the X-axis
  */
-void Matrix::setRotX(double x){
+void Matrix::setRotX(float x){
     matrix[1][1] =  cos(x);
     matrix[1][2] = -sin(x);
     matrix[2][1] =  sin(x);
@@ -176,7 +176,7 @@ void Matrix::setRotX(double x){
  * Set the rotation matrix in the Y-axis in radians
  * @param y radians to rotate in the Y-axis
  */
-void Matrix::setRotY(double y){
+void Matrix::setRotY(float y){
     matrix[0][0] =  cos(y);
     matrix[0][2] =  sin(y);
     matrix[2][0] = -sin(y);
@@ -187,7 +187,7 @@ void Matrix::setRotY(double y){
  * Set the rotation matrix in the Z-axis in radians
  * @param z radians to rotate in the Z-axis
  */
-void Matrix::setRotZ(double z){
+void Matrix::setRotZ(float z){
     matrix[0][0] =  cos(z);
     matrix[0][1] = -sin(z);
     matrix[1][0] =  sin(z);
@@ -216,7 +216,7 @@ Matrix Matrix::transpose() const{
  * @return adjugate matrix
  */
 Matrix Matrix::adjugate() const{
-    double value = 0;
+    float value = 0;
     Matrix adjugate;
     /* First column */
     value = Matrix::determinant3x3(this->get(1,1), this->get(1,2),this->get(1,3),
@@ -296,7 +296,7 @@ Matrix Matrix::adjugate() const{
  */
 Matrix Matrix::inverse() const{
     Matrix inverse;
-    double determinant = this->determinant();
+    float determinant = this->determinant();
     if(determinant != 0){
         inverse = this->adjugate().transpose() * (1 / determinant);
     }else{
@@ -310,8 +310,8 @@ Matrix Matrix::inverse() const{
  * Return the determinant of the matrix
  * @return the determinant of the matrix
  */
-double Matrix::determinant() const{
-    double valor = 0;
+float Matrix::determinant() const{
+    float valor = 0;
     valor += this->get(0,0) *
             Matrix::determinant3x3(this->get(1,1), this->get(1,2),this->get(1,3),
                                    this->get(2,1), this->get(2,2),this->get(2,3),
@@ -341,7 +341,7 @@ double Matrix::determinant() const{
  * @param z coordinate z
  * @return the traslation matrix to point
  */
-Matrix Matrix::traslation(double x, double y, double z){
+Matrix Matrix::traslation(float x, float y, float z){
     Matrix m;
     m.setPoint(x,y,z);
     return m;
@@ -354,7 +354,7 @@ Matrix Matrix::traslation(double x, double y, double z){
  * @param sz z scaling
  * @return the scale matrix
  */
-Matrix Matrix::scale(double sx, double sy, double sz){
+Matrix Matrix::scale(float sx, float sy, float sz){
     Matrix m;
     m.setScale(sx,sy,sz);
     return m;
@@ -366,7 +366,7 @@ Matrix Matrix::scale(double sx, double sy, double sz){
  * @param z radians in z-axis
  * @return the rotation matrix
  */
-Matrix Matrix::rotationXYZ(double x, double y, double z){
+Matrix Matrix::rotationXYZ(float x, float y, float z){
     Matrix m;
     m.setRotX(x);
     m.setRotY(y);
@@ -387,10 +387,10 @@ Matrix Matrix::rotationXYZ(double x, double y, double z){
  * @param a33
  * @return
  */
-double Matrix::determinant3x3(double a11, double a12, double a13,
-                             double a21, double a22, double a23,
-                             double a31, double a32, double a33){
-    double value = 0;
+float Matrix::determinant3x3(float a11, float a12, float a13,
+                             float a21, float a22, float a23,
+                             float a31, float a32, float a33){
+    float value = 0;
     value  = ( (a11 * a22 * a33) + (a12 * a23 * a31) + (a13 * a21 * a32) );
     value += -( (a13 * a22 * a31) + (a12 * a21 * a33) + (a11 * a23 * a32) );
 
@@ -400,7 +400,7 @@ double Matrix::determinant3x3(double a11, double a12, double a13,
 /** Operator overloading **/
 Matrix Matrix::operator+(const Matrix &m) const{
     Matrix matrixAux;
-    double value;
+    float value;
     for(int i = 0; i < 4; i++)
         for(int j = 0; j < 4; j++){
             value = this->get(i,j) + m.get(i,j);
@@ -412,7 +412,7 @@ Matrix Matrix::operator+(const Matrix &m) const{
 
 Matrix Matrix::operator-(const Matrix &m) const{
     Matrix matrixAux;
-    double value;
+    float value;
     for(int i = 0; i < 4; i++)
         for(int j = 0; j < 4; j++){
             value = this->get(i,j) - m.get(i,j);
@@ -422,9 +422,9 @@ Matrix Matrix::operator-(const Matrix &m) const{
     return matrixAux;
 }
 
-Matrix Matrix::operator*(double m) const{
+Matrix Matrix::operator*(float m) const{
     Matrix product;
-    double value;
+    float value;
     for(int i = 0; i < 4; i++)
         for(int j = 0; j < 4; j++){
             value = this->get(i,j);
@@ -436,7 +436,7 @@ Matrix Matrix::operator*(double m) const{
 
 Matrix Matrix::operator*(const Matrix &m) const{
     Matrix product;
-    double value = 0;
+    float value = 0;
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
             for(int k = 0; k < 4; k++){
@@ -451,7 +451,7 @@ Matrix Matrix::operator*(const Matrix &m) const{
 
 Vector Matrix::operator*(const Vector &pd) const{
     Vector result;
-    double value;
+    float value;
     for(int i = 0; i < 4; i++) {
         value = 0;
         for (int j = 0; j < 4; j++) {
@@ -488,7 +488,7 @@ Matrix Matrix::operator-=(const Matrix &m){
  * @param m
  * @return
  */
-Matrix Matrix::operator*=(double m){
+Matrix Matrix::operator*=(float m){
     *this = this->operator*(m);
     return *this;
 }

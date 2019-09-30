@@ -10,4 +10,9 @@ add_executable(ComputerGraphics
         maths/Matrix.h
         maths/RGB.h
         maths/Vector.cpp
-        maths/Vector.h)
+        maths/Vector.h
+        main.cpp
+        geometry/Ray.cpp
+        geometry/Ray.h
+        geometry/Sphere.cpp
+        geometry/Sphere.h)
