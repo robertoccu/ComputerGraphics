@@ -48,7 +48,8 @@ public:
     Vector operator+(const Vector &v1) const;                           // Sum of two vectors
     Vector operator-(const Vector &v1) const;                           // Subtraction of two vectors
     static Vector cross(const Vector &v1, const Vector &v2);             // Cross product
-    float operator*(const Vector &v1) const;                           // Dot product
+    static float dot(const Vector &v1, const Vector &v2);
+    Vector operator*(const Vector &v1) const;                           // Multiply operation
     // With other types
     Vector operator*(float scalar) const;                              // Vector multiplied by scale
     friend Vector operator*(float scalar, const Vector &v1);           // Distribution operation

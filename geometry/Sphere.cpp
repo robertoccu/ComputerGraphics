@@ -37,10 +37,10 @@ bool Sphere::intersection(const Ray &r, float &t) {
     // Ray   =>  P = O + tD
     // Sphere => (P - C)*(P - C) -r^2 = 0
     // ((O + tD) - C)*((O + tD) - C) -r^2 = 0
-    float a = r.getDirection() * r.getDirection();  // D ^ 2
-    float b = 2 * ((r.getOrigin() * r.getDirection()) - (r.getDirection() * this->getCenter()));
-    float c = (r.getOrigin() * r.getOrigin()) - (2 * (r.getOrigin() * this->getCenter()))
-            + (this->getCenter()*this->getCenter());
+    float a = Vector::dot(r.getDirection(), r.getDirection()); // D ^ 2
+    float b = 2 * (Vector::dot(r.getOrigin(), r.getDirection()) - Vector::dot(r.getDirection(), this->getCenter()));
+    float c = Vector::dot(r.getOrigin(), r.getOrigin()) - (2 * Vector::dot(r.getOrigin(), this->getCenter()))
+            + Vector::dot(this->getCenter(), this->getCenter());
     c = c - (this->getRadius() * this->getRadius());
 
     // Calculation of the second-degree equation discriminant

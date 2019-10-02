@@ -188,16 +188,30 @@ Vector Vector::cross(const Vector &v1, const Vector &v2){
 }
 
 /**
+ * Dot product of two vectors
+ * @param v1
+ * @param v2
+ * @return
+ */
+float Vector::dot(const Vector &v1, const Vector &v2){
+    float dot = 0.0;
+    for(int i = 0; i < 4; i++){
+        dot += v1.get(i) * v2.get(i);
+    }
+    return dot;
+}
+
+/**
  * Return the dot product
  * @param v1
  * @return dot product float
  */
-float Vector::operator*(const Vector &v1) const{
-    float dot = 0.0;
+Vector Vector::operator*(const Vector &v1) const{
+    Vector new_vector;
     for(int i = 0; i < 4; i++){
-        dot += this->get(i) * v1.get(i);
+        new_vector.set(i, this->get(i) * v1.get(i));
     }
-    return dot;
+    return new_vector;
 }
 
 /**
