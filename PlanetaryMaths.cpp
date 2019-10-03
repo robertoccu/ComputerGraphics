@@ -3,7 +3,6 @@
  */
 
 #include "maths/Matrix.h"
-#include "maths/Vector.h"
 #include <cmath>
 
 using namespace std;
@@ -22,25 +21,41 @@ public:
         this->the_other_vector_as_known_as_vector_Y = Vector::cross(center_to_north, center_to_city).normalize(); // East to West (or West to East?)
     }
 
+    /**
+     * Return the UCS coordinates of the station defined by azimuth and a inclination
+     * @param azimuth azimuth in radians
+     * @param inclination inclination in radians
+     * @return station in UCS coordinates
+     */
     Vector get_station(float azimuth, float inclination) {
-        Matrix return_to_planet_base;
-        return_to_planet_base.setVectors(center_to_city, the_other_vector_as_known_as_vector_Y, center_to_north);
-        return_to_planet_base.setPoint(center);
+        Matrix return_to_ucs;
+        return_to_ucs.setVectors(center_to_city, the_other_vector_as_known_as_vector_Y, center_to_north);
+        return_to_ucs.setPoint(center);
 
-        Vector station = center + center_to_north; // Do rotations at center of UCS.
-        station = return_to_planet_base.inverse() * station;    // Move to UCS System
-        // Now, station is in UCS system
+        /* We define a point in the center of the local system, that's why it's 0,0,0.
+         * As in the local system, the south-north axis will always be the Z axis,
+         * we add the radius of the planet in the Z axis and this way we get to move up the starting point
+         * to the local north.*/
+        Vector station = Vector(0,0,0,1) +
+                Vector(0,0,center_to_north.modulus(),0);
 
+        /* We apply the rotations */
         Matrix apply_azimuth = Matrix(); apply_azimuth.setRotZ(azimuth);
         Matrix apply_inclination = Matrix(); apply_inclination.setRotY(inclination);
         Matrix positioning = apply_azimuth * apply_inclination; // First apply inclination then azimuth.
         station = positioning * station;
 
-        // Now we must move the point to the planet base
-        return return_to_planet_base * station;
+        /* We switched to the UCS coordinate system */
+        return return_to_ucs * station;
     }
 
-    Vector get_vector_to_station(Vector station_planetA, Vector station_planetB){
+    /**
+     * Returns the vector that goes from station A to station B in the local system of station A.
+     * @param station_planetA   UCS coordinates of station A
+     * @param station_planetB   UCS coordinates of station B
+     * @return the vector from station A to stationB
+     */
+    Vector get_vector_to_station(const Vector &station_planetA, const Vector &station_planetB){
         // First we obtain the new base from the planetA
         Vector normal_planetA = station_planetA - center;
         // Tangent vector to normal, positive direction from azimuth
@@ -64,10 +79,13 @@ public:
 
 int main() {
 
+    Vector ref_city_planet1 = Vector(-1, 0, 0, 1);
+    Vector ref_city_planet2 = Vector(11, 0, 0, 1);
+
     Planet planet_1(Vector(0,0,0,1), Vector(0,0,2,0),
-            Vector(-1,0,0,1));
+                    ref_city_planet1);
     Planet planet_2(Vector(10,0,0,1), Vector(0,0,2,0),
-                    Vector(11,0,0,1));
+                    ref_city_planet2);
 
     Vector station_planet1 = planet_1.get_station(M_PI, M_PI_2);
     Vector station_planet2 = planet_2.get_station(M_PI, M_PI_2);
@@ -75,11 +93,14 @@ int main() {
     Vector ray_from_station1_to_station2 = planet_1.get_vector_to_station(station_planet1, station_planet2);
 
     // Is it possible, pierce the center of planet2?
-    if( Vector::dot(ray_from_station1_to_station2,
-            planet_2.get_normal(Vector(10,0,0,1))) <= 0){
+    if( Vector::dot(planet_1.get_normal(station_planet1),
+            planet_2.get_normal(station_planet2)) <= 0){
+        // Dot product between the normal to station_planet1 and the normal to the station of planet B.
         // If dot product is negative, collision
         cout<<"Ray from Planet 1 to Planet2 in local coordinates from Planet1: "<<endl;
         cout << ray_from_station1_to_station2 <<endl;
+        cout<<"Ray from Planet 2 to Planet1 in local coordinates from Planet2: "<<endl;
+        cout<< planet_2.get_vector_to_station(station_planet2, station_planet1) <<endl;
     }else{
         cout<<"Not possible the collision"<<endl;
     }
