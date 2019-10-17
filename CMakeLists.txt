@@ -16,4 +16,4 @@ add_executable(ComputerGraphics
         geometry/Ray.h
         geometry/Sphere.cpp
         geometry/Sphere.h
-        PlanetaryMaths.cpp)
+        PlanetaryMaths.cpp utils/IOppm.cpp utils/IOppm.h)
