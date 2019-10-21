@@ -5,7 +5,7 @@
  * Read a ppm file from path and return a image class
  * @param path The path of the ppm file
  */
-void IOppm::read(const string &path) {
+Image IOppm::read(const string &path) {
     ifstream inputFile;
     inputFile.open(path);
     if(!inputFile.is_open()){
@@ -19,85 +19,93 @@ void IOppm::read(const string &path) {
 
     // Variables to store the image atributtes
     string type, name;
-    int width, height, color_resolution;
-    float max_value;
+    int width, height, colorDepth;
+    float maxValue;
 
     // Read the type of the file
     getline(inputFile, type);
 
     // Read the max value floating
-    string s_max_value;
-    getline(inputFile, s_max_value);
-    max_value = stof(s_max_value.substr(s_max_value.find('=')+1));
+    string sMaxValue;
+    getline(inputFile, sMaxValue);
+    maxValue = stof(sMaxValue.substr(sMaxValue.find('=')+1));
 
     // Read the name
     getline(inputFile, name);
 
     // Read the width
-    string s_width;
-    getline(inputFile, s_width, ' ');
-    width = stoi(s_width, nullptr, 10);
+    string sWidth;
+    getline(inputFile, sWidth, ' ');
+    width = stoi(sWidth, nullptr, 10);
 
     // Read the height
-    string s_height;
-    getline(inputFile, s_height);
-    height = stoi(s_height, nullptr, 10);
+    string sHeight;
+    getline(inputFile, sHeight);
+    height = stoi(sHeight, nullptr, 10);
 
     // Read the resolution of color
-    string s_color_res;
-    getline(inputFile, s_color_res);
-    color_resolution = stoi(s_color_res, nullptr, 10);
+    string sColorRes;
+    getline(inputFile, sColorRes);
+    colorDepth = stoi(sColorRes, nullptr, 10);
 
     // We create the image with the attributes obtained from the file
-    // Image image();
+    Image image(name, maxValue, width, height, colorDepth);
     string red, green, blue;
-    for(int i = 0; i < width; i++){
-        for(int j = 0; j < height; j++){
+    float realRed, realGreen, realBlue;
+    for(int i = 0; i < height; i++){
+        for(int j = 0; j < width; j++){
             // Obtain the red value
             inputFile >> red;
-            long l_red = stoi(red, nullptr, 10);
+            realRed = stoi(red, nullptr, 10) * maxValue / colorDepth;
 
             // Obtain the green value
             inputFile >> green;
-            long l_green = stoi(green, nullptr, 10);
+            realGreen = stoi(green, nullptr, 10) * maxValue / colorDepth;
 
             // Obtain the blue value
             inputFile >> blue;
-            long l_blue = stoi(blue, nullptr, 10);
+            realBlue = stoi(blue, nullptr, 10) * maxValue / colorDepth;
 
             // Set the pixel in the image with the 3 values
-            //image.setPixel(i, j, RGB())
+            image.setPixel(i, j, RGB(realRed, realGreen, realBlue));
         }
     }
 
     // Set the color resolution now to max_value
-    //image.setColorRes(max_value)
+    image.setColorDepth(maxValue);
 
     // Return the image
-    // return image;
+    return image;
 
 }
 
-/*
-void IOppm::store(const string &path) {
+
+void IOppm::store(const string &path, const Image &image) {
     ofstream outputFile;
     outputFile.open(path);
     if(outputFile.is_open()){
         outputFile << "P3"<<endl;
-        //outputFile << "#MAX=" <<image.getRealMaxValue()<<endl;
-        //outputFile << "# "<< image.getName()<<endl;
-        //outputFile << image.getWidth() <<" "<<image.getHeight()<<endl;
-        //outputFile << image.getColorRes() <<endl;
+        outputFile << "#MAX=" <<image.getMaxValue()<<endl;
+        outputFile << "# "<< image.getName()<<endl;
+        outputFile << image.getWidth() <<" "<<image.getHeight()<<endl;
+        outputFile << image.getColorDepth() <<endl;
 
         // Iterate for all the pixels
-        //for(int i = 0; i < image.getPixels().size(); i++){
+        long lRed, lGreen, lBlue;
+        for(int i = 0; i < image.getPixels().size(); i++){
             // End of line because column is finish
-          //  if(i != 0 && (i % image.getWidth()) == 0){
+            if(i != 0 && (i % image.getWidth()) == 0){
                 outputFile<<endl;
             }
 
             // Set the pixel
+            lRed = image.getPixels()[i].get(RED) * image.getColorDepth() / image.getMaxValue();
 
+            lGreen = image.getPixels()[i].get(GREEN) * image.getColorDepth() / image.getMaxValue();
+
+            lBlue = image.getPixels()[i].get(BLUE) * image.getColorDepth() / image.getMaxValue();
+
+            outputFile << lRed << " " << lGreen << " " << lBlue << "     ";
         }
     }
-}*/
+}

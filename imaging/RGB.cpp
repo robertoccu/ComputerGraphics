@@ -24,7 +24,7 @@ float RGB::get(int color) const {
     return this->value[color];
 }
 
-void RGB::set(float value, int color) {
+void RGB::set(int color, float value) {
     this->value[color] = value;
 }
 

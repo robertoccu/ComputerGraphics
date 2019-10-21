@@ -18,5 +18,9 @@ add_executable(ComputerGraphics
         utils/PlanetaryMaths.h
         utils/IOppm.cpp
         utils/IOppm.h
-        RGB.cpp
-        RGB.h)
+        imaging/RGB.cpp
+        imaging/RGB.h
+        imaging/Image.cpp
+        imaging/Image.h
+        imaging/ToneMapper.cpp
+        imaging/ToneMapper.h)

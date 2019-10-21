@@ -8,6 +8,8 @@
 #include "geometry/Ray.h"
 #include "geometry/Sphere.h"
 #include "utils/PlanetaryMaths.h"
+#include "utils/IOppm.h"
+#include "imaging/ToneMapper.h"
 
 using namespace std;
 
@@ -18,7 +20,16 @@ int main(){
 
     // Run the main program
     cout<<"COMPUTER GRAPHICS"<<endl;
-    planetary_main();
+
+    // Planetary Maths (matrix training)
+    //planetary_main();
+
+    // Image I/O test
+    Image image = IOppm::read("../data/hdr-ppm/mpi_atrium_1.ppm");
+    image.setColorDepth(255);
+    ToneMapper::clamping(image, 1);
+    image.setMaxValue(1);
+    IOppm::store("../data/new_image.ppm",image);
 
     // To finish, obtain the timestamp
     finish_time = clock();
@@ -32,7 +43,6 @@ int main(){
     }else{
         cout<<"Finish in: "<<time<<" seconds."<<endl;
     }
-
 
 }
 

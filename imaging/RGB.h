@@ -26,7 +26,7 @@ public:
 
     /* Get & Set */
     float get(int color) const;
-    void set(float value, int color);
+    void set(int color, float value);
     void set(float red, float green, float blue);
 
     /* Operator overload */
