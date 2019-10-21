@@ -2,7 +2,10 @@
  * Maths done for P1 'FTL'.
  */
 
-#include "maths/Matrix.h"
+#ifndef COMPUTERGRAPHICS_PLANETARYMATHS
+#define COMPUTERGRAPHICS_PLANETARYMATHS
+
+#include "Matrix.h"
 #include <cmath>
 
 using namespace std;
@@ -77,7 +80,7 @@ public:
     }
 };
 
-int main() {
+void planetary_main() {
 
     Vector ref_city_planet1 = Vector(-1, 0, 0, 1);
     Vector ref_city_planet2 = Vector(11, 0, 0, 1);
@@ -106,3 +109,5 @@ int main() {
     }
 
 }
+
+#endif

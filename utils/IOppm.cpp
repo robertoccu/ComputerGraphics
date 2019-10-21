@@ -1,22 +1,8 @@
-//
-// Created by Sergio on 17/10/2019.
-//
-
 #include <fstream>
 #include "IOppm.h"
 
 /**
- * Default constructor
- */
-IOppm::IOppm() {}
-
-/**
- * Default destructor
- */
-IOppm::~IOppm() {}
-
-/**
- * Read a ppm file from path and save their atributtes
+ * Read a ppm file from path and return a image class
  * @param path The path of the ppm file
  */
 void IOppm::read(const string &path) {
@@ -42,7 +28,7 @@ void IOppm::read(const string &path) {
     // Read the max value floating
     string s_max_value;
     getline(inputFile, s_max_value);
-    max_value = stoi(s_max_value.substr(s_max_value.find("=")+1), nullptr, 10);
+    max_value = stof(s_max_value.substr(s_max_value.find('=')+1));
 
     // Read the name
     getline(inputFile, name);
@@ -92,6 +78,26 @@ void IOppm::read(const string &path) {
 
 }
 
+/*
 void IOppm::store(const string &path) {
+    ofstream outputFile;
+    outputFile.open(path);
+    if(outputFile.is_open()){
+        outputFile << "P3"<<endl;
+        //outputFile << "#MAX=" <<image.getRealMaxValue()<<endl;
+        //outputFile << "# "<< image.getName()<<endl;
+        //outputFile << image.getWidth() <<" "<<image.getHeight()<<endl;
+        //outputFile << image.getColorRes() <<endl;
 
-}
+        // Iterate for all the pixels
+        //for(int i = 0; i < image.getPixels().size(); i++){
+            // End of line because column is finish
+          //  if(i != 0 && (i % image.getWidth()) == 0){
+                outputFile<<endl;
+            }
+
+            // Set the pixel
+
+        }
+    }
+}*/
