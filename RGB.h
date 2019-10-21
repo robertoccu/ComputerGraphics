@@ -7,20 +7,27 @@
 
 #include <iostream>
 #include <list>
+#include <iomanip>
+
+#define RED 0
+#define GREEN 1
+#define BLUE 2
 
 using namespace std;
 
 class RGB {
 private:
-    double value[3];
+    float value[3];
 public:
     RGB();
-    RGB(double red, double green, double blue);
+    RGB(float red, float green, float blue);
 
     ~RGB();
 
-    /* Operations */
-    static RGB average(const std::list<RGB> &rgb);
+    /* Get & Set */
+    float get(int color) const;
+    void set(float value, int color);
+    void set(float red, float green, float blue);
 
     /* Operator overload */
     RGB operator+(const RGB &rgb) const;

@@ -8,7 +8,6 @@ include_directories(maths)
 add_executable(ComputerGraphics
         maths/Matrix.cpp
         maths/Matrix.h
-        maths/RGB.h
         maths/Vector.cpp
         maths/Vector.h
         main.cpp
@@ -16,4 +15,8 @@ add_executable(ComputerGraphics
         geometry/Ray.h
         geometry/Sphere.cpp
         geometry/Sphere.h
-        utils/PlanetaryMaths.h utils/IOppm.cpp utils/IOppm.h)
+        utils/PlanetaryMaths.h
+        utils/IOppm.cpp
+        utils/IOppm.h
+        RGB.cpp
+        RGB.h)
