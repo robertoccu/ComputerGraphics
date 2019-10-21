@@ -26,10 +26,14 @@ int main(){
 
     // Image I/O test
     Image image = IOppm::read("../data/hdr-ppm/mpi_atrium_1.ppm");
+    //ToneMapper::clamping(image, 1);
+    //ToneMapper::equalization(image);
+    //ToneMapper::equalAndClamp(image,100000);
+    //ToneMapper::gamma(image,0.5);
+    ToneMapper::clampAndGamma(image, 50000, 0.5);
     image.setColorDepth(255);
-    ToneMapper::clamping(image, 1);
-    image.setMaxValue(1);
-    IOppm::store("../data/new_image.ppm",image);
+    image.setMaxValue(1); // MaxValue = 1 para lectores standard (GIMP). Valor de compresión/codificación.
+    IOppm::store("../data/new_image_clampGamma_50000_0.5.ppm", image);
 
     // To finish, obtain the timestamp
     finish_time = clock();
