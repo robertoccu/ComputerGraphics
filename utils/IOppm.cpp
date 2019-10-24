@@ -80,7 +80,7 @@ Image IOppm::read(const string &path) {
 }
 
 
-void IOppm::store(const string &path, const Image &image) {
+void IOppm::store(const string &path, const Image &image, const int colorDepth) {
     ofstream outputFile;
     outputFile.open(path);
     if(outputFile.is_open()){
@@ -88,7 +88,7 @@ void IOppm::store(const string &path, const Image &image) {
         outputFile << "#MAX=" <<image.getMaxValue()<<endl;
         outputFile << "# "<< image.getName()<<endl;
         outputFile << image.getWidth() <<" "<<image.getHeight()<<endl;
-        outputFile << image.getColorDepth() <<endl;
+        outputFile << colorDepth <<endl;
 
         // Iterate for all the pixels
         long lRed, lGreen, lBlue;
@@ -99,11 +99,11 @@ void IOppm::store(const string &path, const Image &image) {
             }
 
             // Set the pixel
-            lRed = image.getPixels()[i].get(RED) * image.getColorDepth() / image.getMaxValue();
+            lRed = image.getPixels()[i].get(RED) * colorDepth / image.getMaxValue();
 
-            lGreen = image.getPixels()[i].get(GREEN) * image.getColorDepth() / image.getMaxValue();
+            lGreen = image.getPixels()[i].get(GREEN) * colorDepth / image.getMaxValue();
 
-            lBlue = image.getPixels()[i].get(BLUE) * image.getColorDepth() / image.getMaxValue();
+            lBlue = image.getPixels()[i].get(BLUE) * colorDepth / image.getMaxValue();
 
             outputFile << lRed << " " << lGreen << " " << lBlue << "     ";
         }

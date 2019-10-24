@@ -15,6 +15,7 @@ public:
     static void equalAndClamp(Image &image, float clampValue);
     static void gamma(Image &image, float gamma);
     static void clampAndGamma(Image &image, float clampValue, float gamma);
+    static void reinhard(Image &image, RGB Lwhite_rgb);
 };
 
 

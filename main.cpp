@@ -25,15 +25,16 @@ int main(){
     //planetary_main();
 
     // Image I/O test
-    Image image = IOppm::read("../data/hdr-ppm/mpi_atrium_1.ppm");
+    Image image = IOppm::read("../data/hdr-ppm/seymour_park.ppm");
     //ToneMapper::clamping(image, 1);
     //ToneMapper::equalization(image);
-    //ToneMapper::equalAndClamp(image,100000);
-    //ToneMapper::gamma(image,0.5);
-    ToneMapper::clampAndGamma(image, 50000, 0.5);
-    image.setColorDepth(255);
-    image.setMaxValue(1); // MaxValue = 1 para lectores standard (GIMP). Valor de compresión/codificación.
-    IOppm::store("../data/new_image_clampGamma_50000_0.5.ppm", image);
+    //ToneMapper::equalAndClamp(image,40000);
+    //ToneMapper::gamma(image,1.5);
+    //ToneMapper::clampAndGamma(image, 50000, 1.8);
+    ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()));
+    image.setMaxValue(1);
+    IOppm::store("../data/output_r.ppm", image, 255);
+    //IOppm::store("../data/output_gamma_1.5_10.ppm", image, 1023);
 
     // To finish, obtain the timestamp
     finish_time = clock();
