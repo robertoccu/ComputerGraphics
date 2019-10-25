@@ -23,7 +23,6 @@ int main(){
 
     // Planetary Maths (matrix training)
     //planetary_main();
-
     // Image I/O test
     Image image = IOppm::read("../data/hdr-ppm/seymour_park.ppm");
     //ToneMapper::clamping(image, 1);
@@ -31,7 +30,17 @@ int main(){
     //ToneMapper::equalAndClamp(image,40000);
     //ToneMapper::gamma(image,1.5);
     //ToneMapper::clampAndGamma(image, 50000, 1.8);
-    ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()));
+    //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),
+      //      0.18, 0.18);
+
+      // Test
+      RGB rgb(255,0,0);
+      cout<<endl<<"Testing one color conversion"<<endl;
+      cout<<"RGB: {"<<rgb.get(RED)<<", "<<rgb.get(GREEN)<<", "<<rgb.get(BLUE)<<"}"<<endl;
+      cout<<"xyY: {"<<get<0>(rgb.RGBtoxyY())<<", "<<get<1>(rgb.RGBtoxyY())<<", "<<get<2>(rgb.RGBtoxyY())<<"}"<<endl;
+      cout<<"Coincide con los resultados de alguna herramienta web...??"<<endl;
+      // Test
+
     image.setMaxValue(1);
     IOppm::store("../data/output_r.ppm", image, 255);
     //IOppm::store("../data/output_gamma_1.5_10.ppm", image, 1023);

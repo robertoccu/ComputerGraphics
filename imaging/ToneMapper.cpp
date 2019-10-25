@@ -64,49 +64,37 @@ void ToneMapper::clampAndGamma(Image &image, float clampValue, float gamma) {
     ToneMapper::gamma(image, gamma);
 }
 
-void RGBtoxyY(RGB rgb, float &x, float &y, float &Y) {
-    float R = rgb.get(RED);
-    float G = rgb.get(GREEN);
-    float B = rgb.get(BLUE);
+void ToneMapper::reinhard(Image &image, const RGB &Lwhite_rgb, const float delta, const float alpha) {
 
-    // Convert from RGB to XYZ
-    float X = R * 0.4124 + G * 0.3576 + B * 0.1805;
-    Y = R * 0.2126 + G * 0.7152 + B * 0.0722;
-    float Z = R * 0.0193 + G * 0.1192 + B * 0.9505;
-
-    // Convert from XYZ to xyY
-    float L = (X + Y + Z);
-    x = X / L;
-    y = Y / L;
-}
-
-void xyYtoRGB(float x, float y, float Y,
-              RGB &rgb)
-{
-    // Convert from xyY to XYZ
-    float X = x * (Y / y);
-    float Z = (1 - x - y) * (Y / y);
-
-    rgb = RGB();
-    // Convert from XYZ to RGB
-    rgb.set(RED, X *  3.2406 + Y * -1.5372 + Z * -0.4986);
-    rgb.set(GREEN, X * -0.9689 + Y *  1.8758 + Z *  0.0415);
-    rgb.set(BLUE, X *  0.0557 + Y * -0.2040 + Z *  1.0570);
-}
-
-void ToneMapper::reinhard(Image &image, RGB Lwhite_rgb) {
-
-    float x, y, Y, L, Lwhite;
-    RGB output = RGB();
-    RGBtoxyY(Lwhite_rgb, x, y, Lwhite);
-    for(int i = 0; i < image.getPixels().size(); i++){
-        RGBtoxyY(image.getPixels()[i], x, y, Y);
-
-        L = Y;
-        float Lxy = (L * (1 + (L / pow(Lwhite,2))))/(1+L);
-
-        xyYtoRGB(x, y, Lxy, output);
-
-        image.setPixel(i, output);
+    // Obtain the logMean of the global luminance
+    float Lwabsolute  = 0.0;
+    float Lwxy = 0.0;
+    // Formula 1
+    for(const auto & i : image.getPixels()){
+        Lwxy = get<2>(i.RGBtoxyY());    // Obtain the luminance of a rgb pixel
+        Lwabsolute = log(delta + Lwxy);
     }
+
+    Lwabsolute = exp(Lwabsolute) / image.getPixels().size(); // Lw = e^(log...) / N
+
+    // Reinhard formulation
+    float lWhite2 = pow(get<2>(Lwhite_rgb.RGBtoxyY()), 2);
+    float lxy, ldxy, x, y;
+    RGB output = RGB();
+    int iterator = 0;   // Because const auto &i is a colour
+    for(const auto &i : image.getPixels()){
+        // Formula 2
+        lxy = (alpha / Lwabsolute) * get<2>(i.RGBtoxyY());
+        x = get<0>(i.RGBtoxyY());
+        y = get<1>(i.RGBtoxyY());
+
+        // Ld(x, y) from reinhard formule
+        ldxy = (lxy * (1 + (lxy / lWhite2))) / (1 + lxy);
+
+        // Make the new rgb
+        output = output.xyYtoRGB(make_tuple(x,y, ldxy));
+        image.setPixel(iterator, output);
+        iterator++;
+    }
+
 }

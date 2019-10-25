@@ -33,6 +33,9 @@ public:
     RGB operator+(const RGB &rgb) const;
     RGB operator+=(const RGB &rgb);
 
+    tuple<float, float, float> RGBtoxyY () const;
+    RGB xyYtoRGB(const tuple<float, float, float> &xyy) const;
+
     /* Screen output */
     friend std::ostream &operator<<(std::ostream &os, const RGB &rgb);
 };
