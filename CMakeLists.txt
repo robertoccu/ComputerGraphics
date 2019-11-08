@@ -23,4 +23,4 @@ add_executable(ComputerGraphics
         imaging/Image.cpp
         imaging/Image.h
         imaging/ToneMapper.cpp
-        imaging/ToneMapper.h)
+        imaging/ToneMapper.h render/Camera.cpp render/Camera.h render/Screen.cpp render/Screen.h)

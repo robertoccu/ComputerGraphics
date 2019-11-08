@@ -4,12 +4,10 @@
 
 #include <iostream>
 #include <ctime>
-#include "maths/Matrix.h"
-#include "geometry/Ray.h"
-#include "geometry/Sphere.h"
-#include "utils/PlanetaryMaths.h"
 #include "utils/IOppm.h"
 #include "imaging/ToneMapper.h"
+#include "render/Camera.h"
+#include "render/Screen.h"
 
 using namespace std;
 
@@ -21,29 +19,12 @@ int main(){
     // Run the main program
     cout<<"COMPUTER GRAPHICS"<<endl;
 
-    // Planetary Maths (matrix training)
-    //planetary_main();
-    // Image I/O test
-    Image image = IOppm::read("../data/hdr-ppm/seymour_park.ppm");
-    //ToneMapper::clamping(image, 1);
-    //ToneMapper::equalization(image);
-    //ToneMapper::equalAndClamp(image,40000);
-    //ToneMapper::gamma(image,1.5);
-    //ToneMapper::clampAndGamma(image, 50000, 1.8);
-    //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),
-      //      0.18, 0.18);
-
-      // Test
-      RGB rgb(255,0,0);
-      cout<<endl<<"Testing one color conversion"<<endl;
-      cout<<"RGB: {"<<rgb.get(RED)<<", "<<rgb.get(GREEN)<<", "<<rgb.get(BLUE)<<"}"<<endl;
-      cout<<"xyY: {"<<get<0>(rgb.RGBtoxyY())<<", "<<get<1>(rgb.RGBtoxyY())<<", "<<get<2>(rgb.RGBtoxyY())<<"}"<<endl;
-      cout<<"Coincide con los resultados de alguna herramienta web...??"<<endl;
-      // Test
-
-    image.setMaxValue(1);
-    IOppm::store("../data/output_r.ppm", image, 255);
-    //IOppm::store("../data/output_gamma_1.5_10.ppm", image, 1023);
+    Vector up(0,0,5,0), left(-5,0,0,0);
+    Vector forward(0,1,0,0), position(0,-1,0,0);
+    Camera camera(position, up, left, forward);
+    Screen screen(10, 10, camera);
+    cout<<screen.get_pixel(0,0)<<endl;
+    cout<<screen.get_pixel(0,1)<<endl;
 
     // To finish, obtain the timestamp
     finish_time = clock();
@@ -57,6 +38,33 @@ int main(){
     }else{
         cout<<"Finish in: "<<time<<" seconds."<<endl;
     }
+}
+
+
+
+void tone_mapper(){
+    // Image I/O test
+    Image image = IOppm::read("../data/hdr-ppm/seymour_park.ppm");
+    //ToneMapper::clamping(image, 1);
+    //ToneMapper::equalization(image);
+    //ToneMapper::equalAndClamp(image,40000);
+    //ToneMapper::gamma(image,1.5);
+    //ToneMapper::clampAndGamma(image, 50000, 1.8);
+    //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),
+    //      0.18, 0.18);
+
+    // Test
+    RGB rgb(255,0,0);
+    cout<<endl<<"Testing one color conversion"<<endl;
+    cout<<"RGB: {"<<rgb.get(RED)<<", "<<rgb.get(GREEN)<<", "<<rgb.get(BLUE)<<"}"<<endl;
+    cout<<"xyY: {"<<get<0>(rgb.RGBtoxyY())<<", "<<get<1>(rgb.RGBtoxyY())<<", "<<get<2>(rgb.RGBtoxyY())<<"}"<<endl;
+    cout<<"Coincide con los resultados de alguna herramienta web...??"<<endl;
+    // Test
+
+    image.setMaxValue(1);
+    IOppm::store("../data/output_r.ppm", image, 255);
+    //IOppm::store("../data/output_gamma_1.5_10.ppm", image, 1023);
 
 }
+
 
