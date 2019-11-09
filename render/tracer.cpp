@@ -29,6 +29,7 @@ Image tracer::ray_tracer(const Scene &scene) {
             // Create the ray
             Ray ray; ray = ray.rayFromPoints(scene.getCamera().getPosition(), pixel);
             // Obtain the color result of the intersection
+            // TODO: Now only trace one ray per pixel
             color = ray_tracer(ray, scene);
             // Set the color result in the image
             image.setPixel(row, column, color);

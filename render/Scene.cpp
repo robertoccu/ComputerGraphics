@@ -6,6 +6,7 @@
 #include <utility>
 #include "Scene.h"
 #include "../geometry/Sphere.h"
+#include "../geometry/Plane.h"
 
 Scene::Scene(const std::list<CollisionObject*> &objectsList, const Camera &camera, const Screen &screen)
         : objects_list(objectsList), camera(camera), screen(screen) {}
@@ -53,6 +54,9 @@ const Screen &Scene::getScreen() const {
     return screen;
 }
 
+/**
+ * Load the scene1. Consist a white plane and a red sphere in front
+ */
 void Scene::load_scene1() {
     int resolution_X  = 16 * 53;
     int resolution_Y  = 9  * 53;
@@ -63,8 +67,11 @@ void Scene::load_scene1() {
     // Objects
     static Sphere sphere(Vector(15,10,10,1),5);
     sphere.setEmision(RGB(1,0,0));
+    static Plane plane(Vector(15,20,10,1), Vector(0,-1,0,0));
+    plane.setEmision(RGB(1,1,1));
+
     list<CollisionObject*> list;
-    list.push_back(&sphere);
+    list.push_back(&sphere); list.push_back(&plane);
     this->setObjectsList(list);
 
     // Camera
@@ -79,15 +86,15 @@ void Scene::load_scene1() {
 }
 
 void Scene::setCamera(const Camera &camera) {
-    Scene::camera = camera;
+    this->camera = camera;
 }
 
 void Scene::setScreen(const Screen &screen) {
-    Scene::screen = screen;
+    this->screen = screen;
 }
 
 void Scene::setObjectsList(const list <CollisionObject*> &objectsList){
-    objects_list = objectsList;
+    this->objects_list = objectsList;
 }
 
 

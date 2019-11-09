@@ -15,6 +15,8 @@ add_executable(ComputerGraphics
         geometry/Ray.h
         geometry/Sphere.cpp
         geometry/Sphere.h
+        geometry/Plane.h
+        geometry/Plane.cpp
         utils/PlanetaryMaths.h
         utils/IOppm.cpp
         utils/IOppm.h
@@ -23,4 +25,4 @@ add_executable(ComputerGraphics
         imaging/Image.cpp
         imaging/Image.h
         imaging/ToneMapper.cpp
-        imaging/ToneMapper.h render/Camera.cpp render/Camera.h render/Screen.cpp render/Screen.h render/Scene.cpp render/Scene.h geometry/CollisionObject.h material/Material.h material/Emitter.cpp material/Emitter.h render/tracer.cpp render/tracer.h)
+        imaging/ToneMapper.h render/Camera.cpp render/Camera.h render/Screen.cpp render/Screen.h render/Scene.cpp render/Scene.h geometry/CollisionObject.h material/Material.h render/tracer.cpp render/tracer.h )

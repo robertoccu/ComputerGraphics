@@ -49,8 +49,10 @@ bool Sphere::intersection(const Ray &r, float &t) {
         // Negative solution
         t = 0;
         return false;   // No solution
-    }
-    else {
+    }else if(discriminant == 0){
+        t = - b / (2 * a);
+        return true;
+    }else {
         // Being a second-degree equation and the root is positive, it has two solutions
         float op1 = (-b + sqrtf(discriminant)) / 2*a;
         float op2 = (-b - sqrtf(discriminant)) / 2*a;
@@ -59,6 +61,7 @@ bool Sphere::intersection(const Ray &r, float &t) {
         if(op1 < 0 && op2 < 0) {
             // two options is negative, no intersection
             t = 0;
+            is_intersected = false;
         }else if(op1 > 0 && op2 < 0) {
             // One positive, other negative choose positive
             t = op1;
@@ -72,7 +75,6 @@ bool Sphere::intersection(const Ray &r, float &t) {
             is_intersected = true;
         }
     }
-
     return is_intersected;
 }
 
