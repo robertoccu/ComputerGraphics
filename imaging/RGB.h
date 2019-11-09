@@ -36,6 +36,8 @@ public:
     tuple<float, float, float> RGBtoxyY () const;
     RGB xyYtoRGB(const tuple<float, float, float> &xyy) const;
 
+    static RGB average_colors(const RGB *colors, int size);
+
     /* Screen output */
     friend std::ostream &operator<<(std::ostream &os, const RGB &rgb);
 };

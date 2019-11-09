@@ -19,9 +19,10 @@ int main(){
     init_time = clock();
 
     // Run the main program
+    const int PATHS_PER_PIXEL = 1;
     Scene scene;
     scene.load_scene1();
-    Image image = tracer::ray_tracer(scene);    // Create the image
+    Image image = tracer::ray_tracer(scene, PATHS_PER_PIXEL);    // Create the image
 
     ToneMapper::equalization(image);    // Tone mapping
     IOppm::store("../data/ray_tracer.ppm", image, 255);

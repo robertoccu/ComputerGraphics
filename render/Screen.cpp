@@ -57,12 +57,13 @@ Vector Screen::get_world_coordinates( int row,  int column) const {
 }
 
 /**
- *
+ * Return the world coordinates of the pixel[row, column] with a offset defined by a ranom_number
  * @param pixel_row
  * @param pixel_column
+ * @param random_number E [0.0, 1.0]
  * @return
  */
-Vector Screen::get_pixel( int pixel_row,  int pixel_column) const {
+Vector Screen::get_pixel( int pixel_row,  int pixel_column, float random_number) const {
     /* We get the pixel size in world coordinates. Since all pixels measure the same,
      * we can use any pixel to calculate them.
      */
@@ -72,11 +73,9 @@ Vector Screen::get_pixel( int pixel_row,  int pixel_column) const {
     // Obtain the pixel in world coordinates
     Vector pixel = get_world_coordinates(pixel_row, pixel_column);
 
-    // For the moment we always return the point of the center of the pixel.
-    // TODO: Do it with a random number, not always in the middle. It is enough to multiply by a
-    //  number between 0 and 1 the size of the pixel.
-    pixel.set(0, pixel.get(0) + size_pixel_X/2);
-    pixel.set(2, pixel.get(2) - size_pixel_Y/2);
+    // The pixel position is upper left with a offset defined by a random_number
+    pixel.set(0, pixel.get(0) + (size_pixel_X/2 * random_number));
+    pixel.set(2, pixel.get(2) - (size_pixel_Y/2 * random_number));
 
     return pixel;
 }

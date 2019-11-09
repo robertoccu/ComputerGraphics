@@ -36,7 +36,7 @@ public:
     Screen( int pixels_column,  int pixels_row, const Camera& camera);
     Screen();
 
-    Vector get_pixel( int pixel_row,  int pixel_column) const;
+    Vector get_pixel( int pixel_row,  int pixel_column, float random_number) const;
 
      int getPixelsColumn() const;
      int getPixelsRow() const;

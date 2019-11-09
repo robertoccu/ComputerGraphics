@@ -97,3 +97,13 @@ std::ostream &operator<<(std::ostream &os, const RGB &rgb) {
 
     return os;
 }
+
+RGB RGB::average_colors(const RGB *colors, int size) {
+    float red = 0, green = 0, blue = 0;
+    for(int i = 0; i < size; i++){
+        red   += colors[i].get(RED);
+        green += colors[i].get(GREEN);
+        blue  += colors[i].get(BLUE);
+    }
+    return RGB(red/(float)size, green/(float)size, blue/(float)size);
+}
