@@ -30,7 +30,7 @@ Ray::Ray(const Vector &origin, const Vector &direction) {
  * @return
  */
 Ray Ray::rayFromPoints(const Vector &origin, const Vector &end) const {
-    return Ray(origin, end - origin);
+    return Ray(origin, (end - origin).normalize());
 }
 
 const Vector &Ray::getOrigin() const {
