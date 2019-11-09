@@ -7,6 +7,10 @@
 
 #include "../imaging/RGB.h"
 
+/**
+ * Abstract class that represents all possible materials. Lambertian, perfect specular...etc.
+ * TODO: Implement it and add it to the collisionObject class
+ */
 class Material{
     virtual RGB get_emision() = 0;
 };

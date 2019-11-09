@@ -21,9 +21,10 @@ int main(){
     // Run the main program
     Scene scene;
     scene.load_scene1();
-    Image image = tracer::ray_tracer(scene);
-    ToneMapper::equalization(image);
-    IOppm::store("../data/output.ppm", image, 255);
+    Image image = tracer::ray_tracer(scene);    // Create the image
+
+    ToneMapper::equalization(image);    // Tone mapping
+    IOppm::store("../data/ray_tracer.ppm", image, 255);
 
 
     // To finish, obtain the timestamp
