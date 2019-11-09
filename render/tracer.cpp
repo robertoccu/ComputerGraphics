@@ -26,8 +26,8 @@ Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
 
     for(int row = 0; row < scene.getScreen().getPixelsRow(); row++){
         // The percentage is calculated by rows
-        percentage = 100 * ((float) row / (float) scene.getScreen().getPixelsRow());
-        cout<< "\r" << (int) percentage <<" %"<<endl;
+        percentage =  row*100 / scene.getScreen().getPixelsRow();
+        cout<< '\r' << (int) percentage <<" %";
         for(int column = 0; column < scene.getScreen().getPixelsColumn(); column++){
             for(int path = 0; path != paths_per_pixel; path++){
                 // Obtain the pixel in world coordinates with a random offset
