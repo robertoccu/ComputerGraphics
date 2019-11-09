@@ -8,23 +8,32 @@
 
 #include <Vector.h>
 #include "Ray.h"
+#include "CollisionObject.h"
 
-class Sphere {
+class Sphere : public CollisionObject{
 private:
     Vector center;
     float radius;
+    RGB emision;
 
 public:
     Sphere();
-    Sphere(const Vector &center, const float radius);
-
-    Vector getN(const Vector &collisionPoint) const;
-    // Intersection between Ray and Sphere
-    bool intersection(const Ray &r, float &t);
+    Sphere(const Vector &center, float radius);
     const Vector &getCenter() const;
     void setCenter(const Vector &center);
     float getRadius() const;
     void setRadius(float radius);
+
+    // Funciones heredadas
+    bool intersection(const Ray &r, float &t);
+    Vector get_normal(const Vector &collisionPoint) const;
+
+    // DEBUG
+    void setEmision(const RGB& emision){this->emision = emision;}
+    RGB getEmision(){return this->emision;}
+
+    
+
 
     friend std::ostream &operator<<(std::ostream &os, const Sphere &sp);
 

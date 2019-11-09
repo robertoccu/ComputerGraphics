@@ -81,7 +81,7 @@ bool Sphere::intersection(const Ray &r, float &t) {
  * @param collisionPoint
  * @return normal vector
  */
-Vector Sphere::getN(const Vector &collisionPoint) const{
+Vector Sphere::get_normal(const Vector &collisionPoint) const{
     return collisionPoint - this->center;
 }
 

@@ -38,3 +38,5 @@ const Vector &Camera::getForward() const {
 void Camera::setForward(const Vector &forward) {
     Camera::forward = forward;
 }
+
+Camera::Camera() = default;

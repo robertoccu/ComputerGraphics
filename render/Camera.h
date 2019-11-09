@@ -18,6 +18,8 @@ class Camera {
 public:
     Camera(const Vector &position, const Vector &up, const Vector &left, const Vector &forward);
 
+    Camera();
+
     const Vector &getPosition() const;
 
     void setPosition(const Vector &position);

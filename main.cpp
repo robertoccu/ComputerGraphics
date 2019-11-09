@@ -8,6 +8,8 @@
 #include "imaging/ToneMapper.h"
 #include "render/Camera.h"
 #include "render/Screen.h"
+#include "render/Scene.h"
+#include "render/tracer.h"
 
 using namespace std;
 
@@ -17,14 +19,12 @@ int main(){
     init_time = clock();
 
     // Run the main program
-    cout<<"COMPUTER GRAPHICS"<<endl;
+    Scene scene;
+    scene.load_scene1();
+    Image image = tracer::ray_tracer(scene);
+    ToneMapper::equalization(image);
+    IOppm::store("../data/output.ppm", image, 255);
 
-    Vector up(0,0,5,0), left(-5,0,0,0);
-    Vector forward(0,1,0,0), position(0,-1,0,0);
-    Camera camera(position, up, left, forward);
-    Screen screen(10, 10, camera);
-    cout<<screen.get_pixel(0,0)<<endl;
-    cout<<screen.get_pixel(0,1)<<endl;
 
     // To finish, obtain the timestamp
     finish_time = clock();

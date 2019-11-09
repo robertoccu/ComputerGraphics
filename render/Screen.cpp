@@ -4,7 +4,7 @@
 
 #include "Screen.h"
 
-Screen::Screen(float width, float height, float focal_length, unsigned int pixels_column, unsigned int pixels_row) : width(
+Screen::Screen(float width, float height, float focal_length,  int pixels_column,  int pixels_row) : width(
         width), height(height), focal_length(focal_length), pixels_column(pixels_column), pixels_row(pixels_row) {
 
     /*
@@ -17,7 +17,7 @@ Screen::Screen(float width, float height, float focal_length, unsigned int pixel
 
 }
 
-Screen::Screen(unsigned int pixels_column, unsigned int pixels_row, const Camera &camera) :
+Screen::Screen( int pixels_column,  int pixels_row, const Camera &camera) :
     Screen(camera.getLeft().modulus() * 2, camera.getUp().modulus() * 2, camera.getForward().modulus(),
            pixels_column, pixels_row) {
     calculate_world_coordinates(camera);
@@ -32,8 +32,8 @@ void Screen::calculate_world_coordinates(const Camera& camera) {
     transformation_matrix.setVectors(camera.getLeft(), camera.getForward(), camera.getUp());
     transformation_matrix.setPoint(camera.getPosition());
 
-    for(unsigned int i = 0; i < this->pixels_row; i++){
-        for(unsigned int j = 0; j < this->pixels_column; j++){
+    for(int i = 0; i < this->pixels_row; i++){
+        for(int j = 0; j < this->pixels_column; j++){
             // Since the camera has the vector left as X, 1.1 is the upper left corner.
             // Then we advance subtracting to 1 because pixel we are using the size of the pixel.
             // The Y axis is always 1 because it is in camera coordinates.
@@ -47,12 +47,12 @@ void Screen::calculate_world_coordinates(const Camera& camera) {
 }
 
 
-void Screen::set_world_coordinates(unsigned int row, unsigned int column, const Vector &vector) {
+void Screen::set_world_coordinates( int row,  int column, const Vector &vector) {
     pixels_world_coordinates[pixels_column * row + column] = vector;
 }
 
 
-Vector Screen::get_world_coordinates(unsigned int row, unsigned int column) const {
+Vector Screen::get_world_coordinates( int row,  int column) const {
     return pixels_world_coordinates[pixels_column * row + column];
 }
 
@@ -62,7 +62,7 @@ Vector Screen::get_world_coordinates(unsigned int row, unsigned int column) cons
  * @param pixel_column
  * @return
  */
-Vector Screen::get_pixel(unsigned int pixel_row, unsigned int pixel_column) const {
+Vector Screen::get_pixel( int pixel_row,  int pixel_column) const {
     /* We get the pixel size in world coordinates. Since all pixels measure the same,
      * we can use any pixel to calculate them.
      */
@@ -80,3 +80,14 @@ Vector Screen::get_pixel(unsigned int pixel_row, unsigned int pixel_column) cons
 
     return pixel;
 }
+
+ int Screen::getPixelsColumn() const {
+    return pixels_column;
+}
+
+ int Screen::getPixelsRow() const {
+    return pixels_row;
+}
+
+Screen::Screen() = default;
+

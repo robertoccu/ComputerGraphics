@@ -15,7 +15,7 @@
 class Screen {
 private:
     float width, height, focal_length;
-    unsigned int pixels_column, pixels_row;
+    int pixels_column, pixels_row;
 
     /*
      * Specifies how much you can move in both X and Y directions a point in the upper left corner
@@ -27,14 +27,20 @@ private:
     // Coordinates of the position of the upper left corner of each pixel in world coordinates
     std::vector<Vector> pixels_world_coordinates;
 private:
-    Screen(float width, float height, float focal_length, unsigned int pixels_column, unsigned int pixels_row);
+    Screen(float width, float height, float focal_length,  int pixels_column,  int pixels_row);
     void calculate_world_coordinates(const Camera& camera);
-    void set_world_coordinates(unsigned int row, unsigned int column, const Vector& vector);
-    Vector get_world_coordinates(unsigned int row, unsigned int column) const;
+    void set_world_coordinates( int row,  int column, const Vector& vector);
+    Vector get_world_coordinates( int row,  int column) const;
 
 public:
-    Screen(unsigned int pixels_column, unsigned int pixels_row, const Camera& camera);
-    Vector get_pixel(unsigned int pixel_row, unsigned int pixel_column) const;
+    Screen( int pixels_column,  int pixels_row, const Camera& camera);
+    Screen();
+
+    Vector get_pixel( int pixel_row,  int pixel_column) const;
+
+     int getPixelsColumn() const;
+     int getPixelsRow() const;
+
 
 };
 
