@@ -8,6 +8,7 @@
 #include "../geometry/Sphere.h"
 #include "../geometry/Plane.h"
 #include "../geometry/Disk.h"
+#include "../geometry/Triangle.h"
 
 Scene::Scene(const std::list<CollisionObject*> &objectsList, const Camera &camera, const Screen &screen)
         : objects_list(objectsList), camera(camera), screen(screen) {}
@@ -73,11 +74,14 @@ void Scene::load_scene1() {
     Vector center_disk(15, 10, 20, 1);
     static Disk disk(center_disk, Plane(center_disk, Vector(0,0,-1,0)),3);
     disk.setEmision(RGB(0,0,0.8));
+    static Triangle triangle(Vector(3,10, 10,1), Vector(1.5, 10, 8,1), Vector(3, 10, 8, 1));
+    triangle.setEmision(RGB(0, 0.8, 0));
 
     list<CollisionObject*> list;
     list.push_back(&sphere);
     list.push_back(&plane);
     list.push_back(&disk);
+    list.push_back(&triangle);
     this->setObjectsList(list);
 
     // Camera
