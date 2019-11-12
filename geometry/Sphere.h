@@ -14,8 +14,6 @@ class Sphere : public CollisionObject{
 private:
     Vector center;
     float radius;
-    RGB emision;
-
 public:
     Sphere();
     Sphere(const Vector &center, float radius);
@@ -27,13 +25,6 @@ public:
     // Funciones heredadas
     bool intersection(const Ray &r, float &t);
     Vector get_normal(const Vector &collisionPoint) const;
-
-    // DEBUG
-    void setEmision(const RGB& emision){this->emision = emision;}
-    RGB getEmision(){return this->emision;}
-
-    
-
 
     friend std::ostream &operator<<(std::ostream &os, const Sphere &sp);
 
