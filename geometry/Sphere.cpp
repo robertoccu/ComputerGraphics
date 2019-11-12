@@ -3,9 +3,7 @@
 //
 
 #include <cmath>
-#include <memory>
 #include "Sphere.h"
-#include "../material/Emitter.h"
 
 /**
  * Default constructor
@@ -119,4 +117,3 @@ std::ostream &operator<<(std::ostream &os, const Sphere &sp) {
 
     return os;
 }
-

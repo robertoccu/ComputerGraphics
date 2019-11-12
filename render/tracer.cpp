@@ -57,7 +57,7 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene) {
     CollisionObject* collision_object = scene.near_intersection(ray, collision_point);
     // If the ray was intersection
     if(collision_object != nullptr){
-        return collision_object->get_color_emitter();  // Now return the color emission
+        return collision_object->getEmision();  // Now return the color emission
     }else{
         return RGB(0, 0, 0);    // Return black
     }

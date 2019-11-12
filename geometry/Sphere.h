@@ -9,7 +9,6 @@
 #include <Vector.h>
 #include "Ray.h"
 #include "CollisionObject.h"
-#include "../material/Material.h"
 
 class Sphere : public CollisionObject{
 private:
@@ -24,8 +23,8 @@ public:
     void setRadius(float radius);
 
     // Funciones heredadas
-    bool intersection(const Ray &r, float &t) override;
-    Vector get_normal(const Vector &collisionPoint) const override;
+    bool intersection(const Ray &r, float &t);
+    Vector get_normal(const Vector &collisionPoint) const;
 
     friend std::ostream &operator<<(std::ostream &os, const Sphere &sp);
 

@@ -1,14 +1,12 @@
 
 #include "Plane.h"
-#include "../material/Emitter.h"
 
-Plane::Plane(const Vector &point, const Vector &normal) : point(point), normal(normal){
+Plane::Plane(const Vector &point, const Vector &normal) : point(point),
+                                                                              normal(normal){
     distance = - (Vector::dot(normal, point));
-    this->material = make_shared<Emitter>(RGB(0,0,0));
 }
 
-
-
+Plane::Plane() = default;
 
 bool Plane::intersection(const Ray &ray, float &t) {
     bool is_intersection = false;
@@ -25,7 +23,3 @@ bool Plane::intersection(const Ray &ray, float &t) {
 Vector Plane::get_normal(const Vector &collision_point) const {
     return normal;
 }
-
-
-
-
