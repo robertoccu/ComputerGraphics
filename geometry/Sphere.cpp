@@ -3,9 +3,7 @@
 //
 
 #include <cmath>
-#include <memory>
 #include "Sphere.h"
-#include "../material/Emitter.h"
 
 /**
  * Default constructor
@@ -118,15 +116,4 @@ std::ostream &operator<<(std::ostream &os, const Sphere &sp) {
     os <<" \tRadius: "<< sp.radius<<std::endl;
 
     return os;
-}
-
-RGB Sphere::get_color_emitter() {
-    return material->get_emision();
-}
-
-void Sphere::set_material(const shared_ptr<Material>& material_object) {
-    // If the material object is Emitter type
-    if(dynamic_pointer_cast<Emitter>(material_object)){
-        this->material = std::make_shared<Emitter>(material_object->get_emision());
-    }
 }
