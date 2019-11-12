@@ -69,14 +69,22 @@ void Scene::load_scene1() {
 
     // Objects
     static Sphere sphere(Vector(15,10,10,1),5);
-    sphere.setEmision(RGB(1,0,0));
+    shared_ptr<Emitter> sphere_material = make_shared<Emitter>(RGB(1,0,0));
+    sphere.set_material(sphere_material);
+
     static Plane plane(Vector(15,20,10,1), Vector(0,-1,0,0));
-    plane.setEmision(RGB(0.3,0.3,0.3));
+    shared_ptr<Emitter> plane_material = make_shared<Emitter>(RGB(0.3,0.3,0.3));
+    plane.set_material(plane_material);
+
     Vector center_disk(15, 10, 20, 1);
     static Disk disk(center_disk, Plane(center_disk, Vector(0,0,-1,0)),3);
-    disk.setEmision(RGB(0,0,0.8));
+    shared_ptr<Emitter> disk_material = make_shared<Emitter>(RGB(0,0,0.5));
+    disk.set_material(disk_material);
+
     static Triangle triangle(Vector(3,10, 10,1), Vector(1.5, 10, 8,1), Vector(3, 10, 8, 1));
-    triangle.setEmision(RGB(0, 0.8, 0));
+    shared_ptr<Emitter> triangle_material = make_shared<Emitter>(RGB(0,0.8,0));
+    triangle.set_material(triangle_material);
+
     static TriangleMeshes mesh("../geometry/models/cube.obj");
 
     list<CollisionObject*> list;

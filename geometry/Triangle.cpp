@@ -36,10 +36,6 @@ bool Triangle::intersection(const Ray &ray, float &t) {
     return result;
 }
 
-RGB Triangle::getEmision() {
-    return emision;
-}
-
 Vector Triangle::get_normal(const Vector &collision_point) const {
     return normal;
 }

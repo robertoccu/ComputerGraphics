@@ -31,7 +31,3 @@ bool Disk::intersection(const Ray &ray, float &t) {
 Vector Disk::get_normal(const Vector &collision_point) const {
     return plane.get_normal(collision_point);
 }
-
-RGB Disk::getEmision() {
-    return color_emission;
-}
