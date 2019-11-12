@@ -9,6 +9,7 @@
 #include "../geometry/Plane.h"
 #include "../geometry/Disk.h"
 #include "../geometry/Triangle.h"
+#include "../geometry/TriangleMeshes.h"
 
 Scene::Scene(const std::list<CollisionObject*> &objectsList, const Camera &camera, const Screen &screen)
         : objects_list(objectsList), camera(camera), screen(screen) {}
@@ -76,6 +77,7 @@ void Scene::load_scene1() {
     disk.setEmision(RGB(0,0,0.8));
     static Triangle triangle(Vector(3,10, 10,1), Vector(1.5, 10, 8,1), Vector(3, 10, 8, 1));
     triangle.setEmision(RGB(0, 0.8, 0));
+    static TriangleMeshes mesh("../geometry/models/cube.obj");
 
     list<CollisionObject*> list;
     list.push_back(&sphere);

@@ -1,9 +1,4 @@
-//
-// Created by Sergio on 12/11/2019.
-//
-
 #include "Triangle.h"
-#include "Plane.h"
 
 Triangle::Triangle(const Vector &a, const Vector &b, const Vector &c) {
     this->a = a;
@@ -47,4 +42,8 @@ RGB Triangle::getEmision() {
 
 Vector Triangle::get_normal(const Vector &collision_point) const {
     return normal;
+}
+
+void Triangle::set_normal(const Vector &vector) {
+    this->normal = vector;
 }

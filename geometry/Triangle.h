@@ -7,6 +7,7 @@
 
 
 #include "CollisionObject.h"
+#include "Plane.h"
 
 class Triangle : public CollisionObject{
 private:
@@ -18,6 +19,7 @@ public:
     bool intersection(const Ray &ray, float &t) override;
 
     Vector get_normal(const Vector &collision_point) const override ;
+    void set_normal(const Vector &normal);
 
     RGB getEmision() override;
     void setEmision(const RGB &emision){this->emision = emision;}
