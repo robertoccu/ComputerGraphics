@@ -25,7 +25,7 @@ Scene::Scene() = default;
 CollisionObject* Scene::near_intersection(const Ray &ray, Vector &intersection_point) const{
     float t_intersection = 0.0;
     float near_intersection = INFINITY;
-    CollisionObject* collision_object = nullptr;
+    CollisionObject *collision_object = nullptr;
 
     // Iterate on the list of objects in the scene
     for(const auto& object : this->objects_list){
@@ -85,13 +85,22 @@ void Scene::load_scene1() {
     shared_ptr<Emitter> triangle_material = make_shared<Emitter>(RGB(0,0.8,0));
     triangle.set_material(triangle_material);
 
-    static TriangleMeshes mesh("../geometry/models/cube.obj");
+    Matrix matrix_mesh;
+    matrix_mesh = Matrix::traslation(15, 10, 10);
+    matrix_mesh = matrix_mesh * Matrix::scale(10,10,10);
+    matrix_mesh = matrix_mesh * Matrix::rotationXYZ(0,0,M_PI_4/2);
+
+
+    static TriangleMeshes mesh("../geometry/models/cube.obj", matrix_mesh);
+    shared_ptr<Emitter> mesh_material = make_shared<Emitter>(RGB(0.5,0.5,0));
+    mesh.set_material(mesh_material);
 
     list<CollisionObject*> list;
-    list.push_back(&sphere);
-    list.push_back(&plane);
+    //list.push_back(&plane);
+    /*list.push_back(&sphere);
     list.push_back(&disk);
-    list.push_back(&triangle);
+    list.push_back(&triangle);*/
+    list.push_back(&mesh);
     this->setObjectsList(list);
 
     // Camera

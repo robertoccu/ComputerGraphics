@@ -21,14 +21,12 @@ private:
     RGB emision;
 
 public:
-    TriangleMeshes(const string &obj_path);
+    TriangleMeshes(const string &obj_path, const Matrix &matrix);
 
-    bool intersection(const Ray &ray, float &t);
+    bool intersection(const Ray &ray, float &t) override;
 
     Vector get_normal(const Vector &collision_point) const ;
 
-    RGB getEmision();
-    void setEmision(const RGB &emision){this->emision = emision;}
 
 
 };

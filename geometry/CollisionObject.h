@@ -39,6 +39,12 @@ public:
             this->material = std::make_shared<Emitter>(material_object->get_emision());
         }
     }
+
+    /**
+     * Return the material of the object
+     * @return
+     */
+    shared_ptr<Material> get_material(){return this->material;}
 };
 
 #endif //COMPUTERGRAPHICS_COLLISIONOBJECT_H
