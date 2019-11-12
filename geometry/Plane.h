@@ -11,8 +11,6 @@ class Plane : public CollisionObject{
     Vector point;           // Point of plane
     Vector normal;       // Normal direction of plane
     float distance;           // Origin distance
-
-    RGB emision;
 public:
     Plane(const Vector &point, const Vector &normal);
     Plane();
@@ -20,9 +18,6 @@ public:
     bool intersection(const Ray &ray, float &t);
 
     Vector get_normal(const Vector &collision_point) const ;
-
-    RGB getEmision();
-    void setEmision(const RGB &emision){this->emision = emision;}
 };
 
 

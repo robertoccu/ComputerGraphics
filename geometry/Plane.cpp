@@ -23,7 +23,3 @@ bool Plane::intersection(const Ray &ray, float &t) {
 Vector Plane::get_normal(const Vector &collision_point) const {
     return normal;
 }
-
-RGB Plane::getEmision() {
-    return emision;
-}
