@@ -14,7 +14,6 @@ class Plane : public CollisionObject{
     Vector normal;       // Normal direction of plane
     float distance;           // Origin distance
 
-    std::shared_ptr<Material> material; // Pointer to the material of the object
 public:
     Plane(const Vector &point, const Vector &normal);
     Plane();
@@ -23,9 +22,6 @@ public:
 
     Vector get_normal(const Vector &collision_point) const override ;
 
-    RGB get_color_emitter() override;
-
-    void set_material(const shared_ptr<Material>& material_object);
 };
 
 
