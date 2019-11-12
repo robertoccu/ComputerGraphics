@@ -1,8 +1,10 @@
 #ifndef COMPUTERGRAPHICS_PLANE_H
 #define COMPUTERGRAPHICS_PLANE_H
 
+#include <memory>
 #include "../maths/Vector.h"
 #include "CollisionObject.h"
+#include "../material/Material.h"
 
 /**
  * Object that defines a plane. A plane is defined by a vector normal to the surface and by a distance to the origin
@@ -12,17 +14,18 @@ class Plane : public CollisionObject{
     Vector normal;       // Normal direction of plane
     float distance;           // Origin distance
 
-    RGB emision;
+    std::shared_ptr<Material> material; // Pointer to the material of the object
 public:
     Plane(const Vector &point, const Vector &normal);
     Plane();
 
-    bool intersection(const Ray &ray, float &t);
+    bool intersection(const Ray &ray, float &t) override;
 
-    Vector get_normal(const Vector &collision_point) const ;
+    Vector get_normal(const Vector &collision_point) const override ;
 
-    RGB getEmision();
-    void setEmision(const RGB &emision){this->emision = emision;}
+    RGB get_color_emitter() override;
+
+    void set_material(const shared_ptr<Material>& material_object);
 };
 
 
