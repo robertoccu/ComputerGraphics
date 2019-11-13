@@ -2,6 +2,7 @@
 // Created by Sergio on 08/11/2019.
 //
 
+
 #include "Screen.h"
 
 Screen::Screen(float width, float height, float focal_length,  int pixels_column,  int pixels_row) : width(
@@ -57,13 +58,16 @@ Vector Screen::get_world_coordinates( int row,  int column) const {
 }
 
 /**
- * Return the world coordinates of the pixel[row, column] with a offset defined by a ranom_number
+ * Return the world coordinates of the pixel[row, column] with a offset defined by a random_number
  * @param pixel_row
  * @param pixel_column
- * @param random_number E [0.0, 1.0]
  * @return
  */
-Vector Screen::get_pixel( int pixel_row,  int pixel_column, float random_number) const {
+Vector Screen::get_pixel( int pixel_row,  int pixel_column) const {
+    static std::random_device rd;
+    static std::mt19937 mt(rd());
+    static std::uniform_real_distribution<float> dist(0.0, 1.0);
+
     /* We get the pixel size in world coordinates. Since all pixels measure the same,
      * we can use any pixel to calculate them.
      */
@@ -74,8 +78,8 @@ Vector Screen::get_pixel( int pixel_row,  int pixel_column, float random_number)
     Vector pixel = get_world_coordinates(pixel_row, pixel_column);
 
     // The pixel position is upper left with a offset defined by a random_number
-    pixel.set(0, pixel.get(0) + (size_pixel_X/2 * random_number));
-    pixel.set(2, pixel.get(2) - (size_pixel_Y/2 * random_number));
+    pixel.set(0, pixel.get(0) + (size_pixel_X/2 * dist(mt)));
+    pixel.set(2, pixel.get(2) - (size_pixel_Y/2 * dist(mt)));
 
     return pixel;
 }

@@ -58,8 +58,8 @@ const Screen &Scene::getScreen() const {
  * Load the scene1. Consist a white plane and a red sphere in front
  */
 void Scene::load_scene1() {
-    int resolution_X  = 16 * 53;
-    int resolution_Y  = 9  * 53;
+    int resolution_X  = 16 * 52;
+    int resolution_Y  = 9  * 52;
     int width_screen  = 16 *  4;
     int height_screen = 9  *  4;
     int focal_length  =  width_screen / (int)(2* tan(0.26 * M_PI)); // Fish Eye Avoidance Formula
