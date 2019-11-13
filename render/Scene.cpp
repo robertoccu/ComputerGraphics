@@ -73,9 +73,11 @@ void Scene::load_scene1() {
     shared_ptr<Emitter> plane_emitter = make_shared<Emitter>(RGB(1,1,1));
     plane.set_material(plane_emitter);
 
+    cout<<"Loading objects...";
     list<CollisionObject*> list;
     list.push_back(&sphere); list.push_back(&plane);
     this->setObjectsList(list);
+    cout<<"OK"<<endl;
 
     // Camera
     Camera camera_scene(Vector(15,-focal_length/1.8,10,1), Vector(0,0,height_screen/2,0),

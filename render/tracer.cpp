@@ -22,31 +22,32 @@ Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
 
     /* Obtain the max number of cores
      * If you want to set the number of cores, change the variable and leave it at a fixed value */
-    unsigned number_Cores = std::thread::hardware_concurrency();
+    unsigned number_threads = std::thread::hardware_concurrency();
     // We check if the rows can be divided by the cores.
     // If it is not divisible, there will be some row that is not generated. Program will stop.
-    if((scene.getScreen().getPixelsRow() % number_Cores) != 0){
+    if((scene.getScreen().getPixelsRow() % number_threads) != 0){
         cerr<<"You can't divide the number of columns by the cores that you have"<<endl;
         cerr<<"Change the number of cores OR the resolution_Y in scene"<<endl;
         exit(1);
     }
 
     // Obtain the number of rows for worker
-    unsigned int rows_for_worker = scene.getScreen().getPixelsRow() / number_Cores;
+    unsigned int rows_for_worker = scene.getScreen().getPixelsRow() / number_threads;
     // Create a vector of threads
-    std::thread workers[number_Cores + 1];
+    std::thread workers[number_threads + 1];
     // We launched all the workers
-    for(int i = 0; i < number_Cores; i++){
+    for(int i = 0; i < number_threads; i++){
         workers[i] = std::thread(&worker_tracer, i * rows_for_worker, (i * rows_for_worker) + rows_for_worker - 1,
                 ref(image), ref(scene), paths_per_pixel);
     }
-    workers[number_Cores] = std::thread(&show_progress, scene.getScreen().getPixelsRow());
+    workers[number_threads] = std::thread(&show_progress, scene.getScreen().getPixelsRow());
     // We hope that it will be finished.
-    for(int i = 0; i < number_Cores; i++){
+    for(int i = 0; i < number_threads; i++){
         workers[i].join();
     }
-    workers[number_Cores].join();
+    workers[number_threads].join();
     cout<<"\n100 %"<<endl;
+    cout<<"Path tracer finish"<<endl;
     return image;
 }
 
@@ -82,7 +83,7 @@ void tracer::worker_tracer(unsigned int pixel_row_initial, unsigned int pixel_ro
     Vector pixel;
     Ray ray;
     for(unsigned int row = pixel_row_initial; row <= pixel_row_final; row++){
-        threads_progress++;
+        threads_progress.fetch_add(1);
         for(int column = 0; column < scene.getScreen().getPixelsColumn(); column++){
             for(int path = 0; path != paths_per_pixel; path++){
                 // Obtain the pixel in world coordinates with a random offset
@@ -109,7 +110,8 @@ void tracer::show_progress(const unsigned int rows){
         // The percentage is calculated by rows
         percentage =  progress * 100.0 / (float) rows;
         cout<< '\r' << (int) percentage <<" %";
-        progress = threads_progress.load(std::memory_order_relaxed);
+        progress = threads_progress.load(std::memory_order_seq_cst);
+        // For very long processes, establish a time between progress and progress.
         //std::this_thread::sleep_for (std::chrono::seconds(1));
     }
 }

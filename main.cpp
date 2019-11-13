@@ -6,8 +6,6 @@
 #include <ctime>
 #include "utils/IOppm.h"
 #include "imaging/ToneMapper.h"
-#include "render/Camera.h"
-#include "render/Screen.h"
 #include "render/Scene.h"
 #include "render/tracer.h"
 
