@@ -3,6 +3,7 @@
 #define COMPUTERGRAPHICS_SCREEN_H
 
 #include <vector>
+#include <random>
 #include "../maths/Vector.h"
 #include "../maths/Matrix.h"
 #include "Camera.h"
@@ -36,7 +37,7 @@ public:
     Screen( int pixels_column,  int pixels_row, const Camera& camera);
     Screen();
 
-    Vector get_pixel( int pixel_row,  int pixel_column, float random_number) const;
+    Vector get_pixel( int pixel_row,  int pixel_column) const;
 
      int getPixelsColumn() const;
      int getPixelsRow() const;

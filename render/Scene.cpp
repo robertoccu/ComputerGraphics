@@ -61,8 +61,8 @@ const Screen &Scene::getScreen() const {
  * Load the scene1. Consist a white plane and a red sphere in front
  */
 void Scene::load_scene1() {
-    int resolution_X  = 16 * 53;
-    int resolution_Y  = 9  * 53;
+    int resolution_X  = 16 * 52;
+    int resolution_Y  = 9  * 52;
     int width_screen  = 16 *  4;
     int height_screen = 9  *  4;
     int focal_length  =  width_screen / (int)(2* tan(0.26 * M_PI)); // Fish Eye Avoidance Formula
@@ -95,6 +95,7 @@ void Scene::load_scene1() {
     shared_ptr<Emitter> mesh_material = make_shared<Emitter>(RGB(0.5,0.5,0));
     mesh.set_material(mesh_material);
 
+    cout<<"Loading objects...";
     list<CollisionObject*> list;
     //list.push_back(&plane);
     /*list.push_back(&sphere);
@@ -102,6 +103,7 @@ void Scene::load_scene1() {
     list.push_back(&triangle);*/
     list.push_back(&mesh);
     this->setObjectsList(list);
+    cout<<"OK"<<endl;
 
     // Camera
     Camera camera_scene(Vector(15,-focal_length/1.8,10,1), Vector(0,0,height_screen/2,0),
