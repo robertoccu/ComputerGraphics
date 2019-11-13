@@ -12,7 +12,11 @@
  * @param obj_path Obj with vertex, vertex normal, and faces style f 1//2 3//2 5//2. With the same last character.
  * @param matrix Matrix to change base
  */
-TriangleMeshes::TriangleMeshes(const string &obj_path, const Matrix &matrix) {
+list<Triangle> TriangleMeshes::obtain_triangles(const string &obj_path, const Matrix &matrix) {
+    std::vector<Vector> geometric_vertex;
+    std::vector<Vector> vertex_normal;
+    list<Triangle> triangles;
+
     ifstream stream;
     stream.open(obj_path);
     // DEBUG
@@ -66,7 +70,7 @@ TriangleMeshes::TriangleMeshes(const string &obj_path, const Matrix &matrix) {
                 back  = stoi(s_z.substr(s_z.find(delimiter)+2, s_z.length()));
                 Vector c_normal = vertex_normal.at(back - 1); c_normal = (matrix * c_normal).normalize();
 
-                Triangle triangle(a,b,c); triangle.set_normal(a_normal);
+                Triangle triangle(a,b,c); triangle.set_normal((a_normal+b_normal+c_normal).normalize());
                 // DEBUG
                 float red   = dist(mt);
                 float green = dist(mt);
@@ -85,32 +89,5 @@ TriangleMeshes::TriangleMeshes(const string &obj_path, const Matrix &matrix) {
     // When the triangles has saved, we can clean the other vectors
     geometric_vertex.clear();
     vertex_normal.clear();
-}
-
-/**
- * Return true if it collides with any of the triangles that make up the mesh.
- * @param ray
- * @param t
- * @return
- */
-bool TriangleMeshes::intersection(const Ray &ray, float &t) {
-    float near = INFINITY;
-    bool result = false;
-    for(Triangle triangle : triangles){
-        if(triangle.intersection(ray, t)){
-            if(t < near){
-                near = t;
-                result = true;
-                // If collide, set the material of the mesh to the same color of the triangle.
-                this->set_material(triangle.get_material());
-            }
-        }
-
-    }
-
-    return result;
-}
-
-Vector TriangleMeshes::get_normal(const Vector &collision_point) const {
-    return Vector();
+    return triangles;
 }

@@ -7,28 +7,12 @@
 
 #include <fstream>
 #include <vector>
-#include "CollisionObject.h"
 #include "Triangle.h"
 
 
-class TriangleMeshes : public CollisionObject{
-private:
-    std::vector<Vector> geometric_vertex;
-    std::vector<Vector> vertex_normal;
-    std::vector<Vector> space_vertex;
-
-    list<Triangle> triangles;
-    RGB emision;
-
+class TriangleMeshes{
 public:
-    TriangleMeshes(const string &obj_path, const Matrix &matrix);
-
-    bool intersection(const Ray &ray, float &t) override;
-
-    Vector get_normal(const Vector &collision_point) const ;
-
-
-
+    static list<Triangle> obtain_triangles(const string &obj_path, const Matrix &matrix);
 };
 
 

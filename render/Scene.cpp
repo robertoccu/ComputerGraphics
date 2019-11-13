@@ -88,12 +88,13 @@ void Scene::load_scene1() {
     Matrix matrix_mesh;
     matrix_mesh = Matrix::traslation(15, 10, 10);
     matrix_mesh = matrix_mesh * Matrix::scale(10,10,10);
-    matrix_mesh = matrix_mesh * Matrix::rotationXYZ(0,0,M_PI_4/2);
+    //matrix_mesh = matrix_mesh * Matrix::rotationXYZ(0,0,M_PI_4/2);
 
 
-    static TriangleMeshes mesh("../geometry/models/cube.obj", matrix_mesh);
-    shared_ptr<Emitter> mesh_material = make_shared<Emitter>(RGB(0.5,0.5,0));
-    mesh.set_material(mesh_material);
+    static list<Triangle> triangle_mesh =
+            TriangleMeshes::obtain_triangles("../geometry/models/men.obj", matrix_mesh);
+
+
 
     cout<<"Loading objects...";
     list<CollisionObject*> list;
@@ -101,7 +102,10 @@ void Scene::load_scene1() {
     /*list.push_back(&sphere);
     list.push_back(&disk);
     list.push_back(&triangle);*/
-    list.push_back(&mesh);
+    list.push_back(&triangle_mesh.front());
+    for(auto & iterator : triangle_mesh){
+        list.push_back(&iterator);
+    }
     this->setObjectsList(list);
     cout<<"OK"<<endl;
 
