@@ -92,7 +92,7 @@ void Scene::load_scene1() {
 
 
     static list<Triangle> triangle_mesh =
-            TriangleMeshes::obtain_triangles("../geometry/models/men.obj", matrix_mesh);
+            TriangleMeshes::obtain_triangles("../geometry/models/men.obj.3D", matrix_mesh);
 
 
 
