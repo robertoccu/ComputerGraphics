@@ -28,6 +28,7 @@ list<Triangle> TriangleMeshes::obtain_triangles(const string &obj_path, const Ma
     float x, y, z;  // For vertex or normal
     string s_x, s_y, s_z; // For faces
     int front, back; // For faces too
+    Vector face_normal;
 
     if(stream.is_open()){
         while(getline(stream, line)){
@@ -70,7 +71,10 @@ list<Triangle> TriangleMeshes::obtain_triangles(const string &obj_path, const Ma
                 back  = stoi(s_z.substr(s_z.find(delimiter)+2, s_z.length()));
                 Vector c_normal = vertex_normal.at(back - 1); c_normal = (matrix * c_normal).normalize();
 
-                Triangle triangle(a,b,c); triangle.set_normal((a_normal+b_normal+c_normal).normalize());
+                face_normal = (a_normal + b_normal + c_normal) / 3;
+                face_normal = face_normal.normalize();
+
+                Triangle triangle(a,b,c); triangle.set_normal(face_normal);
                 // DEBUG
                 float red   = dist(mt);
                 float green = dist(mt);
