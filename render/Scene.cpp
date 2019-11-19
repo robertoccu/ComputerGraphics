@@ -87,10 +87,11 @@ void Scene::load_scene1() {
 
     Matrix matrix_mesh;
     matrix_mesh = Matrix::traslation(15, 10, 10);
-    matrix_mesh = matrix_mesh * Matrix::scale(3,3,3);
+    matrix_mesh = matrix_mesh * Matrix::scale(5,5,5);
 
     static list<Triangle> triangle_mesh =
-            TriangleMeshes::obtain_triangles("../geometry/models/player.obj.3D", matrix_mesh);
+            TriangleMeshes::get_triangles_with_textures_simple("../geometry/models/text.obj.3D",
+                    "../geometry/models/text.mtl", matrix_mesh);
 
     cout<<"Loading objects...";
     list<CollisionObject*> list;
