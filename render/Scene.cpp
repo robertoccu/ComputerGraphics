@@ -7,6 +7,9 @@
 #include "Scene.h"
 #include "../geometry/Sphere.h"
 #include "../geometry/Plane.h"
+#include "../geometry/Disk.h"
+#include "../geometry/Triangle.h"
+#include "../geometry/TriangleMeshes.h"
 
 Scene::Scene(const std::list<CollisionObject*> &objectsList, const Camera &camera, const Screen &screen)
         : objects_list(objectsList), camera(camera), screen(screen) {}
@@ -22,7 +25,7 @@ Scene::Scene() = default;
 CollisionObject* Scene::near_intersection(const Ray &ray, Vector &intersection_point) const{
     float t_intersection = 0.0;
     float near_intersection = INFINITY;
-    CollisionObject* collision_object = nullptr;
+    CollisionObject *collision_object = nullptr;
 
     // Iterate on the list of objects in the scene
     for(const auto& object : this->objects_list){
@@ -66,16 +69,40 @@ void Scene::load_scene1() {
 
     // Objects
     static Sphere sphere(Vector(15,10,10,1),5);
-    shared_ptr<Emitter> sphere_emitter = make_shared<Emitter>(RGB(1,0,0));
-    sphere.set_material(sphere_emitter);
+    shared_ptr<Emitter> sphere_material = make_shared<Emitter>(RGB(1,0,0));
+    sphere.set_material(sphere_material);
 
     static Plane plane(Vector(15,20,10,1), Vector(0,-1,0,0));
-    shared_ptr<Emitter> plane_emitter = make_shared<Emitter>(RGB(1,1,1));
-    plane.set_material(plane_emitter);
+    shared_ptr<Emitter> plane_material = make_shared<Emitter>(RGB(0.3,0.3,0.3));
+    plane.set_material(plane_material);
+
+    Vector center_disk(15, 10, 20, 1);
+    static Disk disk(center_disk, Plane(center_disk, Vector(0,0,-1,0)),3);
+    shared_ptr<Emitter> disk_material = make_shared<Emitter>(RGB(0,0,0.5));
+    disk.set_material(disk_material);
+
+    static Triangle triangle(Vector(3,10, 10,1), Vector(1.5, 10, 8,1), Vector(3, 10, 8, 1));
+    shared_ptr<Emitter> triangle_material = make_shared<Emitter>(RGB(0,0.8,0));
+    triangle.set_material(triangle_material);
+
+    Matrix matrix_mesh;
+    matrix_mesh = Matrix::traslation(15, 10, 10);
+    matrix_mesh = matrix_mesh * Matrix::scale(5,5,5);
+
+    static list<Triangle> triangle_mesh =
+            TriangleMeshes::get_triangles_with_textures_simple("../geometry/models/text.obj.3D",
+                    "../geometry/models/text.mtl", matrix_mesh);
 
     cout<<"Loading objects...";
     list<CollisionObject*> list;
-    list.push_back(&sphere); list.push_back(&plane);
+    //list.push_back(&plane);
+    /*list.push_back(&sphere);
+    list.push_back(&disk);
+    list.push_back(&triangle);*/
+    list.push_back(&triangle_mesh.front());
+    for(auto & iterator : triangle_mesh){
+        list.push_back(&iterator);
+    }
     this->setObjectsList(list);
     cout<<"OK"<<endl;
 
