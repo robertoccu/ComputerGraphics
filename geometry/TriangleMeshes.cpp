@@ -107,7 +107,7 @@ list<Triangle> TriangleMeshes::get_triangles_without_textures(const string &obj_
  */
 list<Triangle> TriangleMeshes::get_triangles_with_textures_simple(const string &obj_path, const string &mtl_path,
                                                                   const Matrix &matrix) {
-    std::map<string, RGB> materials = get_material_mtl(mtl_path);
+    std::map<string, Composite> materials = get_material_mtl(mtl_path);
     std::vector<Vector> geometric_vertex;
     std::vector<Vector> vertex_normal;
     list<Triangle> triangles;
@@ -122,7 +122,7 @@ list<Triangle> TriangleMeshes::get_triangles_with_textures_simple(const string &
     Vector face_normal;
 
     ssize_t finder_pointer;
-    RGB actual_color;
+    Composite composite_material;
 
     if(stream.is_open()){
         while(getline(stream, line)){
@@ -144,9 +144,8 @@ list<Triangle> TriangleMeshes::get_triangles_with_textures_simple(const string &
                     geometric_vertex.emplace_back(x, y, z, 1);
                 }
             }else if((finder_pointer = line.find("usemtl") != string::npos)){
-                // Set new material. Only set the emision color
-                // TODO: set complete material, now only emission color.
-                actual_color = materials.at(line.substr(finder_pointer + 6, line.length()));
+                // Set new composite material
+                composite_material = Composite(materials.at(line.substr(finder_pointer + 6, line.length())));
             }
             else if(line.front() == 'f'){
                 // Faces
@@ -174,7 +173,8 @@ list<Triangle> TriangleMeshes::get_triangles_with_textures_simple(const string &
                 face_normal = face_normal.normalize();
 
                 Triangle triangle(a,b,c); triangle.set_normal(face_normal);
-                shared_ptr<Emitter> emitter = make_shared<Emitter>(actual_color);
+                // TODO: Now only save emitter materials, latter all
+                shared_ptr<Emitter> emitter = make_shared<Emitter>(composite_material.get_emision());
                 triangle.set_material(emitter);
                 triangles.push_back(triangle);
             }
@@ -194,17 +194,19 @@ list<Triangle> TriangleMeshes::get_triangles_with_textures_simple(const string &
 
 /**
  * Returns the simple materials contained in the mtl file.
- * TODO: Return complete material (Ke, Kd, Ks). Now only return Ke
+ * Return complete material (Ke, Kd, Ks)
  * @param mtl_path mtl file without mapping textures, only with Phong materials.
  * @return map<material_string, material>
  */
-std::map<string, RGB> TriangleMeshes::get_material_mtl(const string &mtl_path) {
-    std::map<string, RGB> materials{};
+std::map<string, Composite> TriangleMeshes::get_material_mtl(const string &mtl_path) {
+    std::map<string, Composite> materials{};
 
     ifstream stream;
     stream.open(mtl_path);
     string line;
     size_t finder_pointer;
+    RGB Kd, Ks, Ke;
+    float Ns = 0;
 
     if(stream.is_open()){
         while(getline(stream, line)){
@@ -213,21 +215,41 @@ std::map<string, RGB> TriangleMeshes::get_material_mtl(const string &mtl_path) {
             }else if((finder_pointer = line.find("newmtl") != string::npos)){
                 // New material
                 string name_material = line.substr(finder_pointer + 6, line.length());  // Obtain the name_material
-                while(getline(stream, line)){
+                for(int i = 0; i < 8; i++){
+                    // Obtain new line
+                    getline(stream, line);
+                    // Find if is Kd, Ks..etc
                     if(line[0] == 'K' && line[1] == 'd'){
                         // Diffuse coefficient
+                        line.replace(0,2,"");   // Erase Kd
+                        float red, green, blue;
+                        stringstream ss(line);
+                        ss >> red; ss >> green; ss >> blue;
+                        Kd = RGB(red, green, blue);
                     }else if(line[0] == 'K' && line[1] == 's'){
                         // Specular coefficient
+                        line.replace(0,2,"");   // Erase Ks
+                        float red, green, blue;
+                        stringstream ss(line);
+                        ss >> red; ss >> green; ss >> blue;
+                        Ks = RGB(red, green, blue);
                     }else if(line[0] == 'K' && line[1] == 'e'){
                         // Emision
                         line.replace(0,2,"");   // Erase Ke
                         float red, green, blue;
                         stringstream ss(line);
                         ss >> red; ss >> green; ss >> blue;
-                        RGB color_material(red, green, blue);
-                        materials.emplace(name_material, color_material);
+                        Ke = RGB(red, green, blue);
+                    }else if(line[0] == 'N' && line[1] == 's'){
+                        // Shininess
+                        line.replace(0,2,"");   // Erase Ns
+                        Ns = stof(line);
                     }
                 }
+
+                // Update the map
+                materials.emplace(name_material, Composite(Emitter(Ke), Phong(Kd,Ks, Ns)));
+
             }
         }
     }else{
