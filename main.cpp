@@ -17,7 +17,8 @@ int main(){
     init_time = clock();
 
     // Run the main program
-    const int PATHS_PER_PIXEL = 1;
+    const int PATHS_PER_PIXEL = 10;
+    cout<<"Path tracer: "<<PATHS_PER_PIXEL<<" ppp."<<endl;
     Scene scene;
     scene.load_cornellBox();
     Image image = tracer::ray_tracer(scene, PATHS_PER_PIXEL);    // Create the image

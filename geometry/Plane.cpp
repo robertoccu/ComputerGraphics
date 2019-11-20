@@ -11,7 +11,7 @@ Plane::Plane() = default;
 bool Plane::intersection(const Ray &ray, float &t) {
     bool is_intersection = false;
     float dot_product = Vector::dot(normal, ray.getDirection());
-    if(dot_product != 0){
+    if(dot_product < 0){
         is_intersection = true;
         t = -(distance + Vector::dot(ray.getOrigin(), normal)) / dot_product;
     }else{

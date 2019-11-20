@@ -61,10 +61,10 @@ const Screen &Scene::getScreen() const {
  * Load the Cornell box scene.
  */
 void Scene::load_cornellBox() {
-    int resolution_X  = 16 * 54;
-    int resolution_Y  = 16  * 54;
+    int resolution_X  = 16 * 52;
+    int resolution_Y  = 9  * 52;
     int width_screen  = 16 *  4;
-    int height_screen = 16  *  4;
+    int height_screen = 9  *  4;
     int focal_length  =  width_screen / (int)(2* tan(0.26 * M_PI)); // Fish Eye Avoidance Formula
 
     // Objects
@@ -72,15 +72,15 @@ void Scene::load_cornellBox() {
     list<CollisionObject*> objects;
 
     // Debug X Axis
-    static Sphere test0(Vector(5,0,0,PT),1);
+    static Sphere test0(Vector(5,3,0,PT),1);
     test0.set_material(make_shared<Emitter>(RGB::red));
     objects.push_back(&test0);
 
-    static Sphere test1(Vector(10,0,0,PT),1);
+    static Sphere test1(Vector(10,3,0,PT),1);
     test1.set_material(make_shared<Emitter>(RGB::red));
     objects.push_back(&test1);
 
-    static Sphere test2(Vector(20,0,0,PT),1);
+    static Sphere test2(Vector(20,3,0,PT),1);
     test2.set_material(make_shared<Emitter>(RGB::red));
     objects.push_back(&test2);
 
@@ -126,6 +126,10 @@ void Scene::load_cornellBox() {
     static Plane ceil(Vector(0,0,30,PT),Vector(0,0,-1,VEC));
     ceil.set_material(make_shared<Emitter>(RGB(0.885809, 0.698859, 0.666422)));
     objects.push_back(&ceil);
+
+    static Plane background(Vector(0,30,0,PT), Vector(0,-1,0,VEC));
+    background.set_material(make_shared<Emitter>(RGB(0,0,0)));
+    objects.push_back(&background);
 
 
     this->setObjectsList(objects);
