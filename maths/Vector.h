@@ -8,6 +8,9 @@
 
 #include <iostream>
 
+#define VEC 0
+#define PT 1
+
 /**
  * vector[0] = X Component
  * vector[1] = Y Component

@@ -15,7 +15,12 @@ void ToneMapper::clamping(Image &image, float clampValue) {
 
         rgb.set(BLUE,image.getPixels()[i].get(BLUE) < clampValue ? image.getPixels()[i].get(BLUE) : clampValue);
 
-        image.setPixel(i, rgb);
+        /*tuple<double,double,double> pixel_xyY = image.getPixels()[i].RGBtoxyY();
+        double x = get<0>(pixel_xyY);
+        double y = get<1>(pixel_xyY);
+        double Y = get<2>(pixel_xyY) < clampValue ? get<2>(pixel_xyY) : clampValue;
+        rgb = rgb.xyYtoRGB(make_tuple(x,y,Y));
+        image.setPixel(i, rgb);*/
     }
     image.setMaxValue(clampValue);
 }
@@ -24,11 +29,19 @@ void ToneMapper::equalization(Image &image) {
     RGB rgb = RGB();
     for(int i = 0; i < image.getPixels().size(); i++){
         // Set the pixel
-        rgb.set(RED,image.getPixels()[i].get(RED) / image.getMaxValue());
+        /*rgb.set(RED,image.getPixels()[i].get(RED) / image.getMaxValue());
 
         rgb.set(GREEN,image.getPixels()[i].get(GREEN) / image.getMaxValue());
 
-        rgb.set(BLUE,image.getPixels()[i].get(BLUE) / image.getMaxValue());
+        rgb.set(BLUE,image.getPixels()[i].get(BLUE) / image.getMaxValue());*/
+
+        double maxY = get<2>(RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()).RGBtoxyY());
+
+        tuple<double,double,double> pixel_xyY = image.getPixels()[i].RGBtoxyY();
+        double x = get<0>(pixel_xyY);
+        double y = get<1>(pixel_xyY);
+        double Y = get<2>(pixel_xyY) / maxY;
+        rgb = rgb.xyYtoRGB(make_tuple(x,y,Y));
 
         image.setPixel(i, rgb);
     }
@@ -53,6 +66,14 @@ void ToneMapper::gamma(Image &image, float gamma) {
 
         rgb.set(BLUE,pow(image.getPixels()[i].get(BLUE), gamma));
 
+        /*double maxY = get<2>(RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()).RGBtoxyY());
+
+        tuple<double,double,double> pixel_xyY = image.getPixels()[i].RGBtoxyY();
+        double x = get<0>(pixel_xyY);
+        double y = get<1>(pixel_xyY);
+        double Y = pow(get<2>(pixel_xyY),gamma);
+        rgb = rgb.xyYtoRGB(make_tuple(x,y,Y));*/
+
         image.setPixel(i, rgb);
     }
     image.setMaxValue(1);
@@ -72,10 +93,10 @@ void ToneMapper::reinhard(Image &image, const RGB &Lwhite_rgb, const float delta
     // Formula 1
     for(const auto & i : image.getPixels()){
         Lwxy = get<2>(i.RGBtoxyY());    // Obtain the luminance of a rgb pixel
-        Lwabsolute = log(delta + Lwxy);
+        Lwabsolute += log(delta + Lwxy);
     }
 
-    Lwabsolute = exp(Lwabsolute) / image.getPixels().size(); // Lw = e^(log...) / N
+    Lwabsolute = exp((Lwabsolute) / image.getPixels().size()); // Lw = e^(log...) / N
 
     // Reinhard formulation
     float lWhite2 = pow(get<2>(Lwhite_rgb.RGBtoxyY()), 2);

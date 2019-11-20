@@ -32,7 +32,9 @@ public:
     CollisionObject* near_intersection(const Ray &ray, Vector &intersection_point) const;
 
     // List of scenes harcoded
+    void load_cornellBox();
     void load_scene1();
+
 
 };
 

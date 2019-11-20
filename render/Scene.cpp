@@ -58,6 +58,91 @@ const Screen &Scene::getScreen() const {
 }
 
 /**
+ * Load the Cornell box scene.
+ */
+void Scene::load_cornellBox() {
+    int resolution_X  = 16 * 54;
+    int resolution_Y  = 16  * 54;
+    int width_screen  = 16 *  4;
+    int height_screen = 16  *  4;
+    int focal_length  =  width_screen / (int)(2* tan(0.26 * M_PI)); // Fish Eye Avoidance Formula
+
+    // Objects
+    cout<<"Loading objects...";
+    list<CollisionObject*> objects;
+
+    // Debug X Axis
+    static Sphere test0(Vector(5,0,0,PT),1);
+    test0.set_material(make_shared<Emitter>(RGB::red));
+    objects.push_back(&test0);
+
+    static Sphere test1(Vector(10,0,0,PT),1);
+    test1.set_material(make_shared<Emitter>(RGB::red));
+    objects.push_back(&test1);
+
+    static Sphere test2(Vector(20,0,0,PT),1);
+    test2.set_material(make_shared<Emitter>(RGB::red));
+    objects.push_back(&test2);
+
+    // Debug Y Axis
+    static Sphere test3(Vector(0,5,0,PT),1);
+    test3.set_material(make_shared<Emitter>(RGB::green));
+    objects.push_back(&test3);
+
+    static Sphere test4(Vector(0,10,0,PT),1);
+    test4.set_material(make_shared<Emitter>(RGB::green));
+    objects.push_back(&test4);
+
+    static Sphere test5(Vector(0,20,0,PT),1);
+    test5.set_material(make_shared<Emitter>(RGB::green));
+    objects.push_back(&test5);
+
+    // Debug Z Axis
+    static Sphere test6(Vector(0,0,5,PT),1);
+    test6.set_material(make_shared<Emitter>(RGB::blue));
+    objects.push_back(&test6);
+
+    static Sphere test7(Vector(0,0,10,PT),1);
+    test7.set_material(make_shared<Emitter>(RGB::blue));
+    objects.push_back(&test7);
+
+    static Sphere test8(Vector(0,0,20,PT),1);
+    test8.set_material(make_shared<Emitter>(RGB::blue));
+    objects.push_back(&test8);
+
+    // Cornell Box with color values from implementation on Mitsuba renderer.
+    static Plane left_wall(Vector(0,0,0,PT),Vector(1,0,0,VEC));
+    left_wall.set_material(make_shared<Emitter>(RGB(0.570068, 0.0430135, 0.0443706)));
+    objects.push_back(&left_wall);
+
+    static Plane right_wall(Vector(30,0,0,PT),Vector(-1,0,0,VEC));
+    right_wall.set_material(make_shared<Emitter>(RGB(0.105421, 0.37798, 0.076425)));
+    objects.push_back(&right_wall);
+
+    static Plane floor(Vector(0,0,0,PT),Vector(0,0,1,VEC));
+    floor.set_material(make_shared<Emitter>(RGB(0.885809, 0.698859, 0.666422)));
+    objects.push_back(&floor);
+
+    static Plane ceil(Vector(0,0,30,PT),Vector(0,0,-1,VEC));
+    ceil.set_material(make_shared<Emitter>(RGB(0.885809, 0.698859, 0.666422)));
+    objects.push_back(&ceil);
+
+
+    this->setObjectsList(objects);
+    cout<<"Objects loaded successfully"<<endl;
+
+    // Camera
+    Camera camera_scene(Vector(15,-focal_length/1.8,10,1), Vector(0,0,height_screen/2,0),
+                        Vector(-width_screen/2,0,0,0), Vector(0, focal_length,0,0));
+    this->setCamera(camera_scene);
+
+    // Screen
+    Screen screen_scene(resolution_X, resolution_Y, camera_scene);
+    this->setScreen(screen_scene);
+
+}
+
+/**
  * Load the scene1. Consist a white plane and a red sphere in front
  */
 void Scene::load_scene1() {

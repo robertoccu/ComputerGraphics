@@ -18,7 +18,18 @@ using namespace std;
 class RGB {
 private:
     float value[3];
+
 public:
+
+    static RGB red;
+    static RGB green;
+    static RGB blue;
+    static RGB yellow;
+    static RGB magenta;
+    static RGB cyan;
+    static RGB white;
+    static RGB black;
+
     RGB();
     RGB(float red, float green, float blue);
 

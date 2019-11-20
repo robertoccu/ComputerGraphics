@@ -19,7 +19,7 @@ int main(){
     // Run the main program
     const int PATHS_PER_PIXEL = 1;
     Scene scene;
-    scene.load_scene1();
+    scene.load_cornellBox();
     Image image = tracer::ray_tracer(scene, PATHS_PER_PIXEL);    // Create the image
 
     ToneMapper::equalization(image);    // Tone mapping
