@@ -329,10 +329,14 @@ std::ostream &operator<<(std::ostream &os, const Vector &v1){
     os << std::fixed;
     os << std::setprecision(2);     // Number of decimals
 
-    os << std::setw(7)<<"x: "<<v1.get(0)<<std::endl;
-    os << std::setw(7)<<"y: "<<v1.get(1)<<std::endl;
-    os << std::setw(7)<<"z: "<<v1.get(2)<<std::endl;
-    os << std::setw(7)<<"h: "<<v1.get(3)<<std::endl;
+    os << std::setw(7)<<"[x: "<<v1.get(0);
+    os << std::setw(7)<<", y: "<<v1.get(1);
+    os << std::setw(7)<<", z: "<<v1.get(2);
+    os << std::setw(7)<<", h: "<<v1.get(3)<<"]";
 
     return os;
+}
+
+Vector operator/(float scalar, const Vector &v1) {
+    return Vector(v1.get(0) / scalar, v1.get(1) / scalar,v1.get(2) / scalar,v1.get(3));
 }

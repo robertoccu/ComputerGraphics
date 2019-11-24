@@ -8,13 +8,22 @@
 #include "imaging/ToneMapper.h"
 #include "render/Scene.h"
 #include "render/tracer.h"
+#include "geometry/Triangle.h"
+#include "geometry/AABB.h"
+#include "utils/BVH.h"
 
 using namespace std;
+
+void test_bvh();
 
 int main(){
     unsigned init_time, finish_time;
     // Obtain the timestamp
     init_time = clock();
+
+    // dEBUG
+    test_bvh();
+    // Debug
 
     // Run the main program
     const int PATHS_PER_PIXEL = 10;
@@ -41,7 +50,22 @@ int main(){
     }
 }
 
+void test_bvh(){
+    Triangle t1(Vector(0,0,0,1), Vector(2,0,0,1), Vector(2,0,2,1));
+    Triangle t3(Vector(3,0,2,1), Vector(5,0,2,1), Vector(5,0,4,1));
+    Triangle t2(Vector(6,0,0,1), Vector(8,0,0,1), Vector(8,0,2,1));
+    Triangle t4(Vector(9,0,2,1), Vector(11,0,2,1), Vector(11,0,4,1));
+    Triangle t5(Vector(9,0,-3,1), Vector(11,0,-3,1), Vector(11,0,-1,1));
 
+    std::vector<AABB> aabbs;
+    aabbs.emplace_back(t1);aabbs.emplace_back(t2);aabbs.emplace_back(t3);aabbs.emplace_back(t4);aabbs.emplace_back(t5);
+
+    BVH bvh;
+    bvh.construct(aabbs);
+    bvh.show_nodes();
+
+    exit(0);
+}
 
 void tone_mapper(){
     // Image I/O test

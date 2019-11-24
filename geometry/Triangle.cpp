@@ -43,3 +43,43 @@ Vector Triangle::get_normal(const Vector &collision_point) const {
 void Triangle::set_normal(const Vector &vector) {
     this->normal = vector;
 }
+
+/**
+ * Return the centroid of a triangle
+ * @return
+ */
+Vector Triangle::get_centroid() const {
+    return (a+b+c)/3;
+}
+
+float Triangle::get_min_X() const {
+    return get_min(0);
+}
+
+float Triangle::get_max_X() const {
+    return get_max(0);
+}
+
+float Triangle::get_min_Y() const {
+    return get_min(1);
+}
+
+float Triangle::get_max_Y() const {
+    return get_max(1);
+}
+
+float Triangle::get_min_Z() const {
+    return get_min(2);
+}
+
+float Triangle::get_max_Z() const {
+    return get_max(2);
+}
+
+float Triangle::get_min(int position) const {
+    return std::min(a.get(position), std::min(b.get(position), c.get(position)));
+}
+
+float Triangle::get_max(int position) const {
+    return std::max(a.get(position), std::max(b.get(position), c.get(position)));
+}

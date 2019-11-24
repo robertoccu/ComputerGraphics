@@ -20,6 +20,7 @@ protected:
 public:
     virtual bool intersection(const Ray &ray, float &t) = 0;
     virtual Vector get_normal(const Vector& collision_point) const = 0;
+
 public:
     /**
      * Return the color emitter of the object

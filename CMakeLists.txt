@@ -25,4 +25,4 @@ add_executable(ComputerGraphics
         imaging/Image.cpp
         imaging/Image.h
         imaging/ToneMapper.cpp
-        imaging/ToneMapper.h render/Camera.cpp render/Camera.h render/Screen.cpp render/Screen.h render/Scene.cpp render/Scene.h geometry/CollisionObject.h material/Material.h render/tracer.cpp render/tracer.h geometry/Disk.cpp geometry/Disk.h geometry/Triangle.cpp geometry/Triangle.h geometry/TriangleMeshes.cpp geometry/TriangleMeshes.h material/Phong.h material/Composite.h)
+        imaging/ToneMapper.h render/Camera.cpp render/Camera.h render/Screen.cpp render/Screen.h render/Scene.cpp render/Scene.h geometry/CollisionObject.h material/Material.h render/tracer.cpp render/tracer.h geometry/Disk.cpp geometry/Disk.h geometry/Triangle.cpp geometry/Triangle.h geometry/TriangleMeshes.cpp geometry/TriangleMeshes.h material/Phong.h material/Composite.h geometry/AABB.cpp geometry/AABB.h utils/BVH.cpp utils/BVH.h)

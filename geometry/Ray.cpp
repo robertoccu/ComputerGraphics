@@ -21,6 +21,8 @@ Ray::Ray() {
 Ray::Ray(const Vector &origin, const Vector &direction) {
     this->origin = origin;
     this->direction = direction;
+    this->inverse_direction = Vector(1 / direction.get(0), 1 / direction.get(1),
+            1 / direction.get(2), 0);
 }
 
 /**

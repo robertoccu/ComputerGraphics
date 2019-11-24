@@ -10,6 +10,10 @@ class Ray {
 private:
     Vector origin;
     Vector direction;
+
+    Vector inverse_direction;
+
+
 public:
     Ray();
     Ray(const Vector &origin, const Vector &direction);
@@ -22,6 +26,9 @@ public:
     void setDirection(const Vector &direction);
 
     Vector operator*(const float t) const;
+    const Vector &getInverseDirection() const {
+        return inverse_direction;
+    }
 
     friend std::ostream &operator<<(std::ostream &os, const Ray &r);
 };

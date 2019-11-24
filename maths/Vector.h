@@ -57,6 +57,7 @@ public:
     Vector operator*(float scalar) const;                              // Vector multiplied by scale
     friend Vector operator*(float scalar, const Vector &v1);           // Distribution operation
     Vector operator/(float scalar) const;                              // Vector divide by scale
+    friend Vector operator/(float scalar, const Vector &v1);           // Distribution operation
     Vector operator+=(const Vector &v1);                                // Vector = Vector + v1
     Vector operator-=(const Vector &v1);                                // Vector = Vector - v1;
     Vector operator*=(float scalar);                                   // Vector = Vector * scalar
