@@ -7,6 +7,9 @@
 
 // Atomic variable that contains the number of rows that are already finished.
 std::atomic<int> tracer::threads_progress(0);
+static std::random_device rd;
+static std::mt19937 mt(rd());
+static std::uniform_real_distribution<float> dist(0.0, 1.0);
 
 /**
  * Main method that calculates the image of the scene.
@@ -60,14 +63,35 @@ Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
  * @return color of the ray
  */
 RGB tracer::ray_tracer(const Ray &ray, const Scene &scene) {
+#ifndef ABSORPTION_PROBABILITY
+#define ABSORPTION_PROBABILITY 0.1
+#endif
+
     Vector collision_point;
     // Obtain the collision object and the collision point
     CollisionObject* collision_object = scene.near_intersection(ray, collision_point);
     // If the ray was intersection
     if(collision_object != nullptr){
-        return collision_object->get_color_emitter();  // Now return the color emission
+        // Path tracing
+        // Lo = Le + { Li * Fr }
+        RGB color(0,0,0);
+
+        // Collision happened, so calculate next ray. Receive color from collision.
+        Ray out_ray;
+        float rr = dist(mt); // Russian Roulette
+        if (rr < 1 - ABSORPTION_PROBABILITY) {
+            color = collision_object->get_material().get_outgoing_ray(ray, out_ray, rr);
+        } else { // Ray discarted by Russian Roulette
+            return color;
+        }
+        
+        // 2. Trace outgoing ray and get color from path.
+        color *= ray_tracer(out_ray, scene);
+
+        return color;
+
     }else{
-        return RGB(0, 0, 0);    // Return black
+        return RGB::black;    // Return black
     }
 }
 

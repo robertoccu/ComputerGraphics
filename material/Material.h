@@ -21,6 +21,7 @@ public:
 
     virtual RGB get_emision() = 0;
     virtual RGB get_BRDF(const Ray& in_ray, Ray& out_ray) = 0;
+    virtual RGB get_outgoing_ray(const Ray& ray, Ray& out_ray, float rr);
 };
 
 #endif //COMPUTERGRAPHICS_MATERIAL_H

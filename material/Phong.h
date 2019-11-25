@@ -12,8 +12,8 @@
  */
 class Phong : public Material{
 private:
-    RGB Kd, Ks;
-    float Ns;
+    RGB Kd, Ks; // Difuse and Specular
+    float Ns; // Shinnies
 public:
     Phong(const RGB &kd, const RGB &ks, const float &ns) : Kd(kd), Ks(ks), Ns(ns) {
         set_material(material_type::PHONG);
@@ -42,6 +42,20 @@ public:
         // Now divide by the pdf
         float pdf = (Kd.get_mean_color() + Ks.get_mean_color()) / 2;
         return brdf * (1 / pdf);
+    }
+
+    RGB get_outgoing_ray(const Ray& ray, Ray& out_ray, float rr) {
+        static std::random_device rd;
+        static std::mt19937 mt(rd());
+        static std::uniform_real_distribution<float> dist(0.0, 1.0);
+
+        float r_theta = dist(mt);
+        float r_phi = dist(mt);
+
+        float c_theta = acos(sqrt(1-r_theta));
+        float c_phi = 2 * M_PI * r_phi;
+
+        //TODO: Generate ray
     }
 };
 #endif //COMPUTERGRAPHICS_PHONG_H

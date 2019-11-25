@@ -128,7 +128,7 @@ void Scene::load_cornellBox() {
     objects.push_back(&ceil);
 
     static Plane background(Vector(0,30,0,PT), Vector(0,-1,0,VEC));
-    background.set_material(make_shared<Emitter>(RGB(0,0,0)));
+    background.set_material(make_shared<Emitter>(RGB::white));
     objects.push_back(&background);
 
 
