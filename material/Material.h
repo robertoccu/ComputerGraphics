@@ -20,6 +20,7 @@ public:
     material_type get_material(){ return material;}
 
     virtual RGB get_emision() = 0;
+
 };
 
 #endif //COMPUTERGRAPHICS_MATERIAL_H

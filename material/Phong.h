@@ -28,5 +28,6 @@ public:
     const RGB &getKs() const {return Ks; }
 
     float getNs() const {return Ns;}
+    
 };
 #endif //COMPUTERGRAPHICS_PHONG_H
