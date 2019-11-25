@@ -20,7 +20,7 @@ public:
     material_type get_material(){ return material;}
 
     virtual RGB get_emision() = 0;
-    virtual RGB get_BRDF(const Ray& in_ray, Ray& out_ray) = 0;
+    virtual RGB get_BRDF(const Ray& in_ray, const Vector& normal, Ray& out_ray) = 0;
     virtual RGB get_outgoing_ray(const Ray& in_ray, const Vector& collision_normal, const Vector& collision_point, Ray& out_ray, float rr) = 0;
 };
 

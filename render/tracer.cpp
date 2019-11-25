@@ -79,7 +79,8 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene) {
         // Collision happened, so calculate next ray. Receive color from collision.
         Ray out_ray;
         float rr = dist(mt); // Russian Roulette
-        if (rr < 1 - ABSORPTION_PROBABILITY) {
+
+        if (rr > ABSORPTION_PROBABILITY) {
             if (collision_object->get_material()->get_material() == material_type::EMITTER ) {
                 color = collision_object->get_material()->get_emision();
                 return color;
@@ -91,7 +92,7 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene) {
         }
 
         // 2. Trace outgoing ray and get color from path.
-        color *= ray_tracer(out_ray, scene);
+        color = color * ray_tracer(out_ray, scene);
 
         return color;
 

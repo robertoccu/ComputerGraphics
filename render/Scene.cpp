@@ -42,7 +42,7 @@ CollisionObject* Scene::near_intersection(const Ray &ray, Vector &intersection_p
     // If he's at least collided with some object.
     if(near_intersection != INFINITY){
         // Obtain the intersection point
-        intersection_point = Vector(ray.getOrigin() + (ray.getDirection() * t_intersection));
+        intersection_point = Vector(ray.getOrigin() + (t_intersection * ray.getDirection()));
         return collision_object;
     }else{
         return nullptr;
@@ -73,15 +73,15 @@ void Scene::load_cornellBox() {
 
     // Cornell Box with color values from implementation on Mitsuba renderer.
     static Plane left_wall(Vector(0,0,0,PT),Vector(1,0,0,VEC));
-    left_wall.set_material(make_shared<Phong>(RGB(0.570068, 0.0430135, 0.0443706), RGB(0.01, 0.01, 0.01), 0.1));
+    left_wall.set_material(make_shared<Phong>(RGB(0.8, 0, 0.0), RGB(0.00, 0.00, 0.00), 1.0));
     objects.push_back(&left_wall);
 
     static Plane right_wall(Vector(30,0,0,PT),Vector(-1,0,0,VEC));
-    right_wall.set_material(make_shared<Phong>(RGB(0.105421, 0.37798, 0.076425),RGB(0.01, 0.01, 0.01), 0.1));
+    right_wall.set_material(make_shared<Phong>(RGB(0.0, 0.8, 0.0),RGB(0.00, 0.00, 0.00), 1.0));
     objects.push_back(&right_wall);
 
     static Plane floor(Vector(0,0,0,PT),Vector(0,0,1,VEC));
-    floor.set_material(make_shared<Phong>(RGB(0.885809, 0.698859, 0.666422), RGB(0.01, 0.01, 0.01), 0.1));
+    floor.set_material(make_shared<Phong>(RGB(0.26, 0.26, 0.26), RGB(0.00, 0.00, 0.00), 1.0));
     objects.push_back(&floor);
 
     static Plane ceil(Vector(0,0,30,PT),Vector(0,0,-1,VEC));
@@ -89,7 +89,7 @@ void Scene::load_cornellBox() {
     objects.push_back(&ceil);
 
     static Plane background(Vector(0,30,0,PT), Vector(0,-1,0,VEC));
-    background.set_material(make_shared<Phong>(RGB(0.105421, 0.37798, 0.076425),RGB(0.01, 0.01, 0.01), 0.1));
+    background.set_material(make_shared<Phong>(RGB(0, 00, 0.8),RGB(0.00, 0.00, 0.00), 1.0));
     objects.push_back(&background);
 
 

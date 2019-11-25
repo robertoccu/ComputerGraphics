@@ -52,7 +52,7 @@ public:
     RGB xyYtoRGB(const tuple<float, float, float> &xyy) const;
 
     float get_mean_color() const{
-       return (this->get(0) + this->get(1) + this->get(2)) / 3;
+       return (this->get(0) + this->get(1) + this->get(2)) / 3.0;
     }
 
 
