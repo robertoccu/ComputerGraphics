@@ -6,9 +6,7 @@
 #define COMPUTERGRAPHICS_COLLISIONOBJECT_H
 
 #include "Ray.h"
-#include "../imaging/RGB.h"
 #include "../material/Material.h"
-#include "../material/Emitter.h"
 #include <memory>
 
 /**
@@ -34,10 +32,7 @@ public:
      * @param material_object shared_ptr
      */
     void set_material(const shared_ptr<Material>& material_object) {
-        // If the material object is Emitter type
-        if(dynamic_pointer_cast<Emitter>(material_object)){
-            this->material = std::make_shared<Emitter>(material_object->get_emision());
-        }
+        this->material = material_object;
     }
 
     /**

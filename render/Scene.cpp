@@ -71,64 +71,25 @@ void Scene::load_cornellBox() {
     cout<<"Loading objects...";
     list<CollisionObject*> objects;
 
-    // Debug X Axis
-    static Sphere test0(Vector(5,3,0,PT),1);
-    test0.set_material(make_shared<Emitter>(RGB::red));
-    objects.push_back(&test0);
-
-    static Sphere test1(Vector(10,3,0,PT),1);
-    test1.set_material(make_shared<Emitter>(RGB::red));
-    objects.push_back(&test1);
-
-    static Sphere test2(Vector(20,3,0,PT),1);
-    test2.set_material(make_shared<Emitter>(RGB::red));
-    objects.push_back(&test2);
-
-    // Debug Y Axis
-    static Sphere test3(Vector(0,5,0,PT),1);
-    test3.set_material(make_shared<Emitter>(RGB::green));
-    objects.push_back(&test3);
-
-    static Sphere test4(Vector(0,10,0,PT),1);
-    test4.set_material(make_shared<Emitter>(RGB::green));
-    objects.push_back(&test4);
-
-    static Sphere test5(Vector(0,20,0,PT),1);
-    test5.set_material(make_shared<Emitter>(RGB::green));
-    objects.push_back(&test5);
-
-    // Debug Z Axis
-    static Sphere test6(Vector(0,0,5,PT),1);
-    test6.set_material(make_shared<Emitter>(RGB::blue));
-    objects.push_back(&test6);
-
-    static Sphere test7(Vector(0,0,10,PT),1);
-    test7.set_material(make_shared<Emitter>(RGB::blue));
-    objects.push_back(&test7);
-
-    static Sphere test8(Vector(0,0,20,PT),1);
-    test8.set_material(make_shared<Emitter>(RGB::blue));
-    objects.push_back(&test8);
-
     // Cornell Box with color values from implementation on Mitsuba renderer.
     static Plane left_wall(Vector(0,0,0,PT),Vector(1,0,0,VEC));
-    left_wall.set_material(make_shared<Emitter>(RGB(0.570068, 0.0430135, 0.0443706)));
+    left_wall.set_material(make_shared<Phong>(RGB(0.570068, 0.0430135, 0.0443706), RGB(0.01, 0.01, 0.01), 0.1));
     objects.push_back(&left_wall);
 
     static Plane right_wall(Vector(30,0,0,PT),Vector(-1,0,0,VEC));
-    right_wall.set_material(make_shared<Emitter>(RGB(0.105421, 0.37798, 0.076425)));
+    right_wall.set_material(make_shared<Phong>(RGB(0.105421, 0.37798, 0.076425),RGB(0.01, 0.01, 0.01), 0.1));
     objects.push_back(&right_wall);
 
     static Plane floor(Vector(0,0,0,PT),Vector(0,0,1,VEC));
-    floor.set_material(make_shared<Emitter>(RGB(0.885809, 0.698859, 0.666422)));
+    floor.set_material(make_shared<Phong>(RGB(0.885809, 0.698859, 0.666422), RGB(0.01, 0.01, 0.01), 0.1));
     objects.push_back(&floor);
 
     static Plane ceil(Vector(0,0,30,PT),Vector(0,0,-1,VEC));
-    ceil.set_material(make_shared<Emitter>(RGB(0.885809, 0.698859, 0.666422)));
+    ceil.set_material(make_shared<Emitter>(RGB::white));
     objects.push_back(&ceil);
 
     static Plane background(Vector(0,30,0,PT), Vector(0,-1,0,VEC));
-    background.set_material(make_shared<Emitter>(RGB::white));
+    background.set_material(make_shared<Phong>(RGB(0.105421, 0.37798, 0.076425),RGB(0.01, 0.01, 0.01), 0.1));
     objects.push_back(&background);
 
 

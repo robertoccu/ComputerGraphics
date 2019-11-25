@@ -25,8 +25,8 @@ Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
 
     /* Obtain the max number of cores
      * If you want to set the number of cores, change the variable and leave it at a fixed value */
-    unsigned number_threads = 2* std::thread::hardware_concurrency() + 1;
-    //unsigned number_threads = 1;
+    //unsigned number_threads = 2* std::thread::hardware_concurrency() + 1;
+    unsigned number_threads = 1;
     cout<<"Launching path tracer with "<<number_threads<<" workers"<<endl;
     // We check if the rows can be divided by the cores.
     // If it is not divisible, there will be some row that is not generated. Program will stop.
@@ -80,11 +80,16 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene) {
         Ray out_ray;
         float rr = dist(mt); // Russian Roulette
         if (rr < 1 - ABSORPTION_PROBABILITY) {
-            color = collision_object->get_material().get_outgoing_ray(ray, out_ray, rr);
+            if (collision_object->get_material()->get_material() == material_type::EMITTER ) {
+                color = collision_object->get_material()->get_emision();
+                return color;
+            } else {
+                color = collision_object->get_material()->get_outgoing_ray(ray, collision_object->get_normal(collision_point), collision_point, out_ray, rr);
+            }
         } else { // Ray discarted by Russian Roulette
             return color;
         }
-        
+
         // 2. Trace outgoing ray and get color from path.
         color *= ray_tracer(out_ray, scene);
 

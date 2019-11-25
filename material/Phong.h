@@ -5,6 +5,7 @@
 #ifndef COMPUTERGRAPHICS_PHONG_H
 #define COMPUTERGRAPHICS_PHONG_H
 
+#include <Matrix.h>
 #include "Material.h"
 
 /**
@@ -41,10 +42,11 @@ public:
         brdf = 2 * Kd + Ks * (Ns + 2) * Vector::dot(in_ray.getDirection(), out_ray.getDirection());
         // Now divide by the pdf
         float pdf = (Kd.get_mean_color() + Ks.get_mean_color()) / 2;
-        return brdf * (1 / pdf);
+        RGB color = brdf * (1 / pdf);
+        return color;
     }
 
-    RGB get_outgoing_ray(const Ray& ray, Ray& out_ray, float rr) {
+    RGB get_outgoing_ray(const Ray& in_ray, const Vector& collision_normal, const Vector& collision_point, Ray& out_ray, float rr) {
         static std::random_device rd;
         static std::mt19937 mt(rd());
         static std::uniform_real_distribution<float> dist(0.0, 1.0);
@@ -52,10 +54,20 @@ public:
         float r_theta = dist(mt);
         float r_phi = dist(mt);
 
-        float c_theta = acos(sqrt(1-r_theta));
-        float c_phi = 2 * M_PI * r_phi;
+        float theta = acos(sqrt(1-r_theta));
+        float phi = 2 * M_PI * r_phi;
 
-        //TODO: Generate ray
+        Vector w(sin(theta)*cos(phi),sin(theta)*sin(phi),cos(theta), VEC);
+        Matrix T;
+        T.setVector(collision_normal.perpendicular(),0);
+        T.setVector(Vector::cross(collision_normal,collision_normal.perpendicular()),1);
+        T.setVector(collision_normal,2);
+        T.setPoint(collision_point);
+
+        Vector out_dir = T*w;
+        out_ray = Ray(collision_point, out_dir.normalize());
+
+        return get_BRDF(in_ray, out_ray);
     }
 };
 #endif //COMPUTERGRAPHICS_PHONG_H
