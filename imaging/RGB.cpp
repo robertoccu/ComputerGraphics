@@ -166,3 +166,11 @@ RGB RGB::average_colors(const RGB *colors, int size) {
     }
     return RGB(red/(float)size, green/(float)size, blue/(float)size);
 }
+
+RGB RGB::operator*(float f) const {
+    return RGB(this->get(0) * f, this->get(1) * f, this->get(2) * f);
+}
+
+RGB operator*(float f, const RGB &rgb) {
+    return rgb * f;
+}

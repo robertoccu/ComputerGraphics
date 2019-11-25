@@ -42,10 +42,17 @@ public:
 
     /* Operator overload */
     RGB operator+(const RGB &rgb) const;
+    RGB operator*(float f) const;
+    friend RGB operator*(float f, const RGB& rgb) ;
     RGB operator+=(const RGB &rgb);
 
     tuple<float, float, float> RGBtoxyY () const;
     RGB xyYtoRGB(const tuple<float, float, float> &xyy) const;
+
+    float get_mean_color() const{
+       return (this->get(0) + this->get(1) + this->get(2)) / 3;
+    }
+
 
     static RGB average_colors(const RGB *colors, int size);
 

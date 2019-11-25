@@ -20,6 +20,7 @@ public:
     material_type get_material(){ return material;}
 
     virtual RGB get_emision() = 0;
+    virtual RGB get_BRDF(const Ray& in_ray, Ray& out_ray) = 0;
 };
 
 #endif //COMPUTERGRAPHICS_MATERIAL_H

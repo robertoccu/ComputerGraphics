@@ -28,5 +28,20 @@ public:
     const RGB &getKs() const {return Ks; }
 
     float getNs() const {return Ns;}
+
+    /**
+     * Return the BRDF to the phong material
+     * @param in_ray
+     * @param out_ray
+     * @return
+     */
+    RGB get_BRDF(const Ray& in_ray, Ray& out_ray) override{
+        RGB brdf;
+        // Calculate the Phong BRDF
+        brdf = 2 * Kd + Ks * (Ns + 2) * Vector::dot(in_ray.getDirection(), out_ray.getDirection());
+        // Now divide by the pdf
+        float pdf = (Kd.get_mean_color() + Ks.get_mean_color()) / 2;
+        return brdf * (1 / pdf);
+    }
 };
 #endif //COMPUTERGRAPHICS_PHONG_H
