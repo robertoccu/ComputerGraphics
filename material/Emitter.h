@@ -15,6 +15,7 @@ public:
     Emitter() {Emitter(RGB(0,0,0));}
 
     RGB get_emision(){ return emitter_color;}
+    RGB get_BRDF(const Ray& in_ray, Ray& out_ray) override{}
 
 };
 

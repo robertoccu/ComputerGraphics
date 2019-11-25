@@ -18,5 +18,6 @@ public:
     Composite(const Emitter& emitter, const Phong &phong){this->emitter = emitter; this->phong = phong;}
     Composite() {emitter = Emitter(); phong = Phong();}
     RGB get_emision() override{ return emitter.get_emision(); }
+    RGB get_BRDF(const Ray& in_ray, Ray& out_ray) override{}
 };
 #endif //COMPUTERGRAPHICS_COMPOSITE_H
