@@ -90,8 +90,16 @@ void Scene::load_cornellBox() {
     objects.push_back(&floor);
 
     static Plane ceil(Vector(0,0,30,PT),Vector(0,0,-1,VEC));
-    ceil.set_material(make_shared<Emitter>(RGB::white));
+    ceil.set_material(make_shared<Phong>(RGB(0.75, 0.75, 0.75), RGB(0.00, 0.00, 0.00), 1.0));
     objects.push_back(&ceil);
+
+    float min = 6, max = 24;    // The minX and maxX point of the square light
+    static Triangle triangle1(Vector(max,min,29,PT), Vector(min,min,29,PT), Vector(min,max,29,PT));
+    static Triangle triangle2(Vector(min,max,29,PT), Vector(max,max,29,PT), Vector(max,min,29,PT));
+    triangle1.set_material(make_shared<Emitter>(RGB::white));
+    triangle2.set_material(make_shared<Emitter>(RGB::white));
+    objects.push_back(&triangle1);
+    objects.push_back(&triangle2);
 
     static Plane background(Vector(0,30,0,PT), Vector(0,-1,0,VEC));
     background.set_material(make_shared<Phong>(RGB(0.75, 0.75, 0.75), RGB(0.00, 0.00, 0.00), 1.0));
