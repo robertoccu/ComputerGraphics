@@ -25,8 +25,8 @@ Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
 
     /* Obtain the max number of cores
      * If you want to set the number of cores, change the variable and leave it at a fixed value */
-    //unsigned number_threads = 2* std::thread::hardware_concurrency() + 1;
-    unsigned number_threads = 1;
+    unsigned number_threads = 2* std::thread::hardware_concurrency() + 1;
+    //unsigned number_threads = 1;
     cout<<"Launching path tracer with "<<number_threads<<" workers"<<endl;
     // We check if the rows can be divided by the cores.
     // If it is not divisible, there will be some row that is not generated. Program will stop.
@@ -62,11 +62,15 @@ Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
  * @param scene
  * @return color of the ray
  */
-RGB tracer::ray_tracer(const Ray &ray, const Scene &scene) {
+RGB tracer::ray_tracer(const Ray &ray, const Scene &scene, bool camera_ray) {
 #ifndef ABSORPTION_PROBABILITY
 #define ABSORPTION_PROBABILITY 0.1
 #endif
-
+    /*if (camera_ray) {
+        cout << "Lanzando rayo de cámara: " << endl << ray << endl;
+    } else {
+        cout << "Lanzando rayo indirecto: " << endl << ray << endl;
+    }*/
     Vector collision_point;
     // Obtain the collision object and the collision point
     CollisionObject* collision_object = scene.near_intersection(ray, collision_point);
@@ -80,7 +84,7 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene) {
         Ray out_ray;
         float rr = dist(mt); // Russian Roulette
 
-        if (rr > ABSORPTION_PROBABILITY) {
+        if (camera_ray || rr < 1 - ABSORPTION_PROBABILITY) {
             if (collision_object->get_material()->get_material() == material_type::EMITTER ) {
                 color = collision_object->get_material()->get_emision();
                 return color;
@@ -92,7 +96,7 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene) {
         }
 
         // 2. Trace outgoing ray and get color from path.
-        color = color * ray_tracer(out_ray, scene);
+        color = color * ray_tracer(out_ray, scene, false);
 
         return color;
 
@@ -123,7 +127,7 @@ void tracer::worker_tracer(unsigned int pixel_row_initial, unsigned int pixel_ro
                 // Create the ray
                 ray = ray.rayFromPoints(scene.getCamera().getPosition(), pixel);
                 // Obtain the color result of the intersection and save in the vector
-                colors[path] = ray_tracer(ray, scene);
+                colors[path] = ray_tracer(ray, scene, true);
             }
             // Set the color result in the image
             image.setPixel(row, column, RGB::average_colors(colors, paths_per_pixel));

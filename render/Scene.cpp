@@ -26,13 +26,17 @@ CollisionObject* Scene::near_intersection(const Ray &ray, Vector &intersection_p
     float t_intersection = 0.0;
     float near_intersection = INFINITY;
     CollisionObject *collision_object = nullptr;
+    bool collision = false;
 
     // Iterate on the list of objects in the scene
     for(const auto& object : this->objects_list){
         //If the ray intersects with the object
-        if(object->intersection(ray, t_intersection)){
+        collision = object->intersection(ray, t_intersection);
+        //cout << "t_intersection: " << t_intersection << " | collision: " << collision << endl;
+        if(collision){
             //If the point of intersection is less than the nearest point so far
             if(t_intersection < near_intersection){
+                //cout << "near_intersection: " << t_intersection << endl;
                 // The intersection point is updated
                 near_intersection = t_intersection;
                 collision_object = object;
@@ -42,7 +46,7 @@ CollisionObject* Scene::near_intersection(const Ray &ray, Vector &intersection_p
     // If he's at least collided with some object.
     if(near_intersection != INFINITY){
         // Obtain the intersection point
-        intersection_point = Vector(ray.getOrigin() + (t_intersection * ray.getDirection()));
+        intersection_point = Vector(ray.getOrigin() + (near_intersection * ray.getDirection()));
         return collision_object;
     }else{
         return nullptr;
@@ -61,8 +65,8 @@ const Screen &Scene::getScreen() const {
  * Load the Cornell box scene.
  */
 void Scene::load_cornellBox() {
-    int resolution_X  = 16 * 52;
-    int resolution_Y  = 9  * 52;
+    int resolution_X  = 16 * 53;
+    int resolution_Y  = 462;
     int width_screen  = 16 *  4;
     int height_screen = 9  *  4;
     int focal_length  =  width_screen / (int)(2* tan(0.26 * M_PI)); // Fish Eye Avoidance Formula
@@ -73,15 +77,15 @@ void Scene::load_cornellBox() {
 
     // Cornell Box with color values from implementation on Mitsuba renderer.
     static Plane left_wall(Vector(0,0,0,PT),Vector(1,0,0,VEC));
-    left_wall.set_material(make_shared<Phong>(RGB(0.8, 0, 0.0), RGB(0.00, 0.00, 0.00), 1.0));
+    left_wall.set_material(make_shared<Phong>(RGB(0.9, 0.0, 0.0), RGB(0.00, 0.00, 0.00), 1.0));
     objects.push_back(&left_wall);
 
     static Plane right_wall(Vector(30,0,0,PT),Vector(-1,0,0,VEC));
-    right_wall.set_material(make_shared<Phong>(RGB(0.0, 0.8, 0.0),RGB(0.00, 0.00, 0.00), 1.0));
+    right_wall.set_material(make_shared<Phong>(RGB(0.0, 0.9, 0.0),RGB(0.00, 0.00, 0.00), 1.0));
     objects.push_back(&right_wall);
 
     static Plane floor(Vector(0,0,0,PT),Vector(0,0,1,VEC));
-    floor.set_material(make_shared<Phong>(RGB(0.26, 0.26, 0.26), RGB(0.00, 0.00, 0.00), 1.0));
+    floor.set_material(make_shared<Phong>(RGB(0.75, 0.75, 0.75), RGB(0.00, 0.00, 0.00), 1.0));
     objects.push_back(&floor);
 
     static Plane ceil(Vector(0,0,30,PT),Vector(0,0,-1,VEC));
@@ -89,8 +93,16 @@ void Scene::load_cornellBox() {
     objects.push_back(&ceil);
 
     static Plane background(Vector(0,30,0,PT), Vector(0,-1,0,VEC));
-    background.set_material(make_shared<Phong>(RGB(0, 00, 0.8),RGB(0.00, 0.00, 0.00), 1.0));
+    background.set_material(make_shared<Phong>(RGB(0.75, 0.75, 0.75), RGB(0.00, 0.00, 0.00), 1.0));
     objects.push_back(&background);
+
+    static Sphere sphere1(Vector(15,16,12,PT),3);
+    sphere1.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 10.0));
+    objects.push_back(&sphere1);
+
+    static Sphere sphere2(Vector(15,14,5,PT),3);
+    sphere2.set_material(make_shared<Phong>(RGB(0.65, 0.65, 0.65),RGB(0.25, 0.25, 0.25), 10.0));
+    objects.push_back(&sphere2);
 
 
     this->setObjectsList(objects);
