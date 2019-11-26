@@ -10,6 +10,7 @@
 #include "../geometry/Disk.h"
 #include "../geometry/Triangle.h"
 #include "../geometry/TriangleMeshes.h"
+#include "../material/SpecularPerfect.h"
 
 Scene::Scene(const std::list<CollisionObject*> &objectsList, const Camera &camera, const Screen &screen)
         : objects_list(objectsList), camera(camera), screen(screen) {}
@@ -66,7 +67,7 @@ const Screen &Scene::getScreen() const {
  */
 void Scene::load_cornellBox() {
     int resolution_X  = 16 * 53;
-    int resolution_Y  = 462;
+    int resolution_Y  = 9  * 53; // 462 for Robert PC
     int width_screen  = 16 *  4;
     int height_screen = 9  *  4;
     int focal_length  =  width_screen / (int)(2* tan(0.26 * M_PI)); // Fish Eye Avoidance Formula
@@ -96,11 +97,12 @@ void Scene::load_cornellBox() {
     background.set_material(make_shared<Phong>(RGB(0.75, 0.75, 0.75), RGB(0.00, 0.00, 0.00), 1.0));
     objects.push_back(&background);
 
-    static Sphere sphere1(Vector(15,16,12,PT),3);
-    sphere1.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 10.0));
+    static Sphere sphere1(Vector(10,16,12,PT),3);
+    //sphere1.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 10.0));
+    sphere1.set_material(make_shared<SpecularPerfect>(RGB(1,1,1)));
     objects.push_back(&sphere1);
 
-    static Sphere sphere2(Vector(15,14,5,PT),3);
+    static Sphere sphere2(Vector(17,10,5,PT),3);
     sphere2.set_material(make_shared<Phong>(RGB(0.65, 0.65, 0.65),RGB(0.25, 0.25, 0.25), 10.0));
     objects.push_back(&sphere2);
 

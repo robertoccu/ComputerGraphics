@@ -56,6 +56,15 @@ public:
         return max(max(this->get(0), this->get(1)), this->get(2));
     }
 
+    float get_max_color() const{
+        float max = 0;
+        for(int i = 0; i < 3; i++){
+            if(this->get(i) > max)
+                max = this->get(i);
+        }
+        return max;
+
+    }
 
     static RGB average_colors(const RGB *colors, int size);
 
