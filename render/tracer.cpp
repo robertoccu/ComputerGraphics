@@ -6,11 +6,12 @@
 #include "tracer.h"
 
 #ifndef SHOW_PROGRESS
-#define SHOW_PROGRESS 0
+#define SHOW_PROGRESS true
 #endif
 
 // Atomic variable that contains the number of rows that are already finished.
 std::atomic<int> tracer::threads_progress(0);
+std::atomic<float> image_max_value(0);
 static std::random_device rd;
 static std::mt19937 mt(rd());
 static std::uniform_real_distribution<float> dist(0.0, 1.0);
@@ -29,8 +30,8 @@ Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
 
     /* Obtain the max number of cores
      * If you want to set the number of cores, change the variable and leave it at a fixed value */
-    //unsigned number_threads = 2* std::thread::hardware_concurrency() + 1;
-    unsigned number_threads = 1;
+    unsigned number_threads = 2* std::thread::hardware_concurrency() + 1;
+    //unsigned number_threads = 1;
     cout<<"Launching path tracer with "<<number_threads<<" workers"<<endl;
     // We check if the rows can be divided by the cores.
     // If it is not divisible, there will be some row that is not generated. Program will stop.
@@ -57,6 +58,8 @@ Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
     workers[number_threads].join();
     cout<<"\n100 %"<<endl;
     cout<<"Path tracer finish"<<endl;
+    cout<<"Image max value: "<<image_max_value<<endl;
+    image.setMaxValue(image_max_value);
     return image;
 }
 
@@ -102,8 +105,7 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene, bool camera_ray) {
         // Next event estimation, only for phong material
         RGB next_event = next_event_estimation(scene, ray, collision_point, collision_object->get_normal(collision_point), collision_object->get_material());
         // 2. Trace outgoing ray and get color from path.
-        //color = color * ray_tracer(out_ray, scene, false) + next_event;
-        color = color + next_event;
+        color = color * ray_tracer(out_ray, scene, false) + next_event;
 
         return color;
 
@@ -125,6 +127,8 @@ void tracer::worker_tracer(unsigned int pixel_row_initial, unsigned int pixel_ro
     RGB colors[paths_per_pixel];
     Vector pixel;
     Ray ray;
+    RGB pixel_color;
+    float max_pixel_color_value;
     for(unsigned int row = pixel_row_initial; row <= pixel_row_final; row++){
         threads_progress.fetch_add(1);
         for(int column = 0; column < scene.getScreen().getPixelsColumn(); column++){
@@ -133,18 +137,18 @@ void tracer::worker_tracer(unsigned int pixel_row_initial, unsigned int pixel_ro
                 pixel = scene.getScreen().get_pixel(row, column);
                 // Create the ray
                 ray = ray.rayFromPoints(scene.getCamera().getPosition(), pixel);
-                if(column == 236 && row == 79){ //423,78
-                    cout<<"Pasa algo?"<<endl;
-                }
                 // Obtain the color result of the intersection and save in the vector
                 colors[path] = ray_tracer(ray, scene, true);
             }
             // Set the color result in the image
-            RGB colorsito = RGB::average_colors(colors, paths_per_pixel);
-            image.setPixel(row, column, RGB::average_colors(colors, paths_per_pixel));
+            pixel_color = RGB::average_colors(colors, paths_per_pixel);
+            max_pixel_color_value = pixel_color.get_max_color();
+            if (max_pixel_color_value > image_max_value) {
+                image_max_value.store(max_pixel_color_value);
+            }
+            image.setPixel(row, column, pixel_color);
         }
     }
-    image.setPixel(78, 423, RGB(1,1,0));
 }
 
 /**
@@ -185,9 +189,6 @@ RGB tracer::next_event_estimation(const Scene &scene, const Ray &in_ray, const V
         }
         // The shadow ray is not occluded
         RGB evaluate_render_equation = material->get_BRDF_next_event(in_ray, normal, shadow_ray, light, collision_point);
-        if(evaluate_render_equation.get_mean_color() < 0.1){
-            //cout<<"Menor"<<endl;
-        }
         color_estimation = color_estimation + evaluate_render_equation;
     }
 

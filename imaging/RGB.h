@@ -53,17 +53,11 @@ public:
     RGB xyYtoRGB(const tuple<float, float, float> &xyy) const;
 
     float get_mean_color() const{
-       //return (this->get(0) + this->get(1) + this->get(2)) / 3.0;
-        return max(max(this->get(0), this->get(1)), this->get(2));
+       return (this->get(0) + this->get(1) + this->get(2)) / 3.0;
     }
 
     float get_max_color() const{
-        float max = 0;
-        for(int i = 0; i < 3; i++){
-            if(this->get(i) > max)
-                max = this->get(i);
-        }
-        return max;
+        return max(max(this->get(0), this->get(1)), this->get(2));
 
     }
 

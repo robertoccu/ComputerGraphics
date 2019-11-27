@@ -93,13 +93,13 @@ void Scene::load_cornellBox() {
     ceil.set_material(make_shared<Phong>(RGB(0.75, 0.75, 0.75), RGB(0.00, 0.00, 0.00), 1.0));
     objects.push_back(&ceil);
 
-    float min = 10, max = 20;    // The minX and maxX point of the square light
+    /*float min = 10, max = 20;    // The minX and maxX point of the square light
     static Triangle triangle1(Vector(max,min,29,PT), Vector(min,min,29,PT), Vector(min,max,29,PT));
     static Triangle triangle2(Vector(min,max,29,PT), Vector(max,max,29,PT), Vector(max,min,29,PT));
     triangle1.set_material(make_shared<Emitter>(RGB::white));
     triangle2.set_material(make_shared<Emitter>(RGB::white));
-    //objects.push_back(&triangle1);
-    //objects.push_back(&triangle2);
+    objects.push_back(&triangle1);
+    objects.push_back(&triangle2);*/
 
     static Plane background(Vector(0,30,0,PT), Vector(0,-1,0,VEC));
     background.set_material(make_shared<Phong>(RGB(0.75, 0.75, 0.75), RGB(0.00, 0.00, 0.00), 1.0));
@@ -108,11 +108,12 @@ void Scene::load_cornellBox() {
     static Sphere sphere1(Vector(10,16,12,PT),3);
     //sphere1.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 10.0));
     sphere1.set_material(make_shared<SpecularPerfect>(RGB(1,1,1)));
-    //objects.push_back(&sphere1);
+    objects.push_back(&sphere1);
 
     static Sphere sphere2(Vector(17,10,5,PT),3);
     sphere2.set_material(make_shared<Phong>(RGB(0.65, 0.65, 0.65),RGB(0.25, 0.25, 0.25), 10.0));
-    //objects.push_back(&sphere2);
+    objects.push_back(&sphere2);
+
 
     this->setObjectsList(objects);
     cout<<"Objects loaded successfully"<<endl;

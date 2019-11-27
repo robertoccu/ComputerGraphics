@@ -21,14 +21,30 @@ int main(){
     init_time = clock();
 
     // Run the main program
-    const int PATHS_PER_PIXEL = 1;
+    const int PATHS_PER_PIXEL = 8;
     cout<<"Path tracer: "<<PATHS_PER_PIXEL<<" ppp."<<endl;
     Scene scene;
     scene.load_cornellBox();
     Image image = tracer::ray_tracer(scene, PATHS_PER_PIXEL);    // Create the image
+    cout<<endl;
 
-    ToneMapper::equalization(image);    // Tone mapping
+    cout<<"Saving HDR image..."<<endl;
+    IOppm::store("../data/ray_tracer_hdr.ppm", image, 65535);
+    cout<<endl;
+
+    cout<<"Tone Mapping image..."<<endl;
+    //ToneMapper::equalization(image);    // Tone mapping
+    ToneMapper::gamma(image, 0.75);
+    //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),0.18, 0.72);
+    cout<<endl;
+
+    cout<<"Saving (8-bit) image..."<<endl;
     IOppm::store("../data/ray_tracer.ppm", image, 255);
+    cout<<endl;
+
+    /*cout<<"Saving (10-bit) image..."<<endl; // Robert things
+    IOppm::store("../data/ray_tracer_10bit.ppm", image, 1023);
+    cout<<endl;*/
 
 
     // To finish, obtain the timestamp
@@ -56,7 +72,7 @@ void tone_mapper(){
     //ToneMapper::gamma(image,1.5);
     //ToneMapper::clampAndGamma(image, 50000, 1.8);
     //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),
-    //      0.18, 0.18);
+    //     0.18, 0.18);
 
     // Test
     RGB rgb(255,0,0);

@@ -43,7 +43,7 @@ public:
         // Calculate the Phong BRDF
         brdf = Kd + Ks * (Ns + 2) * (1/2) * pow(abs(Vector::dot(in_ray.getDirection(), Wr)), Ns);
         // Now divide by the pdf
-        float prr = max(Kd.get_mean_color(), Ks.get_mean_color());
+        float prr = max(Kd.get_max_color(), Ks.get_max_color());
         RGB color = brdf * (1 / prr);
         return color;
     }
