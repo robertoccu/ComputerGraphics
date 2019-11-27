@@ -5,11 +5,11 @@
 #ifndef COMPUTERGRAPHICS_TRACER_H
 #define COMPUTERGRAPHICS_TRACER_H
 
-#include <random>
 #include <thread>
 #include <atomic>
 #include "../imaging/Image.h"
 #include "Scene.h"
+#include "../utils/Prng.h"
 
 class tracer {
 public:
@@ -23,6 +23,7 @@ private:
 
 private:
     static std::atomic<int> threads_progress;
+    static std::atomic<float> image_max_value;
     static void show_progress(const unsigned int rows);
 };
 

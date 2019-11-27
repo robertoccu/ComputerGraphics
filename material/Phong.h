@@ -7,6 +7,7 @@
 
 #include <Matrix.h>
 #include "Material.h"
+#include "../utils/Prng.h"
 
 /**
  * Represent an material phong
@@ -49,12 +50,8 @@ public:
     }
 
     RGB get_outgoing_ray(const Ray& in_ray, const Vector& collision_normal, const Vector& collision_point, Ray& out_ray, float rr) {
-        static std::random_device rd;
-        static std::mt19937 mt(rd());
-        static std::uniform_real_distribution<float> dist(0.0, 1.0);
-
-        float r_theta = dist(mt);
-        float r_phi = dist(mt);
+        float r_theta = Prng::random();
+        float r_phi   = Prng::random();
 
         float theta = acos(sqrt(1-r_theta));
         float phi = 2 * M_PI * r_phi;
@@ -78,7 +75,7 @@ public:
         // Lo = p / d^2 * fr(x, shadow_ray, in_ray) * |dot(n, shadow_ray)|
         RGB evaluate_render_equation;
         Vector Wr = 2 * normal * (shadow_ray.getDirection() * normal) - shadow_ray.getDirection();
-        RGB dot_light_in_point = 1000 * light.light_in_the_point(collision_point);
+        RGB dot_light_in_point = light.light_in_the_point(collision_point);
         RGB brdf_next = (Kd * M_1_PI) + (Ks * (Ns + 2) * M_2_PI) * pow(abs(Vector::dot(in_ray.getDirection(), Wr)), Ns);
         float cosine = abs(Vector::dot(normal, shadow_ray.getDirection()));
         evaluate_render_equation = dot_light_in_point * brdf_next * cosine;

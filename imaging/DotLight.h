@@ -13,10 +13,12 @@ class DotLight {
 private:
     Vector position;
     RGB color;
+    float power;
 public:
-    DotLight(const Vector& pos, const RGB& light) : position(pos), color(light){}
+    DotLight(const Vector& pos, const RGB& light, float power) : position(pos), color(light), power(power){}
 
     const Vector &getPosition() const;
+    const float &getPower() const { return power;}
 
     RGB light_in_the_point(const Vector& point) const;
 };

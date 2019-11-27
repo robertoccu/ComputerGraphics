@@ -11,10 +11,8 @@
 
 // Atomic variable that contains the number of rows that are already finished.
 std::atomic<int> tracer::threads_progress(0);
-std::atomic<float> image_max_value(0);
-static std::random_device rd;
-static std::mt19937 mt(rd());
-static std::uniform_real_distribution<float> dist(0.0, 1.0);
+// Atomic variable to save the max value of the image
+std::atomic<float> tracer::image_max_value(0);
 
 /**
  * Main method that calculates the image of the scene.
@@ -73,11 +71,7 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene, bool camera_ray) {
 #ifndef ABSORPTION_PROBABILITY
 #define ABSORPTION_PROBABILITY 0.1
 #endif
-    /*if (camera_ray) {
-        cout << "Lanzando rayo de cámara: " << endl << ray << endl;
-    } else {
-        cout << "Lanzando rayo indirecto: " << endl << ray << endl;
-    }*/
+
     Vector collision_point;
     // Obtain the collision object and the collision point
     CollisionObject* collision_object = scene.near_intersection(ray, collision_point);
@@ -89,7 +83,7 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene, bool camera_ray) {
 
         // Collision happened, so calculate next ray. Receive color from collision.
         Ray out_ray;
-        float rr = dist(mt); // Russian Roulette
+        float rr = Prng::random(); // Russian Roulette
 
         if (camera_ray || rr < 1 - ABSORPTION_PROBABILITY) {
             if (collision_object->get_material()->get_material() == material_type::EMITTER ) {
@@ -123,13 +117,13 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene, bool camera_ray) {
  */
 void tracer::worker_tracer(unsigned int pixel_row_initial, unsigned int pixel_row_final, Image &image,
         const Scene &scene, int paths_per_pixel){
-
     RGB colors[paths_per_pixel];
     Vector pixel;
     Ray ray;
     RGB pixel_color;
     float max_pixel_color_value;
     for(unsigned int row = pixel_row_initial; row <= pixel_row_final; row++){
+        // Update the progress of the actual worker
         threads_progress.fetch_add(1);
         for(int column = 0; column < scene.getScreen().getPixelsColumn(); column++){
             for(int path = 0; path != paths_per_pixel; path++){
@@ -143,7 +137,7 @@ void tracer::worker_tracer(unsigned int pixel_row_initial, unsigned int pixel_ro
             // Set the color result in the image
             pixel_color = RGB::average_colors(colors, paths_per_pixel);
             max_pixel_color_value = pixel_color.get_max_color();
-            if (max_pixel_color_value > image_max_value) {
+            if (max_pixel_color_value > image_max_value.load()) {
                 image_max_value.store(max_pixel_color_value);
             }
             image.setPixel(row, column, pixel_color);
@@ -182,8 +176,9 @@ RGB tracer::next_event_estimation(const Scene &scene, const Ray &in_ray, const V
                                   const Vector &normal, shared_ptr<Material> material){
     RGB color_estimation(0, 0, 0);
     for(const auto& light : scene.getLights()){
-        // Trazamos rayo de sombra entre el punto de colision y las luces
+        // Trace a ray of shadow between the collision point and the lights.
         Ray shadow_ray(collision_point + (0.01 * normal), (light.getPosition() - collision_point).normalize());
+        // If the ray is occluded there is no light
         if(scene.shadow_ray(shadow_ray, collision_point, light)){
             continue;
         }
@@ -191,6 +186,5 @@ RGB tracer::next_event_estimation(const Scene &scene, const Ray &in_ray, const V
         RGB evaluate_render_equation = material->get_BRDF_next_event(in_ray, normal, shadow_ray, light, collision_point);
         color_estimation = color_estimation + evaluate_render_equation;
     }
-
     return color_estimation;
 }

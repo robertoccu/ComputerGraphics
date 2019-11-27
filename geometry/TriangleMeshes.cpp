@@ -6,6 +6,7 @@
 #include <cmath>
 #include <random>
 #include "TriangleMeshes.h"
+#include "../utils/Prng.h"
 
 /**
  * Load a triangle mesh of the obj file. At the same, move scale and rotate the points.
@@ -20,10 +21,6 @@ list<Triangle> TriangleMeshes::get_triangles_without_textures(const string &obj_
 
     ifstream stream;
     stream.open(obj_path);
-    // DEBUG
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_real_distribution<float> dist(0.0, 1.0);
 
     string line;
     float x, y, z;  // For vertex or normal
@@ -77,9 +74,9 @@ list<Triangle> TriangleMeshes::get_triangles_without_textures(const string &obj_
 
                 Triangle triangle(a,b,c); triangle.set_normal(face_normal);
                 // DEBUG
-                float red   = dist(mt);
-                float green = dist(mt);
-                float blue  = dist(mt);
+                float red   = Prng::random();
+                float green = Prng::random();
+                float blue  = Prng::random();
                 shared_ptr<Emitter> aleatorio = make_shared<Emitter>(RGB(red, green, blue));
                 triangle.set_material(aleatorio);
                 triangles.push_back(triangle);

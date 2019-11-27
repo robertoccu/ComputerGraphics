@@ -8,13 +8,14 @@
 #include "imaging/ToneMapper.h"
 #include "render/Scene.h"
 #include "render/tracer.h"
+#include "utils/Prng.h"
 
 #ifndef DEBUG_MODE
 #define DEBUG_MODE
 #endif
 
 using namespace std;
-
+void pruebas_prng();
 int main(){
     unsigned init_time, finish_time;
     // Obtain the timestamp
@@ -28,19 +29,19 @@ int main(){
     Image image = tracer::ray_tracer(scene, PATHS_PER_PIXEL);    // Create the image
     cout<<endl;
 
-    cout<<"Saving HDR image..."<<endl;
-    IOppm::store("../data/ray_tracer_hdr.ppm", image, 65535);
-    cout<<endl;
+//    cout<<"Saving HDR image..."<<endl;
+//    IOppm::store("../data/ray_tracer_hdr.ppm", image, 65535);
+//    cout<<endl;
 
-    cout<<"Tone Mapping image..."<<endl;
+    cout<<"Tone Mapping image...";
     //ToneMapper::equalization(image);    // Tone mapping
-    ToneMapper::gamma(image, 0.75);
+    ToneMapper::gamma(image, 0.45);
     //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),0.18, 0.72);
-    cout<<endl;
+    cout<<"Done!"<<endl;
 
-    cout<<"Saving (8-bit) image..."<<endl;
+    cout<<"Saving (8-bit) image...";
     IOppm::store("../data/ray_tracer.ppm", image, 255);
-    cout<<endl;
+    cout<<"Done!"<<endl;
 
     /*cout<<"Saving (10-bit) image..."<<endl; // Robert things
     IOppm::store("../data/ray_tracer_10bit.ppm", image, 1023);
@@ -60,8 +61,6 @@ int main(){
         cout<<"Finish in: "<<time<<" seconds."<<endl;
     }
 }
-
-
 
 void tone_mapper(){
     // Image I/O test

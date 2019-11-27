@@ -16,7 +16,7 @@ RGB DotLight::light_in_the_point(const Vector &point) const {
     // The square distance
     distance = pow(distance, 2);
     // The light is the color divided by the distance square
-    return color / distance;
+    return (color * power) / distance;
 }
 
 const Vector &DotLight::getPosition() const {
