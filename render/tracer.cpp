@@ -5,6 +5,10 @@
 
 #include "tracer.h"
 
+#ifndef SHOW_PROGRESS
+#define SHOW_PROGRESS 0
+#endif
+
 // Atomic variable that contains the number of rows that are already finished.
 std::atomic<int> tracer::threads_progress(0);
 static std::random_device rd;
@@ -25,8 +29,8 @@ Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
 
     /* Obtain the max number of cores
      * If you want to set the number of cores, change the variable and leave it at a fixed value */
-    unsigned number_threads = 2* std::thread::hardware_concurrency() + 1;
-    //unsigned number_threads = 1;
+    //unsigned number_threads = 2* std::thread::hardware_concurrency() + 1;
+    unsigned number_threads = 1;
     cout<<"Launching path tracer with "<<number_threads<<" workers"<<endl;
     // We check if the rows can be divided by the cores.
     // If it is not divisible, there will be some row that is not generated. Program will stop.
@@ -95,8 +99,11 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene, bool camera_ray) {
             return color;
         }
 
+        // Next event estimation, only for phong material
+        RGB next_event = next_event_estimation(scene, ray, collision_point, collision_object->get_normal(collision_point), collision_object->get_material());
         // 2. Trace outgoing ray and get color from path.
-        color = color * ray_tracer(out_ray, scene, false);
+        //color = color * ray_tracer(out_ray, scene, false) + next_event;
+        color = color + next_event;
 
         return color;
 
@@ -126,13 +133,18 @@ void tracer::worker_tracer(unsigned int pixel_row_initial, unsigned int pixel_ro
                 pixel = scene.getScreen().get_pixel(row, column);
                 // Create the ray
                 ray = ray.rayFromPoints(scene.getCamera().getPosition(), pixel);
+                if(column == 236 && row == 79){ //423,78
+                    cout<<"Pasa algo?"<<endl;
+                }
                 // Obtain the color result of the intersection and save in the vector
                 colors[path] = ray_tracer(ray, scene, true);
             }
             // Set the color result in the image
+            RGB colorsito = RGB::average_colors(colors, paths_per_pixel);
             image.setPixel(row, column, RGB::average_colors(colors, paths_per_pixel));
         }
     }
+    image.setPixel(78, 423, RGB(1,1,0));
 }
 
 /**
@@ -145,9 +157,39 @@ void tracer::show_progress(const unsigned int rows){
     while(progress < rows - 1){
         // The percentage is calculated by rows
         percentage =  progress * 100.0 / (float) rows;
+        #if SHOW_PROGRESS
         cout<< '\r' << (int) percentage <<" %";
+        #endif
         progress = threads_progress.load(std::memory_order_seq_cst);
         // For very long processes, establish a time between progress and progress.
         //std::this_thread::sleep_for (std::chrono::seconds(1));
     }
+}
+
+/**
+ *
+ * @param scene
+ * @param in_ray
+ * @param collision_point
+ * @param normal
+ * @return
+ */
+RGB tracer::next_event_estimation(const Scene &scene, const Ray &in_ray, const Vector &collision_point,
+                                  const Vector &normal, shared_ptr<Material> material){
+    RGB color_estimation(0, 0, 0);
+    for(const auto& light : scene.getLights()){
+        // Trazamos rayo de sombra entre el punto de colision y las luces
+        Ray shadow_ray(collision_point + (0.01 * normal), (light.getPosition() - collision_point).normalize());
+        if(scene.shadow_ray(shadow_ray, collision_point, light)){
+            continue;
+        }
+        // The shadow ray is not occluded
+        RGB evaluate_render_equation = material->get_BRDF_next_event(in_ray, normal, shadow_ray, light, collision_point);
+        if(evaluate_render_equation.get_mean_color() < 0.1){
+            //cout<<"Menor"<<endl;
+        }
+        color_estimation = color_estimation + evaluate_render_equation;
+    }
+
+    return color_estimation;
 }

@@ -20,6 +20,11 @@ public:
         return get_BRDF(in_ray,collision_normal,out_ray);
     }
 
+    RGB get_BRDF_next_event(const Ray &in_ray, const Vector &normal, const Ray &shadow_ray, const DotLight light,
+                            const Vector &collision_point) const override {
+        return RGB(0,0,0);
+    }
+
 };
 
 #endif //COMPUTERGRAPHICS_EMITTER_H

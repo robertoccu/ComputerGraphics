@@ -78,8 +78,14 @@ Vector Screen::get_pixel( int pixel_row,  int pixel_column) const {
     Vector pixel = get_world_coordinates(pixel_row, pixel_column);
 
     // The pixel position is upper left with a offset defined by a random_number
-    pixel.set(0, pixel.get(0) + (size_pixel_X/2 * dist(mt)));
-    pixel.set(2, pixel.get(2) - (size_pixel_Y/2 * dist(mt)));
+    //pixel.set(0, pixel.get(0) + (size_pixel_X/2 * dist(mt)));
+    //pixel.set(2, pixel.get(2) - (size_pixel_Y/2 * dist(mt)));
+
+    // The pixel position is upper left with a offset defined by the center
+    pixel.set(0, pixel.get(0) + (size_pixel_X/2 * 0.5));
+    pixel.set(2, pixel.get(2) - (size_pixel_Y/2 * 0.5));
+
+
 
     return pixel;
 }

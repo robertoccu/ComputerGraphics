@@ -12,8 +12,9 @@
 #include "../geometry/TriangleMeshes.h"
 #include "../material/SpecularPerfect.h"
 
-Scene::Scene(const std::list<CollisionObject*> &objectsList, const Camera &camera, const Screen &screen)
-        : objects_list(objectsList), camera(camera), screen(screen) {}
+Scene::Scene(const std::list<CollisionObject*> &objectsList, const Camera &camera, const Screen &screen,
+        const std::list<DotLight> lights)
+        : objects_list(objectsList), camera(camera), screen(screen), lights(lights) {}
 
 Scene::Scene() = default;
 
@@ -72,11 +73,10 @@ void Scene::load_cornellBox() {
     int height_screen = 9  *  4;
     int focal_length  =  width_screen / (int)(2* tan(0.26 * M_PI)); // Fish Eye Avoidance Formula
 
-    // Objects
+    /** Objects **/
     cout<<"Loading objects...";
     list<CollisionObject*> objects;
 
-    // Cornell Box with color values from implementation on Mitsuba renderer.
     static Plane left_wall(Vector(0,0,0,PT),Vector(1,0,0,VEC));
     left_wall.set_material(make_shared<Phong>(RGB(0.9, 0.0, 0.0), RGB(0.00, 0.00, 0.00), 1.0));
     objects.push_back(&left_wall);
@@ -98,8 +98,8 @@ void Scene::load_cornellBox() {
     static Triangle triangle2(Vector(min,max,29,PT), Vector(max,max,29,PT), Vector(max,min,29,PT));
     triangle1.set_material(make_shared<Emitter>(RGB::white));
     triangle2.set_material(make_shared<Emitter>(RGB::white));
-    objects.push_back(&triangle1);
-    objects.push_back(&triangle2);
+    //objects.push_back(&triangle1);
+    //objects.push_back(&triangle2);
 
     static Plane background(Vector(0,30,0,PT), Vector(0,-1,0,VEC));
     background.set_material(make_shared<Phong>(RGB(0.75, 0.75, 0.75), RGB(0.00, 0.00, 0.00), 1.0));
@@ -108,15 +108,24 @@ void Scene::load_cornellBox() {
     static Sphere sphere1(Vector(10,16,12,PT),3);
     //sphere1.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 10.0));
     sphere1.set_material(make_shared<SpecularPerfect>(RGB(1,1,1)));
-    objects.push_back(&sphere1);
+    //objects.push_back(&sphere1);
 
     static Sphere sphere2(Vector(17,10,5,PT),3);
     sphere2.set_material(make_shared<Phong>(RGB(0.65, 0.65, 0.65),RGB(0.25, 0.25, 0.25), 10.0));
-    objects.push_back(&sphere2);
-
+    //objects.push_back(&sphere2);
 
     this->setObjectsList(objects);
     cout<<"Objects loaded successfully"<<endl;
+
+    /** Lights **/
+    cout<<"Loading lights...";
+    std::list<DotLight> lights;
+    // Dot light
+    static DotLight light(Vector(15,15,28,PT), RGB::white);
+    lights.push_back(light);
+
+    this->setLights(lights);
+    cout<<"Lights loaded successfully"<<endl;
 
     // Camera
     Camera camera_scene(Vector(15,-focal_length/1.8,10,1), Vector(0,0,height_screen/2,0),
@@ -199,6 +208,33 @@ void Scene::setScreen(const Screen &screen) {
 
 void Scene::setObjectsList(const list <CollisionObject*> &objectsList){
     this->objects_list = objectsList;
+}
+
+const list<DotLight> &Scene::getLights() const {
+    return lights;
+}
+
+void Scene::setLights(const list<DotLight> &lights) {
+    Scene::lights = lights;
+}
+
+
+
+/**
+ * Return true if the collision point is occluded by an object between the light and the point in the shadow ray.
+ * @param collision_point
+ * @param light
+ * @param shadow_ray
+ * @return
+ */
+bool Scene::shadow_ray(const Ray &shadow_ray, const Vector &collision_point, const DotLight& light) const{
+    Vector intersection_occluded_point;
+    bool is_intersection = near_intersection(shadow_ray, intersection_occluded_point);
+    if(is_intersection){
+        return (light.getPosition() - collision_point).modulus() > (intersection_occluded_point - collision_point).modulus();
+    }else{
+        return false;
+    }
 }
 
 

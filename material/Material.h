@@ -6,6 +6,8 @@
 #define COMPUTERGRAPHICS_MATERIAL_H
 
 #include "../imaging/RGB.h"
+#include "../imaging/DotLight.h"
+
 
 enum material_type{EMITTER, PHONG, SPECULAR};
 /**
@@ -22,6 +24,8 @@ public:
     virtual RGB get_emision() = 0;
     virtual RGB get_BRDF(const Ray& in_ray, const Vector& normal, Ray& out_ray) = 0;
     virtual RGB get_outgoing_ray(const Ray& in_ray, const Vector& collision_normal, const Vector& collision_point, Ray& out_ray, float rr) = 0;
+    virtual RGB get_BRDF_next_event(const Ray& in_ray, const Vector& normal, const Ray& shadow_ray, const DotLight light,
+            const Vector& collision_point) const = 0;
 };
 
 #endif //COMPUTERGRAPHICS_MATERIAL_H

@@ -72,5 +72,18 @@ public:
 
         return get_BRDF(in_ray, collision_normal, out_ray);
     }
+
+    RGB get_BRDF_next_event(const Ray &in_ray, const Vector &normal, const Ray &shadow_ray, const DotLight light,
+            const Vector& collision_point) const override {
+        // Lo = p / d^2 * fr(x, shadow_ray, in_ray) * |dot(n, shadow_ray)|
+        RGB evaluate_render_equation;
+        Vector Wr = 2 * normal * (shadow_ray.getDirection() * normal) - shadow_ray.getDirection();
+        RGB dot_light_in_point = 1000 * light.light_in_the_point(collision_point);
+        RGB brdf_next = (Kd * M_1_PI) + (Ks * (Ns + 2) * M_2_PI) * pow(abs(Vector::dot(in_ray.getDirection(), Wr)), Ns);
+        float cosine = abs(Vector::dot(normal, shadow_ray.getDirection()));
+        evaluate_render_equation = dot_light_in_point * brdf_next * cosine;
+        return evaluate_render_equation;
+    }
+
 };
 #endif //COMPUTERGRAPHICS_PHONG_H

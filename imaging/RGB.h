@@ -44,6 +44,7 @@ public:
     RGB operator+(const RGB &rgb) const;
     RGB operator*(const RGB &rgb) const;
     RGB operator*(float f) const;
+    RGB operator/(float f) const;
     friend RGB operator*(float f, const RGB& rgb) ;
     RGB operator+=(const RGB &rgb);
     RGB operator*=(const RGB &rgb);

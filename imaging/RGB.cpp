@@ -150,9 +150,9 @@ std::ostream &operator<<(std::ostream &os, const RGB &rgb) {
     os << std::fixed;
     os << std::setprecision(2);     // Number of decimals
 
-    os << std::setw(7)<<"R: "<<rgb.get(RED)<<std::endl;
-    os << std::setw(7)<<"G: "<<rgb.get(GREEN)<<std::endl;
-    os << std::setw(7)<<"B: "<<rgb.get(BLUE)<<std::endl;
+    os << std::setw(7)<<"[R: "<<rgb.get(RED);
+    os << std::setw(7)<<", G: "<<rgb.get(GREEN);
+    os << std::setw(7)<<", B: "<<rgb.get(BLUE)<<"]"<<std::endl;
 
     return os;
 }
@@ -183,4 +183,8 @@ RGB RGB::operator*(float f) const {
 
 RGB operator*(float f, const RGB &rgb) {
     return rgb * f;
+}
+
+RGB RGB::operator/(float f) const {
+    return RGB(this->get(0) / f, this->get(1) / f, this->get(2) / f);
 }
