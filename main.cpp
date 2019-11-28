@@ -22,7 +22,7 @@ int main(){
     init_time = clock();
 
     // Run the main program
-    const int PATHS_PER_PIXEL = 16;
+    const int PATHS_PER_PIXEL = 100;
     cout<<"Path tracer: "<<PATHS_PER_PIXEL<<" ppp."<<endl;
     Scene scene;
     scene.load_cornellBox();
@@ -62,7 +62,7 @@ int main(){
     }
 }
 
-int tonemapper(){
+void tonemapper(){
     // Image I/O test
     Image image = IOppm::read("../data/ray_tracer_hdr.ppm");
     //ToneMapper::clamping(image, 1);

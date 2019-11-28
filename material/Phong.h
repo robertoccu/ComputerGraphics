@@ -40,12 +40,13 @@ public:
     RGB get_BRDF(const Ray& in_ray, const Vector& normal, Ray& out_ray) override{
         RGB brdf;
         Vector Wr = 2 * normal * Vector::dot(out_ray.getDirection(), normal) - out_ray.getDirection();
-        //Vector Wr = out_ray.getDirection() - 2 * (out_ray.getDirection() - normal * Vector::dot(out_ray.getDirection(), normal));
         Wr = Wr.normalize();
+        float cosine = Vector::dot(in_ray.getDirection(), Wr);
         // Calculate the Phong BRDF
-        brdf = Kd + Ks * (Ns + 2) * (0.5) * pow(abs(Vector::dot(in_ray.getDirection(), Wr)), Ns);
+        brdf = Kd + Ks * (Ns + 2) * (0.5) * pow(abs(cosine), Ns);
+        //cout<<brdf<<endl;
         // Now divide by the pdf
-        float prr = max(Kd.get_max_color(), Ks.get_max_color());
+        float prr = Kd.get_max_color() + Ks.get_max_color();
         RGB color = brdf * (1 / prr);
         return color;
     }
