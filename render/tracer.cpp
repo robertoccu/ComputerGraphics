@@ -67,7 +67,7 @@ Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
  * @param scene
  * @return color of the ray
  */
-RGB tracer::ray_tracer(const Ray &ray, const Scene &scene, bool camera_ray) {
+RGB tracer::ray_tracer(const Ray &ray, const Scene &scene) {
 #ifndef ABSORPTION_PROBABILITY
 #define ABSORPTION_PROBABILITY 0.1
 #endif
@@ -85,25 +85,26 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene, bool camera_ray) {
         Ray out_ray;
         float rr = Prng::random(); // Russian Roulette
 
-        if (camera_ray || rr < 1 - ABSORPTION_PROBABILITY) {
-            if (collision_object->get_material()->get_material() == material_type::EMITTER ) {
-                color = collision_object->get_material()->get_emision();
-                return color;
-            } else {
-                color = collision_object->get_material()->get_outgoing_ray(ray, collision_object->get_normal(collision_point), collision_point, out_ray, rr);
-            }
-        } else { // Ray discarted by Russian Roulette
-            return color;
+        // Color at the collision point
+        if (collision_object->get_material()->get_material() == material_type::EMITTER) {
+            return collision_object->get_material()->get_emision();
+        } else {
+            color = collision_object->get_material()->get_outgoing_ray(ray, collision_object->get_normal(collision_point), collision_point, out_ray, rr);
         }
 
         // Next event estimation, only for phong material
         RGB next_event = next_event_estimation(scene, ray, collision_point, collision_object->get_normal(collision_point), collision_object->get_material());
-        // 2. Trace outgoing ray and get color from path.
-        color = color * ray_tracer(out_ray, scene, false) + next_event;
+
+        // Russian Roulette
+        if (rr < 1 - ABSORPTION_PROBABILITY) {
+            color = color * ray_tracer(out_ray, scene) + next_event;
+        } else { // Ray discarted by Russian Roulette
+            color = next_event;
+        }
 
         return color;
 
-    }else{
+    } else {
         return RGB::black;    // Return black
     }
 }
@@ -132,7 +133,7 @@ void tracer::worker_tracer(unsigned int pixel_row_initial, unsigned int pixel_ro
                 // Create the ray
                 ray = ray.rayFromPoints(scene.getCamera().getPosition(), pixel);
                 // Obtain the color result of the intersection and save in the vector
-                colors[path] = ray_tracer(ray, scene, true);
+                colors[path] = ray_tracer(ray, scene);
             }
             // Set the color result in the image
             pixel_color = RGB::average_colors(colors, paths_per_pixel);

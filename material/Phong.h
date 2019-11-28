@@ -40,9 +40,10 @@ public:
     RGB get_BRDF(const Ray& in_ray, const Vector& normal, Ray& out_ray) override{
         RGB brdf;
         Vector Wr = 2 * normal * Vector::dot(out_ray.getDirection(), normal) - out_ray.getDirection();
+        //Vector Wr = out_ray.getDirection() - 2 * (out_ray.getDirection() - normal * Vector::dot(out_ray.getDirection(), normal));
         Wr = Wr.normalize();
         // Calculate the Phong BRDF
-        brdf = Kd + Ks * (Ns + 2) * (1/2) * pow(abs(Vector::dot(in_ray.getDirection(), Wr)), Ns);
+        brdf = Kd + Ks * (Ns + 2) * (0.5) * pow(abs(Vector::dot(in_ray.getDirection(), Wr)), Ns);
         // Now divide by the pdf
         float prr = max(Kd.get_max_color(), Ks.get_max_color());
         RGB color = brdf * (1 / prr);
@@ -75,6 +76,7 @@ public:
         // Lo = p / d^2 * fr(x, shadow_ray, in_ray) * |dot(n, shadow_ray)|
         RGB evaluate_render_equation;
         Vector Wr = 2 * normal * (shadow_ray.getDirection() * normal) - shadow_ray.getDirection();
+        Wr = Wr.negate(); Wr = Wr.normalize();
         RGB dot_light_in_point = light.light_in_the_point(collision_point);
         RGB brdf_next = (Kd * M_1_PI) + (Ks * (Ns + 2) * M_2_PI) * pow(abs(Vector::dot(in_ray.getDirection(), Wr)), Ns);
         float cosine = abs(Vector::dot(normal, shadow_ray.getDirection()));

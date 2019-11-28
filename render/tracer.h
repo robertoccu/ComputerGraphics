@@ -17,7 +17,7 @@ public:
 private:
     static void worker_tracer(unsigned int pixel_row_initial, unsigned int pixel_row_final, Image &image,
             const Scene &scene, int paths_per_pixel);
-    static RGB ray_tracer(const Ray &ray, const Scene &scene, bool camera_ray);
+    static RGB ray_tracer(const Ray &ray, const Scene &scene);
     static RGB next_event_estimation(const Scene &scene, const Ray &in_ray, const Vector &collision_point,
                                      const Vector &normal, shared_ptr<Material> material) ;
 
