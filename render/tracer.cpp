@@ -23,8 +23,8 @@ std::atomic<float> tracer::image_max_value(0);
  */
 Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
     // Image creation
-    Image image("RayTracer", 1, scene.getScreen().getPixelsColumn(), scene.getScreen().getPixelsRow(),
-            65535);
+    Image image("RayTracer", 65535, scene.getScreen().getPixelsColumn(), scene.getScreen().getPixelsRow(),
+            10000000);
 
     /* Obtain the max number of cores
      * If you want to set the number of cores, change the variable and leave it at a fixed value */
@@ -67,7 +67,60 @@ Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
  * @param scene
  * @return color of the ray
  */
-RGB tracer::ray_tracer(const Ray &ray, const Scene &scene, bool camera_ray) {
+RGB tracer::ray_tracer(const Ray &ray, const Scene &scene) {
+#ifndef ABSORPTION_PROBABILITY
+#define ABSORPTION_PROBABILITY 0.1
+#endif
+
+    Vector collision_point;
+    // Obtain the collision object and the collision point
+    CollisionObject* collision_object = scene.near_intersection(ray, collision_point);
+    // If the ray was intersection
+    if(collision_object != nullptr){ // Collision happened
+        RGB color, brdf, shadow_ray = RGB(0,0,0);
+        auto material = collision_object->get_material();
+        Ray out_ray;
+        float rr = Prng::random(); // Random number for Russian Roulette
+
+        if (material->get_material() == material_type::EMITTER ) { // Emitters don't allow paths to continue
+            return material->get_emision(); // Return light emission.
+
+        } else { // When path collide with a non-emitter object. Get refracted ray and evaluate brdf. If there are point lights, trace shadow rays.
+            out_ray = material->get_outgoing_ray(ray, collision_object->get_normal(collision_point), collision_point);
+            brdf = material->get_BRDF(ray, collision_object->get_normal(collision_point), out_ray);
+            shadow_ray = next_event_estimation(scene, ray, collision_point,collision_object->get_normal(collision_point), material);
+        }
+
+        float theta = abs(Vector::dot(collision_object->get_normal(collision_point), out_ray.getDirection().normalize()));
+
+        // Render equation: Lo = Le + Lo * Fr * cos(theta) * sin(theta)
+        if (rr > 1 - ABSORPTION_PROBABILITY) { // Ray discarted by Russian Roulette. Path stop here.
+            color = shadow_ray + brdf * cos(theta) * sin(theta);
+        } else {
+            color = shadow_ray + ray_tracer(out_ray, scene) * brdf * cos(theta) * sin(theta);
+        }
+
+        // Important sampling
+        float important_sampling;
+        if (material->get_material() == material_type::PHONG) {
+            important_sampling = 2.0f * cos(theta) * sin(theta) * (1.0f/(2.0f * (float)M_PI)); // Cosine
+
+        } else if (material->get_material() == material_type::SPECULAR) {
+            important_sampling = sin(theta) * (1.0f/(2.0f * (float)M_PI)); // Solid angle
+
+        } else {
+            important_sampling = 2.0f * cos(theta) * sin(theta) * (1.0f/(2.0f * (float)M_PI)); // Cosine
+        }
+
+        return color / (important_sampling * material->get_rr_probability());
+
+    }else{
+        return RGB::black;    // Return black
+    }
+}
+
+
+/*RGB tracer::ray_tracer(const Ray &ray, const Scene &scene) {
 #ifndef ABSORPTION_PROBABILITY
 #define ABSORPTION_PROBABILITY 0.1
 #endif
@@ -77,36 +130,47 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene, bool camera_ray) {
     CollisionObject* collision_object = scene.near_intersection(ray, collision_point);
     // If the ray was intersection
     if(collision_object != nullptr){
+        // Collision happened.
         // Path tracing
         // Lo = Le + { Li * Fr }
         RGB color(0,0,0);
-
-        // Collision happened, so calculate next ray. Receive color from collision.
+        RGB brdf, shadow_ray;
+        auto material = collision_object->get_material();
         Ray out_ray;
         float rr = Prng::random(); // Russian Roulette
 
-        if (camera_ray || rr < 1 - ABSORPTION_PROBABILITY) {
-            if (collision_object->get_material()->get_material() == material_type::EMITTER ) {
-                color = collision_object->get_material()->get_emision();
-                return color;
-            } else {
-                color = collision_object->get_material()->get_outgoing_ray(ray, collision_object->get_normal(collision_point), collision_point, out_ray, rr);
-            }
-        } else { // Ray discarted by Russian Roulette
-            return color;
+        // 1. Color at the collision point
+        if (material->get_material() == material_type::EMITTER) {
+            return material->get_emision();
+        } else {
+            out_ray = material->get_outgoing_ray(ray, collision_object->get_normal(collision_point), collision_point);
+            brdf = material->get_BRDF(ray,collision_object->get_normal(collision_point),out_ray);
+            shadow_ray = next_event_estimation(scene, ray, collision_point, collision_object->get_normal(collision_point), collision_object->get_material());
         }
 
-        // Next event estimation, only for phong material
-        RGB next_event = next_event_estimation(scene, ray, collision_point, collision_object->get_normal(collision_point), collision_object->get_material());
-        // 2. Trace outgoing ray and get color from path.
-        color = color * ray_tracer(out_ray, scene, false) + next_event;
+        // 2. Russian Roulette. Should next ray be fired?
+        if (rr > 1 - ABSORPTION_PROBABILITY) {
+            return shadow_ray;
+        }
 
-        return color;
+        float theta = abs(Vector::dot(collision_object->get_normal(collision_point), out_ray.getDirection().normalize()));
+        color = shadow_ray + ray_tracer(out_ray, scene) * brdf * cos(theta) * sin(theta);
+
+        float important_sampling;
+        if (material->get_material() == material_type::PHONG) {
+            important_sampling = 2.0f * cos(theta) * sin(theta) * (1.0f/(2.0f * (float)M_PI)); // Cosine
+        } else if (material->get_material() == material_type::SPECULAR) {
+            important_sampling = 2.0f * cos(theta) * sin(theta) * (1.0f/(2.0f * (float)M_PI)); // Cosine
+        } else {
+            important_sampling = 2.0f * cos(theta) * sin(theta) * (1.0f/(2.0f * (float)M_PI)); // Cosine
+        }
+
+        return color / (important_sampling * material->get_rr_probability());
 
     }else{
         return RGB::black;    // Return black
     }
-}
+}*/
 
 /**
  * Each worker has the task of completing x rows of the image.
@@ -132,7 +196,7 @@ void tracer::worker_tracer(unsigned int pixel_row_initial, unsigned int pixel_ro
                 // Create the ray
                 ray = ray.rayFromPoints(scene.getCamera().getPosition(), pixel);
                 // Obtain the color result of the intersection and save in the vector
-                colors[path] = ray_tracer(ray, scene, true);
+                colors[path] = ray_tracer(ray, scene);
             }
             // Set the color result in the image
             pixel_color = RGB::average_colors(colors, paths_per_pixel);

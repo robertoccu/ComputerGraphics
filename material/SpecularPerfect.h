@@ -10,9 +10,9 @@
 
 class SpecularPerfect : public Material{
 private:
-    RGB Ksp;
 public:
-    SpecularPerfect(const RGB& color) : Ksp(color){
+    SpecularPerfect(const RGB& color) {
+        this->Ksp = color;
         this->set_material(material_type::SPECULAR);
     }
 
@@ -21,12 +21,14 @@ public:
     }
 
     RGB get_BRDF(const Ray& in_ray, const Vector& normal, Ray& out_ray){
-        return Ksp;
+        Vector n = normal;
+        Vector Wi = out_ray.getDirection().normalize();
+
+        return Ksp * (RGB(1,1,1) / Vector::dot(Wi, normal));
     }
 
-    RGB get_outgoing_ray(const Ray &in_ray, const Vector &collision_normal, const Vector &collision_point, Ray &out_ray,
-                         float rr) {
-        // Calculate the reflected ray with the law Wr = Wi - 2(Wi - n(Wi,n))
+    Ray get_outgoing_ray(const Ray &in_ray, const Vector &collision_normal, const Vector &collision_point) {
+        /*// Calculate the reflected ray with the law Wr = Wi - 2(Wi - n(Wi,n))
         Vector Wr = in_ray.getDirection() - 2 * (in_ray.getDirection() - collision_normal * Vector::dot(in_ray.getDirection(), collision_normal));
         Wr = Wr.normalize();
         // Now normalize by the Wi and N
@@ -35,12 +37,21 @@ public:
         Wr = Wr / Ksp.get_max_color();
         // Asign the out_dir
         out_ray = Ray(collision_point + (0.1 * Wr), Wr);
-        return Ksp;
+        return Ksp;*/
+
+        //ωr = ωi − 2n (ωi · n)  | Is bidirectional
+        Vector Wr = in_ray.getDirection().normalize() - ((2.0f * collision_normal.normalize()) * (Vector::dot(in_ray.getDirection().normalize(), collision_normal.normalize())));
+        float epsilon = 0.1;
+        return Ray(collision_point + (epsilon * Wr.normalize()), Wr.normalize());
     }
 
     RGB get_BRDF_next_event(const Ray &in_ray, const Vector &normal, const Ray &shadow_ray, const DotLight light,
                             const Vector &collision_point) const override {
         return RGB(0,0,0);
+    }
+
+    float get_rr_probability() override {
+        return Ksp.get_max_color();
     }
 };
 

@@ -2,18 +2,19 @@
 // Created by Sergio on 12/11/2019.
 //
 
-#include <Matrix.h>
+/*#include <Matrix.h>
 #include <cmath>
 #include <random>
 #include "TriangleMeshes.h"
 #include "../utils/Prng.h"
+#include "../material/Emitter.h"
 
 /**
  * Load a triangle mesh of the obj file. At the same, move scale and rotate the points.
  * @param obj_path Obj with vertex, vertex normal, and faces style f 1//3 3//4 5//5. Dont have uv coordinates,
  *                  or any reference to any material.
  * @param matrix Matrix to change base
- */
+ *//*
 list<Triangle> TriangleMeshes::get_triangles_without_textures(const string &obj_path, const Matrix &matrix) {
     std::vector<Vector> geometric_vertex;
     std::vector<Vector> vertex_normal;
@@ -101,7 +102,7 @@ list<Triangle> TriangleMeshes::get_triangles_without_textures(const string &obj_
  * @param mtl_path mtl file with simple materials and without texture mapping
  * @param matrix matrix to change base
  * @return
- */
+ *//*
 list<Triangle> TriangleMeshes::get_triangles_with_textures_simple(const string &obj_path, const string &mtl_path,
                                                                   const Matrix &matrix) {
     std::map<string, Composite> materials = get_material_mtl(mtl_path);
@@ -194,7 +195,7 @@ list<Triangle> TriangleMeshes::get_triangles_with_textures_simple(const string &
  * Return complete material (Ke, Kd, Ks)
  * @param mtl_path mtl file without mapping textures, only with Phong materials.
  * @return map<material_string, material>
- */
+ *//*
 std::map<string, Composite> TriangleMeshes::get_material_mtl(const string &mtl_path) {
     std::map<string, Composite> materials{};
 
@@ -257,3 +258,4 @@ std::map<string, Composite> TriangleMeshes::get_material_mtl(const string &mtl_p
     return materials;
 
 }
+*/

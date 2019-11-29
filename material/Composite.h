@@ -1,4 +1,4 @@
-#ifndef COMPUTERGRAPHICS_COMPOSITE_H
+/*#ifndef COMPUTERGRAPHICS_COMPOSITE_H
 #define COMPUTERGRAPHICS_COMPOSITE_H
 
 
@@ -10,7 +10,7 @@
  * Represents a material composed of Phong,
  * Emission, Specular Perfect and Refraction perfect.
  */
-class Composite : public Material{
+/*class Composite : public Material{
     Emitter emitter;
     Phong phong;
     // TODO: SPECULAR PERFECT AND REFRACTION PERFECT
@@ -27,3 +27,4 @@ public:
     }
 };
 #endif //COMPUTERGRAPHICS_COMPOSITE_H
+*/

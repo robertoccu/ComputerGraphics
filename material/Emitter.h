@@ -16,14 +16,16 @@ public:
 
     RGB get_emision(){ return emitter_color;}
     RGB get_BRDF(const Ray& in_ray, const Vector& normal, Ray& out_ray) override{return RGB();}
-    RGB get_outgoing_ray(const Ray& in_ray, const Vector& collision_normal, const Vector& collision_point, Ray& out_ray, float rr) {
-        return get_BRDF(in_ray,collision_normal,out_ray);
+    Ray get_outgoing_ray(const Ray& in_ray, const Vector& collision_normal, const Vector& collision_point) {
+        return Ray();
     }
 
     RGB get_BRDF_next_event(const Ray &in_ray, const Vector &normal, const Ray &shadow_ray, const DotLight light,
                             const Vector &collision_point) const override {
         return RGB(0,0,0);
     }
+
+    float get_rr_probability() {return 0;}
 
 };
 

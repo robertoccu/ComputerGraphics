@@ -22,16 +22,16 @@ int main(){
     init_time = clock();
 
     // Run the main program
-    const int PATHS_PER_PIXEL = 8;
+    const int PATHS_PER_PIXEL = 100;
     cout<<"Path tracer: "<<PATHS_PER_PIXEL<<" ppp."<<endl;
     Scene scene;
     scene.load_cornellBox();
     Image image = tracer::ray_tracer(scene, PATHS_PER_PIXEL);    // Create the image
     cout<<endl;
 
-//    cout<<"Saving HDR image..."<<endl;
-//    IOppm::store("../data/ray_tracer_hdr.ppm", image, 65535);
-//    cout<<endl;
+    cout<<"Saving HDR image..."<<endl;
+    IOppm::store("../data/ray_tracer_hdr.ppm", image, 10000000);
+    cout<<endl;
 
     cout<<"Tone Mapping image...";
     //ToneMapper::equalization(image);    // Tone mapping
@@ -62,27 +62,26 @@ int main(){
     }
 }
 
-void tone_mapper(){
+int main2(){
     // Image I/O test
-    Image image = IOppm::read("../data/hdr-ppm/seymour_park.ppm");
+    Image image = IOppm::read("../data/ray_tracer_hdr.ppm");
     //ToneMapper::clamping(image, 1);
     //ToneMapper::equalization(image);
     //ToneMapper::equalAndClamp(image,40000);
-    //ToneMapper::gamma(image,1.5);
+    ToneMapper::gamma(image,0.45);
     //ToneMapper::clampAndGamma(image, 50000, 1.8);
     //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),
     //     0.18, 0.18);
 
     // Test
-    RGB rgb(255,0,0);
+    /*RGB rgb(255,0,0);
     cout<<endl<<"Testing one color conversion"<<endl;
     cout<<"RGB: {"<<rgb.get(RED)<<", "<<rgb.get(GREEN)<<", "<<rgb.get(BLUE)<<"}"<<endl;
     cout<<"xyY: {"<<get<0>(rgb.RGBtoxyY())<<", "<<get<1>(rgb.RGBtoxyY())<<", "<<get<2>(rgb.RGBtoxyY())<<"}"<<endl;
-    cout<<"Coincide con los resultados de alguna herramienta web...??"<<endl;
+    cout<<"Coincide con los resultados de alguna herramienta web...??"<<endl;*/
     // Test
 
-    image.setMaxValue(1);
-    IOppm::store("../data/output_r.ppm", image, 255);
+    IOppm::store("../data/ray_tracer_hdr_tone_mapped.ppm", image, 255);
     //IOppm::store("../data/output_gamma_1.5_10.ppm", image, 1023);
 
 }
