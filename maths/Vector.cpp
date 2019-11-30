@@ -130,14 +130,22 @@ Vector Vector::negate() const{
  * @return Perpendicular vector
  */
 Vector Vector::perpendicular() const{
-    Vector perpendicular;
+    /*Vector perpendicular;
     if(fabs(this->get(0)) > fabs(this->get(1))){
         perpendicular = Vector(this->get(2), 0, this->get(0), 0);
     }else{
         perpendicular = Vector(0, -this->get(2), this->get(1), 0);
     }
 
-    return perpendicular;
+    return perpendicular;*/
+
+    Vector thisVector = Vector(vector[0], vector[1], vector[2], VEC);
+
+    if (Vector::dot(thisVector, Vector(1,0,0,VEC)) == 0) {
+        return Vector::cross(thisVector, Vector(1,0,0,VEC));
+    } else {
+        return Vector::cross(thisVector, Vector(0,1,0,VEC));
+    }
 }
 
 /* Operator overload */

@@ -39,9 +39,10 @@ public:
      */
     RGB get_BRDF(const Ray& in_ray, const Vector& normal, Ray& out_ray) override{
         RGB brdf;
-        Vector Wr = 2 * normal * Vector::dot(out_ray.getDirection(), normal) - out_ray.getDirection();
+        //Vector Wr = 2 * normal * Vector::dot(out_ray.getDirection(), normal) - out_ray.getDirection();
+        Vector Wr = in_ray.getDirection() - 2 * (in_ray.getDirection() - normal * Vector::dot(in_ray.getDirection(), normal));
         Wr = Wr.normalize();
-        float cosine = Vector::dot(in_ray.getDirection(), Wr);
+        float cosine = Vector::dot(out_ray.getDirection(), Wr);
         // Calculate the Phong BRDF
         brdf = Kd + Ks * (Ns + 2) * (0.5) * pow(abs(cosine), Ns);
         //cout<<brdf<<endl;
@@ -60,10 +61,17 @@ public:
 
         Vector w(sin(theta)*cos(phi),sin(theta)*sin(phi),cos(theta), VEC);
         Matrix T;
-        T.setVector(collision_normal.perpendicular(),0);
-        T.setVector(Vector::cross(collision_normal,collision_normal.perpendicular()),1);
-        T.setVector(collision_normal,2);
+        Vector Vec1 = collision_normal.perpendicular().normalize();
+        Vector Vec2 = Vector::cross(collision_normal, Vec1).normalize();
+        Vector Vec3 = collision_normal.normalize();
+        T.setVector(Vec1,0);
+        T.setVector(Vec2,1);
+        T.setVector(Vec3,2);
         T.setPoint(collision_point);
+
+        if (abs(Vector::dot(Vec1, Vec2)) > 0.01 || abs(Vector::dot(Vec1, Vec3)) > 0.01 || abs(Vector::dot(Vec2, Vec3)) > 0.01) {
+            cout << "A: " << abs(Vector::dot(Vec1, Vec2)) << "B: " << abs(Vector::dot(Vec1, Vec3)) << "C: " << abs(Vector::dot(Vec2, Vec3)) << endl;
+        }
 
         Vector out_dir = T * w; out_dir = out_dir.normalize();
         float epsilon = 0.1;
