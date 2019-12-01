@@ -34,6 +34,7 @@ public:
         // Divide by the probability this event
         Wr = Wr / Ksp.get_max_color();
         // Asign the out_dir
+        Wr = Wr.normalize();
         out_ray = Ray(collision_point + (0.1 * Wr), Wr);
         return Ksp;
     }

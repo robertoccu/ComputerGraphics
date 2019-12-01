@@ -81,6 +81,7 @@ public:
 
             // Outgoing ray
             out_ray = Ray(collision_point + (out_dir.normalize() * epsilon), out_dir);
+            out_dir.normalize();
 
             // BRDF in this point
             RGB brdf = Kd;
@@ -106,6 +107,7 @@ public:
 
             // Change reflected ray from local to global coordinates
             Vector out_dir = T * w;
+            out_dir.normalize();
 
             // Outgoing ray
             out_ray = Ray(collision_point + (out_dir.normalize() * epsilon), out_dir);

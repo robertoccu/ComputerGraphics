@@ -110,14 +110,15 @@ void Scene::load_cornellBox() {
     objects.push_back(&background);
 
     static Sphere sphere1(Vector(6,20,12,PT),3);
-    sphere1.set_material(make_shared<SpecularPerfect>(RGB(1,1,1)));
+    sphere1.set_material(make_shared<SpecularPerfect>(RGB(0.9,0.9,0.9)));
     objects.push_back(&sphere1);
 
     /*static Sphere sphere2(Vector(25,25,3,PT),3);
     sphere2.set_material(make_shared<Phong>(RGB(0.80, 0.06, 0.05),RGB(0.10, 0.10, 0.10), 1.0));
     objects.push_back(&sphere2);*/
 
-    static Sphere sphere3(Vector(23,10,4,PT),4);
+    static Sphere sphere3(Vector(15,10,4,PT),4);
+    //sphere3.set_material(make_shared<Phong>(RGB(0.9, 0.0, 0.9),RGB(0.0, 0.0, 0.0), 1));
     sphere3.set_material(make_shared<Phong>(RGB(0.1, 0.1, 0.1),RGB(0.8, 0.8, 0.8), 5));
     objects.push_back(&sphere3);
 
