@@ -37,8 +37,8 @@ int main(){
 
     cout<<"Tone Mapping image...";
     image.setMaxValue(max_pixel_value);
-    ToneMapper::equalization(image);    // Tone mapping
-    //ToneMapper::gamma(image, 0.3);
+    //ToneMapper::equalization(image);    // Tone mapping
+    ToneMapper::gamma(image, 0.3);
     //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),0.18, 0.72);
     cout<<"Done!"<<endl;
 

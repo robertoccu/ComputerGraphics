@@ -89,7 +89,7 @@ void Scene::load_cornellBox() {
 
     static Plane floor(Vector(0,0,0,PT),Vector(0,0,1,VEC));
     floor.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9), RGB(0.00, 0.00, 0.00), 1.0));
-    //floor.set_material(make_shared<SpecularPerfect>(RGB(0.9,0.9,0.9)));
+    //floor.set_material(make_shared<Phong>(RGB(0.1, 0.1, 0.1),RGB(0.8, 0.8, 0.8), 5));
     objects.push_back(&floor);
 
     static Plane ceil(Vector(0,0,30,PT),Vector(0,0,-1,VEC));
@@ -106,7 +106,7 @@ void Scene::load_cornellBox() {
 
     static Plane background(Vector(0,30,0,PT), Vector(0,-1,0,VEC));
     background.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9), RGB(0.00, 0.00, 0.00), 1.0));
-    //background.set_material(make_shared<SpecularPerfect>(RGB(1,1,1)));
+    //background.set_material(make_shared<Phong>(RGB(0.1, 0.1, 0.1),RGB(0.8, 0.8, 0.8), 5));
     objects.push_back(&background);
 
     static Sphere sphere1(Vector(6,20,12,PT),3);
@@ -118,7 +118,7 @@ void Scene::load_cornellBox() {
     objects.push_back(&sphere2);*/
 
     static Sphere sphere3(Vector(23,10,4,PT),4);
-    sphere3.set_material(make_shared<Phong>(RGB(0.0, 0.0, 0.0),RGB(0.9, 0.9, 0.9), 5));
+    sphere3.set_material(make_shared<Phong>(RGB(0.1, 0.1, 0.1),RGB(0.8, 0.8, 0.8), 5));
     objects.push_back(&sphere3);
 
 
