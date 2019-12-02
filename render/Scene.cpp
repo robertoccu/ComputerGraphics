@@ -68,7 +68,7 @@ const Screen &Scene::getScreen() const {
  */
 void Scene::load_cornellBox() {
     int resolution_X  = 16 * 53;
-    int resolution_Y  = 462 ; // 462 for Robert PC
+    int resolution_Y  = 9 * 53 ; // 462 for Robert PC
     int width_screen  = 16 *  4;
     int height_screen = 9  *  4;
     int focal_length  =  width_screen / (int)(2* tan(0.26 * M_PI)); // Fish Eye Avoidance Formula
@@ -99,8 +99,8 @@ void Scene::load_cornellBox() {
     float min = 0, max = 30;    // The minX and maxX point of the square light
     static Triangle triangle1(Vector(max,min,29,PT), Vector(min,min,29,PT), Vector(min,max,29,PT));
     static Triangle triangle2(Vector(min,max,29,PT), Vector(max,max,29,PT), Vector(max,min,29,PT));
-    triangle1.set_material(make_shared<Emitter>(RGB::white));
-    triangle2.set_material(make_shared<Emitter>(RGB::white));
+    triangle1.set_material(make_shared<Emitter>(RGB(1000, 1000, 1000)));
+    triangle2.set_material(make_shared<Emitter>(RGB(1000, 1000, 1000)));
     objects.push_back(&triangle1);
     objects.push_back(&triangle2);
 
@@ -119,7 +119,7 @@ void Scene::load_cornellBox() {
 
     static Sphere sphere3(Vector(15,10,4,PT),4);
     //sphere3.set_material(make_shared<Phong>(RGB(0.9, 0.0, 0.9),RGB(0.0, 0.0, 0.0), 1));
-    sphere3.set_material(make_shared<Phong>(RGB(0.1, 0.1, 0.1),RGB(0.8, 0.8, 0.8), 5));
+    sphere3.set_material(make_shared<Phong>(RGB(0.3, 0.3, 0),RGB(0.6, 0.6, 0.6), 100));
     objects.push_back(&sphere3);
 
 
@@ -130,8 +130,8 @@ void Scene::load_cornellBox() {
     cout<<"Loading lights...";
     std::list<DotLight> lights;
     // Dot light
-    static DotLight light(Vector(15,15,28,PT), RGB::white, 100);
-    //lights.push_back(light);
+    static DotLight light(Vector(15,0,28,PT), RGB::white, 1000);
+    lights.push_back(light);
 
     this->setLights(lights);
     cout<<"Lights loaded successfully"<<endl;
