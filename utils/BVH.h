@@ -24,11 +24,11 @@ class BVH {
 private:
     AABB make_aabb(const std::vector<AABB>& aabb, int left_index, int right_index);
     float calculate_split_edge(const std::vector<AABB>& aabb, int left_index, int right_index, int edge);
-    int get_split_index(const std::vector<AABB>& aabb, int left_index, int right_index, float split_edge, int edge);
+    int get_split_index(std::vector<AABB>& aabb, int left_index, int right_index, float split_edge, int edge);
 public:
     BVH(){};
-    void construct(const std::vector<AABB> &aabbs);
-    void build_recursive(int left_index, int right_index, const std::vector<AABB>& aabb, int depth);
+    void construct(std::vector<AABB> &aabbs);
+    void build_recursive(int left_index, int right_index, std::vector<AABB>& aabb, int parent);
     void show_nodes();
 
 };

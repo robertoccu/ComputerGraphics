@@ -36,7 +36,7 @@ AABB BVH::make_aabb(const std::vector<AABB> &aabb, int left_index, int right_ind
                 Vector(maximum[0], maximum[1], maximum[2], 1));
 }
 
-void BVH::construct(const std::vector<AABB> &aabb) {
+void BVH::construct(std::vector<AABB> &aabb) {
     // Creamos nodo raiz
     node_list.resize(2 * aabb.size() - 1);
     auto it = node_list.begin();
@@ -46,7 +46,7 @@ void BVH::construct(const std::vector<AABB> &aabb) {
 
 }
 
-void BVH::build_recursive(int left_index, int right_index, const std::vector<AABB>& aabb, int depth) {
+void BVH::build_recursive(int left_index, int right_index, std::vector<AABB>& aabb, int parent) {
     if((right_index - left_index) >= 2){
         // It's more than two AABBs.
         static int axis = 0;    // X:0, Y:1, Z:2
@@ -59,27 +59,30 @@ void BVH::build_recursive(int left_index, int right_index, const std::vector<AAB
         AABB bb_left  = make_aabb(aabb, left_index, split_index - 1);;
         AABB bb_right = make_aabb(aabb, split_index, right_index);
         // Create the new nodes
-        BVHNode node_left = BVHNode(bb_left, false, 2*depth+1);
-        BVHNode node_right = BVHNode(bb_right, false, 2 * depth + 2);
+        BVHNode node_left = BVHNode(bb_left, false, 2 * parent + 1);
+        BVHNode node_right = BVHNode(bb_right, false, 2 * parent + 2);
         // Insert the two nodes in the node_list
         auto it = node_list.begin();
-        node_list.insert(it + (2 * depth + 1), node_left);
-        node_list.insert(it + (2 * depth + 2), node_right);
+        node_list.insert(it + (2 * parent + 1), node_left);
+        node_list.insert(it + (2 * parent + 2), node_right);
         // Change the new axis to compare
-        axis = (axis + 1) % 3;
+        axis = (axis + 2) % 3;
         // Call the recursive function with the two ranges
-        build_recursive(left_index, split_index - 1, aabb, depth + 1);
-        build_recursive(split_index, right_index , aabb, depth + 1);
+        build_recursive(left_index, split_index - 1, aabb, 2 * parent + 1);
+        build_recursive(split_index, right_index , aabb, 2 * parent + 2);
 
-    }else{
+    }else if((right_index - left_index) == 1){
         // It's only two AABB, so it's two leafs.
         // Create the left leaf with the left aabb and the right leaf with the right aabb.
-        BVHNode left_leaf = BVHNode(aabb[left_index], true, 2*depth+1);
-        BVHNode right_leaf = BVHNode(aabb[right_index], true, 2*depth+2);
+        BVHNode left_leaf = BVHNode(aabb[left_index], true, 2 * parent + 1);
+        BVHNode right_leaf = BVHNode(aabb[right_index], true, 2 * parent + 2);
         // Insert in the list of nodes the two new leafs.
         auto it = node_list.begin();
-        node_list.insert(it + (2 * depth + 1), left_leaf);
-        node_list.insert(it + (2 * depth + 2), right_leaf);
+        node_list.insert(it + (2 * parent + 1), left_leaf);
+        node_list.insert(it + (2 * parent + 2), right_leaf);
+    }else{
+        //One AABB, set to leaf
+        node_list[right_index].leaf = true;
     }
 
 }
@@ -127,13 +130,17 @@ float BVH::calculate_split_edge(const std::vector<AABB>& aabb, int left_index, i
  * @param split_edge
  * @return
  */
-int BVH::get_split_index(const std::vector<AABB> &aabb, int left_index, int right_index, float split_edge, int edge) {
+int BVH::get_split_index(std::vector<AABB> &aabb, int left_index, int right_index, float split_edge, int edge) {
     // Hay que ordenar el vector en funcion del eje que estemos usando
-    std::vector<AABB> sorter = aabb;
+    auto initial = aabb.begin() + left_index;
+    auto right = aabb.begin() + right_index;
+    auto final = aabb.end();
     if(edge == 0){
-        sort(sorter.begin(), sorter.end(), AABB::comparatorX);
+        partial_sort(initial, right, final, AABB::comparatorX);
     }else if(edge == 1){
-        sort(sorter.begin(), sorter.end(), AABB::comparatorY);
+        partial_sort(initial, right, final, AABB::comparatorY);
+    }else if(edge == 2){
+        partial_sort(initial, right, final, AABB::comparatorZ);
     }
 
     // Recorremos la lista para ver que objetos estan a un lado u a otro
