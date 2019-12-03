@@ -57,12 +57,20 @@ void test_bvh(){
     Triangle t4(Vector(9,0,2,1), Vector(11,0,2,1), Vector(11,0,4,1));
     Triangle t5(Vector(9,0,-3,1), Vector(11,0,-3,1), Vector(11,0,-1,1));
 
+    // Set normals
+    Vector normal(0, -1, 0, VEC);
+    t1.set_normal(normal);t2.set_normal(normal);t3.set_normal(normal);t4.set_normal(normal);t5.set_normal(normal);
+
     std::vector<AABB> aabbs;
     aabbs.emplace_back(t1);aabbs.emplace_back(t2);aabbs.emplace_back(t3);aabbs.emplace_back(t4);aabbs.emplace_back(t5);
 
     BVH bvh;
     bvh.construct(aabbs);
     bvh.show_nodes();
+    Ray r(Vector(10.5, -2, 3, PT), Vector(0,1,0, VEC));
+    float t = 0;
+    bool intersect = bvh.intersect(r, t);
+    if(intersect){ cout<<"True"<<endl;}
 
     exit(0);
 }

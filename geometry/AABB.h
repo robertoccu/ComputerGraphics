@@ -12,6 +12,7 @@
 class AABB : public CollisionObject{
 private:
     Vector min_point, max_point;
+    Triangle triangle;
 public:
     AABB(const Vector& less, const Vector& greater);
     AABB(const Triangle& tr);
@@ -24,6 +25,11 @@ public:
     Vector getCentroid() const{
         return (min_point + max_point) / 2;
     }
+
+    void setTriangle(Triangle triangle){
+        this->triangle = triangle;
+    }
+    const Triangle getTriangle(){ return triangle;}
 
     static bool comparator(const AABB& aabb1, const AABB& aabb2, int axis);
     static bool comparatorX(const AABB& aabb1, const AABB& aabb2);

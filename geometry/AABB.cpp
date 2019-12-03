@@ -38,6 +38,7 @@ Vector AABB::get_normal(const Vector &collision_point) const {
 AABB::AABB(const Triangle &tr) {
     this->min_point = Vector(tr.get_min_X(), tr.get_min_Y(), tr.get_min_Z(), 1);
     this->max_point = Vector(tr.get_max_X(), tr.get_max_Y(), tr.get_max_Z(),1);
+    this->triangle = tr;
 }
 
 bool AABB::comparator(const AABB &aabb1, const AABB &aabb2, int axis) {

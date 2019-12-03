@@ -15,7 +15,7 @@ private:
 public:
     Disk(const Vector &center, const Plane &plane, float radius);
 
-    bool intersection(const Ray &ray, float &t) override;
+    bool intersection(const Ray &ray, float &t)override;
 
     Vector get_normal(const Vector &collision_point) const override ;
 };

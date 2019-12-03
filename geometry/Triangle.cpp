@@ -83,3 +83,5 @@ float Triangle::get_min(int position) const {
 float Triangle::get_max(int position) const {
     return std::max(a.get(position), std::max(b.get(position), c.get(position)));
 }
+
+Triangle::Triangle() {}
