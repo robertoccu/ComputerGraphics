@@ -43,19 +43,19 @@ public:
      * For more info visit: https://en.wikipedia.org/wiki/Snell%27s_law
      * @param v_in incident ray NORMALIZED!
      * @param normal_surface normal at surface NORMALIZED!
-     * @param n1 index of refraction from the extern material
-     * @param n2 index of refraction from the internal material
+     * @param ior1 index of refraction from the extern material
+     * @param ior2 index of refraction from the internal material
      * @param v_out ray refracted or reflect
      * @return true if the ray is refracted, false if the ray is reflect
      */
-    bool refracted_direction(const Vector& v_in, const Vector& normal_surface, float n1, float n2,
-            Vector& v_out){
+    bool refracted_direction(const Vector& v_in, const Vector& normal_surface, float ior1, float ior2,
+                             Vector& v_out){
         float dt = Vector::dot(v_in, normal_surface);   // Angle between in and normal
-        float n1_over_n2 = n1 / n2; // Proportion to n1 and n2
-        float discriminant = 1.0f - n1_over_n2 * n1_over_n2 * (1 - dt * dt);
+        float ior1_over_ior2 = ior1 / ior2; // Proportion to ior1 and ior2
+        float discriminant = 1.0f - ior1_over_ior2 * ior1_over_ior2 * (1 - dt * dt);
         if(discriminant > 0){
             // Return refracted ray
-            v_out = n1_over_n2 * (v_in - normal_surface * dt) - normal_surface * sqrtf(discriminant);
+            v_out = ior1_over_ior2 * (v_in - normal_surface * dt) - normal_surface * sqrtf(discriminant);
             return true;
         }else{
             // Return reflected ray
