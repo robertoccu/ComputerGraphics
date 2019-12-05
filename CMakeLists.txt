@@ -27,4 +27,4 @@ add_executable(ComputerGraphics
         imaging/Image.cpp
         imaging/Image.h
         imaging/ToneMapper.cpp
-        imaging/ToneMapper.h render/Camera.cpp render/Camera.h render/Screen.cpp render/Screen.h render/Scene.h render/Scene.cpp geometry/CollisionObject.h material/Material.h render/tracer.cpp render/tracer.h geometry/Disk.cpp geometry/Disk.h geometry/Triangle.cpp geometry/Triangle.h geometry/TriangleMeshes.cpp geometry/TriangleMeshes.h material/Phong.h material/Composite.h material/SpecularPerfect.h imaging/DotLight.cpp imaging/DotLight.h utils/Prng.h)
+        imaging/ToneMapper.h render/Camera.cpp render/Camera.h render/Screen.cpp render/Screen.h render/Scene.h render/Scene.cpp geometry/CollisionObject.h material/Material.h render/tracer.cpp render/tracer.h geometry/Disk.cpp geometry/Disk.h geometry/Triangle.cpp geometry/Triangle.h geometry/TriangleMeshes.cpp geometry/TriangleMeshes.h material/Phong.h material/Composite.h material/SpecularPerfect.h material/RefractionPerfect.h imaging/DotLight.cpp imaging/DotLight.h utils/Prng.h)
