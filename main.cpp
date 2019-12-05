@@ -9,6 +9,7 @@
 #include "render/Scene.h"
 #include "render/tracer.h"
 #include "utils/Prng.h"
+#include "material/RefractionPerfect.h"
 
 #ifndef DEBUG_MODE
 #define DEBUG_MODE
