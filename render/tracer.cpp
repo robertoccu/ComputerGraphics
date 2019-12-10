@@ -9,6 +9,10 @@
 #define SHOW_PROGRESS true
 #endif
 
+#ifndef DEBUG
+#define DEBUG false
+#endif
+
 // Atomic variable that contains the number of rows that are already finished.
 std::atomic<int> tracer::threads_progress(0);
 // Atomic variable to save the max value of the image
@@ -28,8 +32,12 @@ Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
 
     /* Obtain the max number of cores
      * If you want to set the number of cores, change the variable and leave it at a fixed value */
-    unsigned number_threads = 2* std::thread::hardware_concurrency() + 1;
-    //unsigned number_threads = 1;
+    unsigned number_threads;
+    #if DEBUG
+        number_threads = 1;
+    #else
+        number_threads = 2 * std::thread::hardware_concurrency() + 1;
+    #endif
     cout<<"Launching path tracer with "<<number_threads<<" workers"<<endl;
     // We check if the rows can be divided by the cores.
     // If it is not divisible, there will be some row that is not generated. Program will stop.
@@ -97,8 +105,8 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene) {
 
         // Russian Roulette
         if (rr < 1 - ABSORPTION_PROBABILITY) {
-            color = color * ray_tracer(out_ray, scene) + next_event;
-        } else { // Ray discarted by Russian Roulette
+            color = ray_tracer(out_ray, scene) * (color + next_event);
+        } else  { // Ray discarded by Russian Roulette
             color = next_event;
         }
 
@@ -156,7 +164,7 @@ void tracer::show_progress(const unsigned int rows){
     while(progress < rows - 1){
         // The percentage is calculated by rows
         percentage =  progress * 100.0 / (float) rows;
-        #if SHOW_PROGRESS
+        #if SHOW_PROGRESS && !DEBUG
         cout<< '\r' << (int) percentage <<" %";
         #endif
         progress = threads_progress.load(std::memory_order_seq_cst);

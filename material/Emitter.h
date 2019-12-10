@@ -25,6 +25,22 @@ public:
         return RGB(0,0,0);
     }
 
+    RGB get_Kd() const override {
+        return RGB(0,0,0);
+    }
+
+    RGB get_Ks() const override {
+        return RGB(0,0,0);
+    }
+
+    RGB get_Ksp() const override {
+        return RGB(0,0,0);
+    }
+
+    RGB get_Kr() const override {
+        return RGB(0,0,0);
+    }
+
 };
 
 #endif //COMPUTERGRAPHICS_EMITTER_H

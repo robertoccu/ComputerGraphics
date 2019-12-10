@@ -68,7 +68,7 @@ const Screen &Scene::getScreen() const {
  */
 void Scene::load_cornellBox() {
     int resolution_X  = 16 * 53;
-    int resolution_Y  = 462 ; // 462 for Robert PC
+    int resolution_Y  = 9 * 53; // 462 for Robert PC
     int width_screen  = 16 *  4;
     int height_screen = 9  *  4;
     int focal_length  =  width_screen / (int)(2* tan(0.26 * M_PI)); // Fish Eye Avoidance Formula
@@ -89,7 +89,7 @@ void Scene::load_cornellBox() {
 
     static Plane floor(Vector(0,0,0,PT),Vector(0,0,1,VEC));
     floor.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9), RGB(0.00, 0.00, 0.00), 1.0));
-    //floor.set_material(make_shared<Phong>(RGB(0.1, 0.1, 0.1),RGB(0.8, 0.8, 0.8), 5));
+    //floor.set_material(make_shared<Phong>(RGB(0.0, 0.0, 0.0),RGB(0.9, 0.9, 0.9), 20));
     objects.push_back(&floor);
 
     static Plane ceil(Vector(0,0,30,PT),Vector(0,0,-1,VEC));
@@ -101,8 +101,8 @@ void Scene::load_cornellBox() {
     static Triangle triangle2(Vector(min,max,29,PT), Vector(max,max,29,PT), Vector(max,min,29,PT));
     triangle1.set_material(make_shared<Emitter>(RGB::white));
     triangle2.set_material(make_shared<Emitter>(RGB::white));
-    objects.push_back(&triangle1);
-    objects.push_back(&triangle2);
+    //objects.push_back(&triangle1);
+    //objects.push_back(&triangle2);
 
     static Plane background(Vector(0,30,0,PT), Vector(0,-1,0,VEC));
     background.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9), RGB(0.00, 0.00, 0.00), 1.0));
@@ -110,17 +110,20 @@ void Scene::load_cornellBox() {
     objects.push_back(&background);
 
     static Sphere sphere1(Vector(6,20,12,PT),3);
-    sphere1.set_material(make_shared<SpecularPerfect>(RGB(0.9,0.9,0.9)));
+    //sphere1.set_material(make_shared<SpecularPerfect>(RGB(0.9,0.9,0.9)));
+    //sphere1.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 1));
+    sphere1.set_material(make_shared<Phong>(RGB(0.0, 0.0, 0.0),RGB(0.9, 0.9, 0.9), 100));
     objects.push_back(&sphere1);
 
-    /*static Sphere sphere2(Vector(25,25,3,PT),3);
-    sphere2.set_material(make_shared<Phong>(RGB(0.80, 0.06, 0.05),RGB(0.10, 0.10, 0.10), 1.0));
-    objects.push_back(&sphere2);*/
+    static Sphere sphere2(Vector(12,25,3,PT),3);
+    //sphere2.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 1));
+    sphere2.set_material(make_shared<Phong>(RGB(0.5, 0.5, 0.5),RGB(0.4, 0.4, 0.4), 10));
+    //objects.push_back(&sphere2);
 
-    static Sphere sphere3(Vector(15,10,4,PT),4);
-    //sphere3.set_material(make_shared<Phong>(RGB(0.9, 0.0, 0.9),RGB(0.0, 0.0, 0.0), 1));
-    sphere3.set_material(make_shared<Phong>(RGB(0.1, 0.1, 0.1),RGB(0.8, 0.8, 0.8), 5));
-    objects.push_back(&sphere3);
+    static Sphere sphere3(Vector(23,10,4,PT),4);
+    //sphere3.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 1));
+    sphere3.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 1.0));
+    //objects.push_back(&sphere3);
 
 
     this->setObjectsList(objects);
@@ -130,8 +133,8 @@ void Scene::load_cornellBox() {
     cout<<"Loading lights...";
     std::list<DotLight> lights;
     // Dot light
-    static DotLight light(Vector(15,15,28,PT), RGB::white, 100);
-    //lights.push_back(light);
+    static DotLight light(Vector(15,15,15,PT), RGB::white, 100);
+    lights.push_back(light);
 
     this->setLights(lights);
     cout<<"Lights loaded successfully"<<endl;

@@ -22,7 +22,7 @@ int main(){
     init_time = clock();
 
     // Run the main program
-    const int PATHS_PER_PIXEL = 100;
+    const int PATHS_PER_PIXEL = 8;
     cout<<"Path tracer: "<<PATHS_PER_PIXEL<<" ppp."<<endl;
     Scene scene;
     scene.load_cornellBox();
@@ -31,15 +31,16 @@ int main(){
     cout<<endl;
 
     cout<<"Saving HDR image..."<<endl;
-    image.setMaxValue(65536);
+    image.setMaxValue(max_pixel_value);
     IOppm::store("../data/ray_tracer_hdr.ppm", image, 10000000);
     cout<<endl;
 
     cout<<"Tone Mapping image...";
     image.setMaxValue(max_pixel_value);
     //ToneMapper::equalization(image);    // Tone mapping
-    ToneMapper::gamma(image, 0.3);
-    //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),0.18, 0.72);
+    //ToneMapper::gamma(image, 0.8);
+    ToneMapper::clampAndGamma(image, 100, 0.15); // First clamp to light max value.
+    //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),0.18, 600);
     cout<<"Done!"<<endl;
 
     cout<<"Saving (8-bit) image...";
@@ -69,12 +70,11 @@ int main2(){
     // Image I/O test
     Image image = IOppm::read("../data/ray_tracer_hdr.ppm");
     //ToneMapper::clamping(image, 1);
-    ToneMapper::equalization(image);
-    //ToneMapper::equalAndClamp(image,40000);
-    //ToneMapper::gamma(image,0.5);
-    //ToneMapper::clampAndGamma(image, 50000, 1.8);
-    //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),
-    //     0.18, 0.18);
+    //ToneMapper::equalization(image);
+    //ToneMapper::equalAndClamp(image,100)
+    //ToneMapper::gamma(image,0.25);
+    ToneMapper::clampAndGamma(image, 50, 0.15);
+    //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),0.18, 0.75);
 
     // Test
     /*RGB rgb(255,0,0);
