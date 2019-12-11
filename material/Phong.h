@@ -132,7 +132,7 @@ public:
             const Vector& collision_point) const override {
         // Lo = p / d^2 * fr(x, shadow_ray, in_ray) * |dot(n, shadow_ray)|
         RGB evaluate_render_equation;
-        Vector Wr = 2 * normal * (shadow_ray.getDirection() * normal) - shadow_ray.getDirection();
+        Vector Wr = 2 * normal * Vector::dot(shadow_ray.getDirection(), normal) - shadow_ray.getDirection();
         Wr = Wr.negate(); Wr = Wr.normalize();
         RGB dot_light_in_point = light.light_in_the_point(collision_point);
         RGB brdf_next = (Kd * M_1_PI) + (Ks * (Ns + 2) * M_2_PI) * pow(abs(Vector::dot(in_ray.getDirection(), Wr)), Ns);

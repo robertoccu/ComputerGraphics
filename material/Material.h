@@ -9,7 +9,7 @@
 #include "../imaging/DotLight.h"
 
 
-enum material_type{EMITTER, PHONG, SPECULAR};
+enum material_type{EMITTER, PHONG, SPECULAR, REFRACTION};
 /**
  * Abstract class that represents all possible materials. Lambertian, perfect specular...etc.
  * TODO: Implement it and add it to the collisionObject class
