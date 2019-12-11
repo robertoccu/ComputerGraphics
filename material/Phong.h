@@ -149,13 +149,5 @@ public:
         return Ks;
     }
 
-    RGB get_Ksp() const override {
-        return RGB(0,0,0);
-    }
-
-    RGB get_Kr() const override {
-        return RGB(0,0,0);
-    }
-
 };
 #endif //COMPUTERGRAPHICS_PHONG_H

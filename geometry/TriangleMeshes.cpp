@@ -245,7 +245,8 @@ std::map<string, Composite> TriangleMeshes::get_material_mtl(const string &mtl_p
                 }
 
                 // Update the map
-                materials.emplace(name_material, Composite(Emitter(Ke), Phong(Kd,Ks, Ns)));
+                materials.emplace(name_material, Composite(Emitter(Ke), Phong(Kd, Ks, Ns), RefractionPerfect(RGB()),
+                                                           SpecularPerfect(RGB())));
 
             }
         }

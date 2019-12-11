@@ -16,6 +16,10 @@ public:
         this->set_material(material_type::SPECULAR);
     }
 
+    SpecularPerfect() : Ksp(RGB(0,0,0)){
+        this->set_material(material_type::SPECULAR);
+    }
+
     RGB get_emision() override {
         return RGB();
     }
@@ -44,20 +48,8 @@ public:
         return RGB(0,0,0);
     }
 
-    RGB get_Kd() const override {
-        return RGB(0,0,0);
-    }
-
-    RGB get_Ks() const override {
-        return RGB(0,0,0);
-    }
-
     RGB get_Ksp() const override {
         return Ksp;
-    }
-
-    RGB get_Kr() const override {
-        return RGB(0,0,0);
     }
 };
 

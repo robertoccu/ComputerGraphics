@@ -26,10 +26,22 @@ public:
     virtual RGB get_outgoing_ray(const Ray& in_ray, const Vector& collision_normal, const Vector& collision_point, Ray& out_ray, float rr) = 0;
     virtual RGB get_BRDF_next_event(const Ray& in_ray, const Vector& normal, const Ray& shadow_ray, const DotLight light,
             const Vector& collision_point) const = 0;
-    virtual RGB get_Kd() const = 0;
-    virtual RGB get_Ks() const = 0;
-    virtual RGB get_Ksp() const = 0;
-    virtual RGB get_Kr() const = 0;
+
+    virtual RGB get_Kd() const {
+        return RGB(0,0,0);
+    }
+
+    virtual RGB get_Ks() const {
+        return RGB(0,0,0);
+    }
+
+    virtual RGB get_Ksp() const {
+        return RGB(0,0,0);
+    }
+
+    virtual RGB get_Kr() const {
+        return RGB(0,0,0);
+    }
 };
 
 #endif //COMPUTERGRAPHICS_MATERIAL_H

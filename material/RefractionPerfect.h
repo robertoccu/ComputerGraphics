@@ -19,6 +19,10 @@ public:
         this->set_material(material_type::REFRACTION);
     }
 
+    RefractionPerfect() : Kr(RGB(0,0,0)){
+        this->set_material(material_type::REFRACTION);
+    }
+
     RGB get_emision() override {
         return RGB();
     }
@@ -62,6 +66,10 @@ public:
             v_out = v_in - 2 * Vector::dot(v_in, normal_surface) * normal_surface;
             return false;
         }
+    }
+
+    RGB get_Kr() const override {
+        return Kr;
     }
 };
 
