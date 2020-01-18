@@ -33,12 +33,27 @@ public:
 
     RGB get_outgoing_ray(const Ray &in_ray, const Vector &collision_normal, const Vector &collision_point, Ray &out_ray,
                          float rr) override {
-        return RGB();
+        float epsilon = 0.001;
+        Vector out_dir;
+        bool refracted = in_ray.has_been_refracted();
+        bool inside = refracted;
+        if (inside) {
+            refracted = refracted_direction(in_ray.getDirection().normalize(), collision_normal.normalize(),
+                                                1.333f, 1.000293f, out_dir); // Water: 1.333 | Glass: 1.52 | Air: 1.000293 | Diamond: 2.417
+            inside = !refracted;
+        } else {
+            refracted = refracted_direction(in_ray.getDirection().normalize(), collision_normal.normalize(),
+                                                1.000293f, 	1.333f, out_dir);
+            inside = refracted;
+        }
+
+        out_ray = Ray(collision_point + (out_dir.normalize() * epsilon), out_dir.normalize(), inside);
+        return Kr;
     }
 
     RGB get_BRDF_next_event(const Ray& in_ray, const Vector& normal, const Ray& shadow_ray, const DotLight light,
                             const Vector& collision_point) const override{
-        return RGB();
+        return RGB(0,0,0);
     }
 
     /**
@@ -52,9 +67,9 @@ public:
      * @param v_out ray refracted or reflect
      * @return true if the ray is refracted, false if the ray is reflect
      */
-    bool refracted_direction(const Vector& v_in, const Vector& normal_surface, float ior1, float ior2,
+    bool refracted_direction(const Vector& v_in, const Vector& normal_surface, float ri_from, float ri_to,
                              Vector& v_out){
-        float dt = Vector::dot(v_in, normal_surface);   // Angle between in and normal
+        /*float dt = Vector::dot(v_in, normal_surface);   // Angle between in and normal
         float ior1_over_ior2 = ior1 / ior2; // Proportion to ior1 and ior2
         float discriminant = 1.0f - ior1_over_ior2 * ior1_over_ior2 * (1 - dt * dt);
         if(discriminant > 0){
@@ -65,7 +80,23 @@ public:
             // Return reflected ray
             v_out = v_in - 2 * Vector::dot(v_in, normal_surface) * normal_surface;
             return false;
+        }*/
+
+        Vector normal = normal_surface;
+        float ior1_over_ior2 = ri_from / ri_to;
+        float cos_in_n = Vector::dot(normal.negate(), v_in);
+        if (cos_in_n < 0) {
+            normal = normal.negate();
+            cos_in_n = Vector::dot(normal.negate(), v_in);
         }
+        Vector v_refl = v_in + 2 * cos_in_n * normal;
+
+        float cos_o2 = sqrtf(1 - pow(ior1_over_ior2, 2) * (1 - pow(cos_in_n, 2)));
+
+        Vector v_refr = ior1_over_ior2 * v_in + (ior1_over_ior2 * cos_in_n - cos_o2) * normal;
+
+        v_out = v_refr;
+        return true;
     }
 
     RGB get_Kr() const override {

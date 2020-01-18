@@ -31,22 +31,30 @@ int main(){
     float max_pixel_value = image.getMaxValue();
     cout<<endl;
 
+    if (max_pixel_value >= 65535) {
+        ToneMapper::clamping(image, 65535);
+    }
     cout<<"Saving HDR image..."<<endl;
-    image.setMaxValue(max_pixel_value);
     IOppm::store("../data/ray_tracer_hdr.ppm", image, 10000000);
     cout<<endl;
 
     cout<<"Tone Mapping image...";
     image.setMaxValue(max_pixel_value);
+    //ToneMapper::equalAndClamp(image, 10);
     //ToneMapper::equalization(image);    // Tone mapping
     //ToneMapper::gamma(image, 0.8);
-    ToneMapper::clampAndGamma(image, 100, 0.15); // First clamp to light max value.
-    //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),0.18, 600);
+    ToneMapper::clampAndGamma(image, 1000, 0.25); // First clamp to light max value.
+    //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),0.18, 0.75);
     cout<<"Done!"<<endl;
 
     cout<<"Saving (8-bit) image...";
     IOppm::store("../data/ray_tracer.ppm", image, 255);
     cout<<"Done!"<<endl;
+
+    /*cout<<"Saving (10-bit) image..."<<endl; // Robert things
+    IOppm::store("../data/ray_tracer_10bit.ppm", image, 1023);
+    cout<<endl;*/
+
 
     /*cout<<"Saving (10-bit) image..."<<endl; // Robert things
     IOppm::store("../data/ray_tracer_10bit.ppm", image, 1023);

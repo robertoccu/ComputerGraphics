@@ -23,6 +23,12 @@ Ray::Ray(const Vector &origin, const Vector &direction) {
     this->direction = direction;
 }
 
+Ray::Ray(const Vector &origin, const Vector &direction, const bool refracted) {
+    this->origin = origin;
+    this->direction = direction;
+    this->refracted = refracted;
+}
+
 /**
  * Constructor of a ray that goes from a point of origin to a point of destination.
  * @param origin origin point
@@ -47,6 +53,10 @@ const Vector &Ray::getDirection() const {
 
 void Ray::setDirection(const Vector &direction) {
     Ray::direction = direction;
+}
+
+const bool Ray::has_been_refracted() const{
+    return refracted;
 }
 
 

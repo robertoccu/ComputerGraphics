@@ -10,9 +10,11 @@ class Ray {
 private:
     Vector origin;
     Vector direction;
+    bool refracted = false;
 public:
     Ray();
     Ray(const Vector &origin, const Vector &direction);
+    Ray(const Vector &origin, const Vector &direction, const bool refracted);
     Ray rayFromPoints(const Vector &origin, const Vector &end) const;
 
     // Setter and getter
@@ -20,6 +22,7 @@ public:
     void setOrigin(const Vector &origin);
     const Vector &getDirection() const;
     void setDirection(const Vector &direction);
+    const bool has_been_refracted() const;
 
     Vector operator*(const float t) const;
 

@@ -68,7 +68,7 @@ const Screen &Scene::getScreen() const {
  */
 void Scene::load_cornellBox() {
     int resolution_X  = 16 * 53;
-    int resolution_Y  = 9 * 53; // 462 for Robert PC
+    int resolution_Y  =  9 * 53; // 462 for Robert PC
     int width_screen  = 16 *  4;
     int height_screen = 9  *  4;
     int focal_length  =  width_screen / (int)(2* tan(0.26 * M_PI)); // Fish Eye Avoidance Formula
@@ -112,18 +112,23 @@ void Scene::load_cornellBox() {
     static Sphere sphere1(Vector(6,20,12,PT),3);
     //sphere1.set_material(make_shared<SpecularPerfect>(RGB(0.9,0.9,0.9)));
     //sphere1.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 1));
-    sphere1.set_material(make_shared<Phong>(RGB(0.0, 0.0, 0.0),RGB(0.9, 0.9, 0.9), 100));
+    sphere1.set_material(make_shared<Phong>(RGB(0.05, 0.05, 0.05),RGB(0.85, 0.85, 0.85), 50));
     objects.push_back(&sphere1);
 
     static Sphere sphere2(Vector(12,25,3,PT),3);
     //sphere2.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 1));
-    sphere2.set_material(make_shared<Phong>(RGB(0.5, 0.5, 0.5),RGB(0.4, 0.4, 0.4), 10));
-    //objects.push_back(&sphere2);
+    sphere2.set_material(make_shared<Phong>(RGB(0.45, 0.45, 0.45),RGB(0.45, 0.45, 0.45), 50));
+    objects.push_back(&sphere2);
 
     static Sphere sphere3(Vector(23,10,4,PT),4);
     //sphere3.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 1));
-    sphere3.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 1.0));
-    //objects.push_back(&sphere3);
+    //sphere3.set_material(make_shared<Phong>(RGB(0.85, 0.85, 0.85),RGB(0.05, 0.05, 0.05), 50));
+    sphere3.set_material(make_shared<RefractionPerfect>(RGB(0.9, 0.9, 0.9)));
+    objects.push_back(&sphere3);
+
+    static Sphere sphere4(Vector(5,18,3,PT),3);
+    sphere4.set_material(make_shared<SpecularPerfect>(RGB(0.9,0.9,0.9)));
+    objects.push_back(&sphere4);
 
 
     this->setObjectsList(objects);
