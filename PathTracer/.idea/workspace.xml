@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="ComputerGraphics" targetName="ComputerGraphics" />
+    </generated>
+  </component>
+  <component name="CMakeSettings" AUTO_RELOAD="true">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+      <configuration PROFILE_NAME="Release" CONFIG_NAME="Release" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="314f7fb8-2540-48cf-ad3c-05a077c0c668" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/material/Phong.h" beforeDir="false" afterPath="$PROJECT_DIR$/material/Phong.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/render/Scene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/render/Scene.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/render/tracer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/render/tracer.cpp" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="adding_BVH" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
+  <component name="ProjectId" id="1RQLJq5wWTASPWYKtlxA9y3Zaek" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="CMakeSettings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Sergio\Desktop\Universidad\04 - Informatica Grafica\Practises\ComputerGraphics\geometry\models" />
+      <recent name="C:\Users\Sergio\Desktop\Universidad\04 - Informatica Grafica\Practises\ComputerGraphics\utils" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Sergio\Desktop\Universidad\04 - Informatica Grafica\Practises\ComputerGraphics\material" />
+      <recent name="C:\Users\Sergio\Desktop\Universidad\04 - Informatica Grafica\Practises\ComputerGraphics\geometry\models" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="ComputerGraphics" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ComputerGraphics" TARGET_NAME="ComputerGraphics" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ComputerGraphics" RUN_TARGET_NAME="ComputerGraphics">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="314f7fb8-2540-48cf-ad3c-05a077c0c668" name="Default Changelist" comment="" />
+      <created>1569594303807</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1569594303807</updated>
+      <workItem from="1569594307400" duration="21000" />
+      <workItem from="1569594364725" duration="5629000" />
+      <workItem from="1569911161591" duration="1670000" />
+      <workItem from="1569930306087" duration="535000" />
+      <workItem from="1569943411194" duration="9903000" />
+      <workItem from="1570082086033" duration="4695000" />
+      <workItem from="1571293587196" duration="2657000" />
+      <workItem from="1571638374180" duration="2497000" />
+      <workItem from="1571922581678" duration="3643000" />
+      <workItem from="1571984781389" duration="683000" />
+      <workItem from="1572007578291" duration="4475000" />
+      <workItem from="1572255536994" duration="434000" />
+      <workItem from="1572422432979" duration="43000" />
+      <workItem from="1573212692614" duration="8922000" />
+      <workItem from="1573252770134" duration="2496000" />
+      <workItem from="1573255427434" duration="6865000" />
+      <workItem from="1573293568051" duration="7315000" />
+      <workItem from="1573513061077" duration="6217000" />
+      <workItem from="1573542070791" duration="33079000" />
+      <workItem from="1573594680728" duration="825000" />
+      <workItem from="1573676763161" duration="10937000" />
+      <workItem from="1573724034856" duration="2120000" />
+      <workItem from="1573735213417" duration="202000" />
+      <workItem from="1573835220470" duration="6932000" />
+      <workItem from="1574124111700" duration="7238000" />
+      <workItem from="1574168458669" duration="1798000" />
+      <workItem from="1574271396592" duration="4456000" />
+      <workItem from="1574529874124" duration="33173000" />
+      <workItem from="1574707852550" duration="3006000" />
+      <workItem from="1574711576121" duration="1851000" />
+      <workItem from="1574787832484" duration="12906000" />
+      <workItem from="1574838159527" duration="6994000" />
+      <workItem from="1574887793665" duration="5934000" />
+      <workItem from="1574938821146" duration="4983000" />
+      <workItem from="1574958637476" duration="3478000" />
+      <workItem from="1575155277294" duration="1047000" />
+      <workItem from="1575278718129" duration="1294000" />
+      <workItem from="1575285928580" duration="16262000" />
+      <workItem from="1575559271247" duration="10523000" />
+      <workItem from="1575967595707" duration="250000" />
+      <workItem from="1576019363585" duration="198000" />
+      <workItem from="1576159645102" duration="1412000" />
+      <workItem from="1576488238733" duration="70000" />
+      <workItem from="1580042019416" duration="1645000" />
+      <workItem from="1580110272863" duration="1026000" />
+      <workItem from="1580127048077" duration="6447000" />
+    </task>
+    <task id="LOCAL-00001" summary="Planetary annihilation alfa">
+      <created>1570010720897</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1570010720897</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Planetary annihilation v1.0">
+      <created>1570086306743</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1570086306743</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added input/output ppm class">
+      <created>1571296229691</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1571296229692</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Reinhard definition implemented, but not working">
+      <created>1572013639265</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1572013639267</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Add Camera and Screen class">
+      <created>1573219244151</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1573219244151</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Add collisionObject, Screen and Tracer">
+      <created>1573258566590</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1573258566590</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Comment one class">
+      <created>1573258779481</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1573258779481</updated>
+    </task>
+    <task id="LOCAL-00008" summary="More than one ray inside pixel">
+      <created>1573300347324</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1573300347324</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Percentage updated">
+      <created>1573302239080</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1573302239080</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Parallelism depending on the number of cores made. Missing proof">
+      <created>1573518818345</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1573518818345</updated>
+    </task>
+    <task id="LOCAL-00011" summary="The resolution_Y is divisible by my number of cores: 4">
+      <created>1573519321750</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1573519321750</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added disk object">
+      <created>1573543830175</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1573543830175</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Added triangle object">
+      <created>1573545472341</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1573545472341</updated>
+    </task>
+    <task id="LOCAL-00014" summary="First aprox to triangle mesh">
+      <created>1573561115837</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1573561115838</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Add shared_ptr to Material in all objects">
+      <created>1573564001060</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1573564001060</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Material inside abstract collisionObject class">
+      <created>1573564437611</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1573564437611</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Fix one merge problem">
+      <created>1573565142969</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1573565142969</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Update the materials">
+      <created>1573566036778</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1573566036778</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Add obj reader but very simple">
+      <created>1573594847804</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1573594847804</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Parallel working">
+      <created>1573678594771</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1573678594771</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Add parallel support and triangle_mesh have one method to obtain all triangles">
+      <created>1573682151672</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1573682151672</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Add player.obj">
+      <created>1573691492729</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1573691492730</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Add textures emission simple, without texture mapping.">
+      <created>1574129319875</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1574129319875</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Add textures Phong simple but only show emitter.">
+      <created>1574159356478</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1574159356480</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Fix the problem with planes">
+      <created>1574274964501</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1574274964501</updated>
+    </task>
+    <task id="LOCAL-00026" summary="First aproximation with BVH. Sort in one dimension and debug.">
+      <created>1574561341214</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1574561341214</updated>
+    </task>
+    <task id="LOCAL-00027" summary="First aproximation with BVH. Sort in one dimension and debug.">
+      <created>1574676887362</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1574676887362</updated>
+    </task>
+    <task id="LOCAL-00028" summary="BRDF phong">
+      <created>1574678206320</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1574678206320</updated>
+    </task>
+    <task id="LOCAL-00029" summary="BRDF phong">
+      <created>1574678825045</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1574678825045</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Phong not working">
+      <created>1574713179213</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1574713179227</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Phong not working">
+      <created>1574790167087</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1574790167087</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Specular perfect implemented">
+      <created>1574794485531</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1574794485531</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Change size of the light">
+      <created>1574795640924</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1574795640924</updated>
+    </task>
+    <task id="LOCAL-00034" summary="DotLights with problems">
+      <created>1574844980641</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1574844980641</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Clean code and optimize PRNG">
+      <created>1574893449586</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1574893449587</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Clean code and optimize PRNG">
+      <created>1574961932076</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1574961932077</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Pseudo-working">
+      <created>1575316969827</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1575316969827</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Apparently a simple example works.">
+      <created>1575358497708</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1575358497708</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Bad integrated">
+      <created>1575405131460</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1575405131463</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Snells law">
+      <created>1575564320410</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1575564320411</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Change one variable">
+      <created>1575564483238</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1575564483239</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Add AABB">
+      <created>1575567514659</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1575567514659</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Add intersection">
+      <created>1575568037873</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1575568037873</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add shared_ptr to Material in all objects" />
+    <MESSAGE value="Material inside abstract collisionObject class" />
+    <MESSAGE value="Fix one merge problem" />
+    <MESSAGE value="Update the materials" />
+    <MESSAGE value="Add obj reader but very simple" />
+    <MESSAGE value="Parallel working" />
+    <MESSAGE value="Add parallel support and triangle_mesh have one method to obtain all triangles" />
+    <MESSAGE value="Add player.obj" />
+    <MESSAGE value="Add textures emission simple, without texture mapping." />
+    <MESSAGE value="Add textures Phong simple but only show emitter." />
+    <MESSAGE value="Fix the problem with planes" />
+    <MESSAGE value="First aproximation with BVH. Sort in one dimension and debug." />
+    <MESSAGE value="BRDF phong" />
+    <MESSAGE value="Phong not working" />
+    <MESSAGE value="Specular perfect implemented" />
+    <MESSAGE value="Change size of the light" />
+    <MESSAGE value="DotLights with problems" />
+    <MESSAGE value="Clean code and optimize PRNG" />
+    <MESSAGE value="Pseudo-working" />
+    <MESSAGE value="Apparently a simple example works." />
+    <MESSAGE value="Bad integrated" />
+    <MESSAGE value="Snells law" />
+    <MESSAGE value="Change one variable" />
+    <MESSAGE value="Add AABB" />
+    <MESSAGE value="Add intersection" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add intersection" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/material/Phong.h</url>
+          <line>7</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

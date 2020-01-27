@@ -105,6 +105,7 @@ RGB tracer::ray_tracer(const Ray &ray, const Scene &scene) {
 
         // Russian Roulette
         if (rr < 1 - ABSORPTION_PROBABILITY) {
+            // Color = Li(out_ray) * BRDF() + next_event
             color = ray_tracer(out_ray, scene) * (color + next_event);
         } else  { // Ray discarded by Russian Roulette
             color = next_event;
@@ -165,11 +166,11 @@ void tracer::show_progress(const unsigned int rows){
         // The percentage is calculated by rows
         percentage =  progress * 100.0 / (float) rows;
         #if SHOW_PROGRESS && !DEBUG
-        cout<< '\r' << (int) percentage <<" %";
+            cout<<(int) percentage <<" %"<<endl;
         #endif
         progress = threads_progress.load(std::memory_order_seq_cst);
         // For very long processes, establish a time between progress and progress.
-        //std::this_thread::sleep_for (std::chrono::seconds(1));
+        std::this_thread::sleep_for (std::chrono::seconds(1));
     }
 }
 

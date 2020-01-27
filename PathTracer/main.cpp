@@ -23,7 +23,7 @@ int main(){
     init_time = clock();
 
     // Run the main program
-    const int PATHS_PER_PIXEL = 8;
+    const int PATHS_PER_PIXEL = 12;
     cout<<"Path tracer: "<<PATHS_PER_PIXEL<<" ppp."<<endl;
     Scene scene;
     scene.load_cornellBox();
@@ -43,7 +43,7 @@ int main(){
     //ToneMapper::equalAndClamp(image, 10);
     //ToneMapper::equalization(image);    // Tone mapping
     //ToneMapper::gamma(image, 0.8);
-    ToneMapper::clampAndGamma(image, 1000, 0.25); // First clamp to light max value.
+    ToneMapper::clampAndGamma(image, 1000, 0.15); // First clamp to light max value.
     //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),0.18, 0.75);
     cout<<"Done!"<<endl;
 
@@ -74,29 +74,3 @@ int main(){
         cout<<"Finish in: "<<time<<" seconds."<<endl;
     }
 }
-
-int main2(){
-    // Image I/O test
-    Image image = IOppm::read("../data/ray_tracer_hdr.ppm");
-    //ToneMapper::clamping(image, 1);
-    //ToneMapper::equalization(image);
-    //ToneMapper::equalAndClamp(image,100)
-    //ToneMapper::gamma(image,0.25);
-    ToneMapper::clampAndGamma(image, 50, 0.15);
-    //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),0.18, 0.75);
-
-    // Test
-    /*RGB rgb(255,0,0);
-    cout<<endl<<"Testing one color conversion"<<endl;
-    cout<<"RGB: {"<<rgb.get(RED)<<", "<<rgb.get(GREEN)<<", "<<rgb.get(BLUE)<<"}"<<endl;
-    cout<<"xyY: {"<<get<0>(rgb.RGBtoxyY())<<", "<<get<1>(rgb.RGBtoxyY())<<", "<<get<2>(rgb.RGBtoxyY())<<"}"<<endl;
-    cout<<"Coincide con los resultados de alguna herramienta web...??"<<endl;*/
-    // Test
-
-    image.setMaxValue(1);
-    IOppm::store("../data/ray_tracer_hdr_tone-mapper.ppm", image, 255);
-    //IOppm::store("../data/output_gamma_1.5_10.ppm", image, 1023);
-
-}
-
-

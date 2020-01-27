@@ -106,29 +106,23 @@ void Scene::load_cornellBox() {
 
     static Plane background(Vector(0,30,0,PT), Vector(0,-1,0,VEC));
     background.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9), RGB(0.00, 0.00, 0.00), 1.0));
-    //background.set_material(make_shared<Phong>(RGB(0.1, 0.1, 0.1),RGB(0.8, 0.8, 0.8), 5));
     objects.push_back(&background);
 
     static Sphere sphere1(Vector(6,20,12,PT),3);
-    //sphere1.set_material(make_shared<SpecularPerfect>(RGB(0.9,0.9,0.9)));
-    //sphere1.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 1));
-    sphere1.set_material(make_shared<Phong>(RGB(0.05, 0.05, 0.05),RGB(0.85, 0.85, 0.85), 50));
+    sphere1.set_material(make_shared<Phong>(RGB(0.85, 0.85, 0.05),RGB(0.05, 0.05, 0.05), 50));
     objects.push_back(&sphere1);
 
     static Sphere sphere2(Vector(12,25,3,PT),3);
-    //sphere2.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 1));
-    sphere2.set_material(make_shared<Phong>(RGB(0.45, 0.45, 0.45),RGB(0.45, 0.45, 0.45), 50));
+    sphere2.set_material(make_shared<Phong>(RGB(0.65, 0.0, 0.65),RGB(0.25, 0.25, 0.25), 50));
     objects.push_back(&sphere2);
 
     static Sphere sphere3(Vector(23,10,4,PT),4);
-    //sphere3.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9),RGB(0.0, 0.0, 0.0), 1));
-    //sphere3.set_material(make_shared<Phong>(RGB(0.85, 0.85, 0.85),RGB(0.05, 0.05, 0.05), 50));
     sphere3.set_material(make_shared<RefractionPerfect>(RGB(0.9, 0.9, 0.9)));
-    objects.push_back(&sphere3);
+    //objects.push_back(&sphere3);
 
     static Sphere sphere4(Vector(5,18,3,PT),3);
     sphere4.set_material(make_shared<SpecularPerfect>(RGB(0.9,0.9,0.9)));
-    objects.push_back(&sphere4);
+    //objects.push_back(&sphere4);
 
 
     this->setObjectsList(objects);
