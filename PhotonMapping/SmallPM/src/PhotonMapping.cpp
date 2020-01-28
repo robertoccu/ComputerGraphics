@@ -308,20 +308,21 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 		// Direct light
 		if (! it.intersected()->material()->is_delta()) {
 			L = direct_light(it);
+
 		} else {
 			int nb_bounces = 0;
+			// Bounce until a non delta material is found.
 			while (it.intersected()->material()->is_delta() && ++nb_bounces < MAX_NB_BOUNCES)
 			{
 				Ray r; float pdf;
-				it.intersected()->material()->get_outgoing_sample_ray(it, r, pdf);
+				it.intersected()->material()->get_outgoing_sample_ray(it, r, pdf); // Get outgoing ray (r) and probability distribution function (pdf)
 				W = W * it.intersected()->material()->get_albedo(it) / pdf;
 
 				r.shift();
 				world->first_intersection(r, it);
-
-				L = direct_light(it);
-
 			}
+			// Direct light at non delta material after bouncing at delta materials
+			L = direct_light(it);
 		}
 	}
 	}
