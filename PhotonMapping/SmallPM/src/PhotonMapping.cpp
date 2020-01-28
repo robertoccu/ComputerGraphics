@@ -181,16 +181,16 @@ void PhotonMapping::preprocess()
 	if (!global_photons.empty()) {
 		for (Photon photon : global_photons) {
 			std::vector<Real> pos = { photon.position.getComponent(0), photon.position.getComponent(1), photon.position.getComponent(2) };
-			photon.flux = photon.flux / ((global_photons.size() + caustics_photons.size()) / world->nb_lights()); // Scale photon with light intensity for number of light shoots.
+			photon.flux = (photon.flux / ((global_photons.size() + caustics_photons.size()) / world->nb_lights()) * (4 * M_PI)); // Scale photon with light intensity for number of light shoots.
 			m_global_map.store(pos, photon);
 		}
 		m_global_map.balance();
 	}
 
 	if (!caustics_photons.empty()) {
-		for (Photon photon : global_photons) {
+		for (Photon photon : caustics_photons) {
 			std::vector<Real> pos = { photon.position.getComponent(0), photon.position.getComponent(1), photon.position.getComponent(2) };
-			photon.flux = photon.flux / ((global_photons.size() + caustics_photons.size()) / world->nb_lights()); // Scale photon with light intensity for number of light shoots.
+			photon.flux = (photon.flux / ((global_photons.size() + caustics_photons.size()) / world->nb_lights()) * (4 * M_PI)); // Scale photon with light intensity for number of light shoots.
 			m_caustics_map.store(pos, photon);
 		}
 		m_caustics_map.balance();
@@ -223,7 +223,7 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 	// will need when doing the work. Goes without saying: remove the 
 	// pieces of code that you won't be using.
 	//
-	unsigned int debug_mode = 9;
+	unsigned int debug_mode = 10;
 
 	switch (debug_mode)
 	{
@@ -278,7 +278,7 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 		// MAX_NB_BOUNCES defined in ./SmallRT/include/globals.h
 		while (it.intersected()->material()->is_delta() && ++nb_bounces < MAX_NB_BOUNCES)
 		{
-			Ray r; float pdf;
+			Ray r; Real pdf;
 			it.intersected()->material()->get_outgoing_sample_ray(it, r, pdf);
 			W = W * it.intersected()->material()->get_albedo(it) / pdf;
 
@@ -291,7 +291,7 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 	case 8: 
 	{
 		// Photon Map
-		list<const KDTree<Photon, 3U>::Node*> global_nodes;
+		std::list<const KDTree<Photon, 3U>::Node*> global_nodes;
 		std::vector<Real> pos = { it.get_position().getComponent(0), it.get_position().getComponent(1), it.get_position().getComponent(2) };
 		m_global_map.find(pos, 0.01f, &global_nodes);
 		if (!global_nodes.empty()) {
@@ -315,7 +315,7 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 			// Bounce until a non delta material is found.
 			while (it.intersected()->material()->is_delta() && ++nb_bounces < MAX_NB_BOUNCES)
 			{
-				Ray r; float pdf;
+				Ray r; Real pdf;
 				it.intersected()->material()->get_outgoing_sample_ray(it, r, pdf); // Get outgoing ray (r) and probability distribution function (pdf)
 				W = W * it.intersected()->material()->get_albedo(it) / pdf;
 
@@ -325,6 +325,69 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 			// Direct light at non delta material after bouncing at delta materials
 			L = direct_light(it);
 		}
+	}
+
+	case 10:
+	{
+		// Direct and indirect light. Full photon mapping.
+		// ----------------------------------------------------------------
+
+		// Direct light
+		if (!it.intersected()->material()->is_delta()) {
+			L = direct_light(it);
+
+		}
+		else {
+			int nb_bounces = 0;
+			// Bounce until a non delta material is found.
+			while (it.intersected()->material()->is_delta() && ++nb_bounces < MAX_NB_BOUNCES)
+			{
+				Ray r; Real pdf;
+				it.intersected()->material()->get_outgoing_sample_ray(it, r, pdf); // Get outgoing ray (r) and probability distribution function (pdf)
+				W = W * it.intersected()->material()->get_albedo(it) / pdf;
+
+				r.shift();
+				world->first_intersection(r, it);
+			}
+			// Direct light at non delta material after bouncing at delta materials
+			L = direct_light(it);
+		}
+		// End of Direct light
+
+		// Indirect light
+		std::vector<const KDTree<Photon, 3U>::Node*> node_vector;
+		std::list<const KDTree<Photon, 3U>::Node*> node_list;
+		std::vector<Real> pos = { it.get_position().getComponent(0), it.get_position().getComponent(1), it.get_position().getComponent(2) };
+
+		// Global
+		Real radius;
+		Real distance;
+		m_global_map.find(pos, m_nb_photons, node_vector, radius);
+		Real area = M_PI * radius * radius;
+		for each (const KDTree<Photon, 3U>::Node * photon_node in node_vector)
+		{
+			distance = sqrt(
+				pow(photon_node->data().position.getComponent(0) - pos[0], 2) +
+				pow(photon_node->data().position.getComponent(1) - pos[1], 2) +
+				pow(photon_node->data().position.getComponent(2) - pos[2], 2));
+			L += (photon_node->data().flux / area) * abs(distance - radius);
+		}
+
+		// Caustics
+		radius = 0.015f;
+		node_vector.clear();
+		m_caustics_map.find(pos, m_nb_photons, node_vector, radius);
+		area = M_PI * radius * radius;
+		for each (const KDTree<Photon, 3U>::Node * photon_node in node_vector)
+		{
+			distance = sqrt(
+				pow(photon_node->data().position.getComponent(0) - pos[0], 2) +
+				pow(photon_node->data().position.getComponent(1) - pos[1], 2) +
+				pow(photon_node->data().position.getComponent(2) - pos[2], 2));
+			L += (photon_node->data().flux / area) * abs(distance - radius);
+		}
+		// End of Indirect light
+
 	}
 	}
 	// End of exampled code
