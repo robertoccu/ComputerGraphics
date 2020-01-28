@@ -11,12 +11,15 @@ students.
 This software is provided as is, and any express or implied warranties are disclaimed.
 In no event shall copyright holders be liable for any damage.
 **********************************************************************************/
+#define _USE_MATH_DEFINES
+
 #include "PhotonMapping.h"
 #include "World.h"
 #include "Intersection.h"
 #include "Ray.h"
 #include "BSDF.h"
 #include <random>
+#include <cmath>
 
 //*********************************************************************
 // Compute the photons by tracing the Ray 'r' from the light source
@@ -220,76 +223,120 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 	// will need when doing the work. Goes without saying: remove the 
 	// pieces of code that you won't be using.
 	//
-	unsigned int debug_mode = 8;
-	int nb_bounces = 0;
+	unsigned int debug_mode = 9;
 
 	switch (debug_mode)
 	{
 	case 1:
+	{
 		// ----------------------------------------------------------------
 		// Display Albedo Only
 		L = it.intersected()->material()->get_albedo(it);
 		break;
+	}
 	case 2:
+	{
 		// ----------------------------------------------------------------
 		// Display Normal Buffer
 		L = it.get_normal();
 		break;
+	}
 	case 3:
+	{
 		// ----------------------------------------------------------------
 		// Display whether the material is specular (or refractive) 
 		L = Vector3(it.intersected()->material()->is_delta());
 		break;
-
-	case 4:
+	}
+	case 4: 
+	{
 		// ----------------------------------------------------------------
 		// Display incoming illumination from light(0)
 		L = world->light(0).get_incoming_light(it.get_position());
 		break;
-
+	}
 	case 5:
+	{
 		// ----------------------------------------------------------------
 		// Display incoming direction from light(0)
 		L = world->light(0).get_incoming_direction(it.get_position());
 		break;
-
+	}
 	case 6:
+	{
 		// ----------------------------------------------------------------
 		// Check Visibility from light(0)
 		if (world->light(0).is_visible(it.get_position()))
 			L = Vector3(1.);
 		break;
-	case 7:
+	}
+	case 7: 
+	{
 		// ----------------------------------------------------------------
 		// Reflect and refract until a diffuse surface is found, then show its albedo...
-		nb_bounces = 0;
+		int nb_bounces = 0;
 		// MAX_NB_BOUNCES defined in ./SmallRT/include/globals.h
-		while( it.intersected()->material()->is_delta() && ++nb_bounces < MAX_NB_BOUNCES)
+		while (it.intersected()->material()->is_delta() && ++nb_bounces < MAX_NB_BOUNCES)
 		{
 			Ray r; float pdf;
-			it.intersected()->material()->get_outgoing_sample_ray(it, r, pdf );		
-			W = W * it.intersected()->material()->get_albedo(it)/pdf;
-			
+			it.intersected()->material()->get_outgoing_sample_ray(it, r, pdf);
+			W = W * it.intersected()->material()->get_albedo(it) / pdf;
+
 			r.shift();
 			world->first_intersection(r, it);
 		}
 		L = it.intersected()->material()->get_albedo(it);
 		break;
-	case 8: // Photon Map
+	}
+	case 8: 
+	{
+		// Photon Map
 		list<const KDTree<Photon, 3U>::Node*> global_nodes;
-		std::vector<Real> pos = { it0.get_position().getComponent(0), it0.get_position().getComponent(1), it0.get_position().getComponent(2) };
+		std::vector<Real> pos = { it.get_position().getComponent(0), it.get_position().getComponent(1), it.get_position().getComponent(2) };
 		m_global_map.find(pos, 0.01f, &global_nodes);
 		if (!global_nodes.empty()) {
-			L = it0.intersected()->material()->get_albedo(it0) + global_nodes.front()->data().flux;
+			L = it.intersected()->material()->get_albedo(it) + global_nodes.front()->data().flux;
 		}
 		else {
-			L = Vector3(0, 0, 0);
+			L = Vector3(0.001f, 0.001f, 0.001f);
 		}
 		W = 1;
 		break;
+	}
+	case 9:
+	{
+		// Direct light
+		if (! it.intersected()->material()->is_delta()) {
+			L = direct_light(it);
+		} else {
+			int nb_bounces = 0;
+			while (it.intersected()->material()->is_delta() && ++nb_bounces < MAX_NB_BOUNCES)
+			{
+				Ray r; float pdf;
+				it.intersected()->material()->get_outgoing_sample_ray(it, r, pdf);
+				W = W * it.intersected()->material()->get_albedo(it) / pdf;
+
+				r.shift();
+				world->first_intersection(r, it);
+
+				L = direct_light(it);
+
+			}
+		}
+	}
 	}
 	// End of exampled code
 	//**********************************************************************
 
 	return L*W;
+}
+
+Vector3 PhotonMapping::direct_light(Intersection& it)const {
+	Vector3 incoming_light_dir = world->light(0).get_incoming_direction(it.get_position());
+	if (world->light(0).is_visible(it.get_position())) {
+		return it.intersected()->material()->get_albedo(it) / M_PI * dot_abs(it.get_normal(), incoming_light_dir);
+	}
+	else {
+		return Vector3(0.001f, 0.001f, 0.001f);
+	}
 }

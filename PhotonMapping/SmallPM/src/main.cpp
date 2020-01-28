@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 	char *name_file = NULL, *default_name_file = "name_file";
 	name_file = default_name_file;
 
-	unsigned int scene = 0;
+	unsigned int scene = 5;
 
 	unsigned int photons_global = 10000, 
 				 photons_caustic = 10000, 
@@ -174,6 +174,18 @@ int main(int argc, char* argv[])
 		w->add_object(sphere1);
 		Object3D* sphere2 = new Sphere(Vector3(0,0.8,0), 0.3, orange);
 		w->add_object(sphere2);
+	}
+	break;
+	case 5:
+	{
+		Object3D* sphere1 = new Sphere(Vector3(0.5, 0.3, .65), 0.3, glass);
+		w->add_object(sphere1);
+
+		Object3D* sphere2 = new Sphere(Vector3(-0.5, 0.5, 1.5), 0.3, red);
+		w->add_object(sphere2);
+
+		Object3D* sphere3 = new Sphere(Vector3(0., 0.3, .0), 0.3, mirror);
+		w->add_object(sphere3);
 	}
 	break;
 	default:
