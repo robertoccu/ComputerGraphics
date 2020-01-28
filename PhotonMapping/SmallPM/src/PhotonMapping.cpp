@@ -181,7 +181,7 @@ void PhotonMapping::preprocess()
 	if (!global_photons.empty()) {
 		for (Photon photon : global_photons) {
 			std::vector<Real> pos = { photon.position.getComponent(0), photon.position.getComponent(1), photon.position.getComponent(2) };
-			photon.flux = photon.flux / (global_photons.size() + caustics_photons.size()); // Scale photon with light intensity for number of light shoots.
+			photon.flux = photon.flux / ((global_photons.size() + caustics_photons.size()) / world->nb_lights()); // Scale photon with light intensity for number of light shoots.
 			m_global_map.store(pos, photon);
 		}
 		m_global_map.balance();
@@ -190,7 +190,7 @@ void PhotonMapping::preprocess()
 	if (!caustics_photons.empty()) {
 		for (Photon photon : global_photons) {
 			std::vector<Real> pos = { photon.position.getComponent(0), photon.position.getComponent(1), photon.position.getComponent(2) };
-			photon.flux = photon.flux / (global_photons.size() + caustics_photons.size()); // Scale photon with light intensity for number of light shoots.
+			photon.flux = photon.flux / ((global_photons.size() + caustics_photons.size()) / world->nb_lights()); // Scale photon with light intensity for number of light shoots.
 			m_caustics_map.store(pos, photon);
 		}
 		m_caustics_map.balance();
@@ -333,13 +333,21 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 	return L*W;
 }
 
+//*********************************************************************
+// Calculate direct light at a point of a **diffuse** material from all 
+// light sources.
+//---------------------------------------------------------------------
 Vector3 PhotonMapping::direct_light(Intersection& it)const {
-	Vector3 incoming_light = world->light(0).get_incoming_light(it.get_position());
-	Vector3 incoming_light_dir = world->light(0).get_incoming_direction(it.get_position());
-	if (world->light(0).is_visible(it.get_position())) {
-		return incoming_light * (it.intersected()->material()->get_albedo(it) / M_PI) * dot_abs(it.get_normal(), incoming_light_dir);
+	Vector3 L;
+	for (LightSource* light : world->light_source_list) {
+		Vector3 incoming_light = light->get_incoming_light(it.get_position()); // Intensity of light coming
+		Vector3 incoming_light_dir = light->get_incoming_direction(it.get_position()); // Direction from where light is coming
+		if (light->is_visible(it.get_position())) {
+			L += incoming_light * (it.intersected()->material()->get_albedo(it) / M_PI) * dot_abs(it.get_normal(), incoming_light_dir); // Le * fr * | n * wi |
+		}
+		else {
+			L += Vector3(0.001f, 0.001f, 0.001f);
+		}
 	}
-	else {
-		return Vector3(0.001f, 0.001f, 0.001f);
-	}
+	return L;
 }
