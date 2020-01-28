@@ -16,6 +16,7 @@ In no event shall copyright holders be liable for any damage.
 #include "Intersection.h"
 #include "Ray.h"
 #include "BSDF.h"
+#include <random>
 
 //*********************************************************************
 // Compute the photons by tracing the Ray 'r' from the light source
@@ -140,8 +141,58 @@ bool PhotonMapping::trace_ray(const Ray& r, const Vector3 &p,
 //		for rendering. 
 //		NOTE: Careful with function
 //---------------------------------------------------------------------
+
+/*
+m_max_nb_shots(max_nb_shots)
+m_nb_current_shots(0)
+m_nb_global_photons(nb_global_photons)
+m_nb_caustic_photons(nb_caustic_photons)
+m_nb_photons(nb_photons)
+m_raytraced_direct(raytraced_direct)
+*/
+
 void PhotonMapping::preprocess()
 {
+	std::mt19937 random(1); // TODO: Añadir semilla
+	std::uniform_real_distribution<Real> rs_dist(-1.0, 1.0);
+	std::uniform_int_distribution<int> ls_dist(0, world->nb_lights()-1);
+	bool more_shots = true;
+	Real x, y, z;
+	std::list<Photon> global_photons;
+	std::list<Photon> caustics_photons;
+
+	while (more_shots) {
+		// Rejection Sampling
+		do {
+			x = rs_dist(random);
+			y = rs_dist(random);
+			z = rs_dist(random);
+		} while (x* x + y * y + z * z > 1);
+		
+		LightSource* light = world->light_source_list[ls_dist(random)];
+		Ray light_ray(light->get_position(), Vector3(x, y, z));
+
+		more_shots = trace_ray(light_ray, light->get_intensities(), global_photons, caustics_photons, false, false);
+	}
+
+	if (!global_photons.empty()) {
+		for (Photon photon : global_photons) {
+			std::vector<Real> pos = { photon.position.getComponent(0), photon.position.getComponent(1), photon.position.getComponent(2) };
+			photon.flux = photon.flux / global_photons.size(); // Scale photon with light intensity for number of light shoots.
+			m_global_map.store(pos, photon);
+		}
+		m_global_map.balance();
+	}
+
+	if (!caustics_photons.empty()) {
+		for (Photon photon : global_photons) {
+			std::vector<Real> pos = { photon.position.getComponent(0), photon.position.getComponent(1), photon.position.getComponent(2) };
+			photon.flux = photon.flux / caustics_photons.size(); // Scale photon with light intensity for number of light shoots.
+			m_caustics_map.store(pos, photon);
+		}
+		m_caustics_map.balance();
+	}
+	
 }
 
 //*********************************************************************
@@ -169,7 +220,8 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 	// will need when doing the work. Goes without saying: remove the 
 	// pieces of code that you won't be using.
 	//
-	unsigned int debug_mode = 7;
+	unsigned int debug_mode = 8;
+	int nb_bounces = 0;
 
 	switch (debug_mode)
 	{
@@ -210,7 +262,7 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 	case 7:
 		// ----------------------------------------------------------------
 		// Reflect and refract until a diffuse surface is found, then show its albedo...
-		int nb_bounces = 0;
+		nb_bounces = 0;
 		// MAX_NB_BOUNCES defined in ./SmallRT/include/globals.h
 		while( it.intersected()->material()->is_delta() && ++nb_bounces < MAX_NB_BOUNCES)
 		{
@@ -222,7 +274,19 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 			world->first_intersection(r, it);
 		}
 		L = it.intersected()->material()->get_albedo(it);
-
+		break;
+	case 8: // Photon Map
+		list<const KDTree<Photon, 3U>::Node*> global_nodes;
+		std::vector<Real> pos = { it0.get_position().getComponent(0), it0.get_position().getComponent(1), it0.get_position().getComponent(2) };
+		m_global_map.find(pos, 0.01f, &global_nodes);
+		if (!global_nodes.empty()) {
+			L = it0.intersected()->material()->get_albedo(it0) + global_nodes.front()->data().flux;
+		}
+		else {
+			L = Vector3(0, 0, 0);
+		}
+		W = 1;
+		break;
 	}
 	// End of exampled code
 	//**********************************************************************

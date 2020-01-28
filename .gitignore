@@ -115,3 +115,4 @@ _deps
 
 # Data files
 data/
+/PhotonMapping/VS2017/name_file.hdr
