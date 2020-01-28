@@ -12,12 +12,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="314f7fb8-2540-48cf-ad3c-05a077c0c668" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/material/Phong.h" beforeDir="false" afterPath="$PROJECT_DIR$/material/Phong.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/render/Scene.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/render/Scene.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/render/tracer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/render/tracer.cpp" afterDir="false" />
-    </list>
+    <list default="true" id="314f7fb8-2540-48cf-ad3c-05a077c0c668" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +33,7 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectId" id="1RQLJq5wWTASPWYKtlxA9y3Zaek" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -129,6 +125,7 @@
       <workItem from="1580042019416" duration="1645000" />
       <workItem from="1580110272863" duration="1026000" />
       <workItem from="1580127048077" duration="6447000" />
+      <workItem from="1580140540127" duration="211000" />
     </task>
     <task id="LOCAL-00001" summary="Planetary annihilation alfa">
       <created>1570010720897</created>
