@@ -181,7 +181,7 @@ void PhotonMapping::preprocess()
 	if (!global_photons.empty()) {
 		for (Photon photon : global_photons) {
 			std::vector<Real> pos = { photon.position.getComponent(0), photon.position.getComponent(1), photon.position.getComponent(2) };
-			photon.flux = photon.flux / global_photons.size(); // Scale photon with light intensity for number of light shoots.
+			photon.flux = photon.flux / (global_photons.size() + caustics_photons.size()); // Scale photon with light intensity for number of light shoots.
 			m_global_map.store(pos, photon);
 		}
 		m_global_map.balance();
@@ -190,7 +190,7 @@ void PhotonMapping::preprocess()
 	if (!caustics_photons.empty()) {
 		for (Photon photon : global_photons) {
 			std::vector<Real> pos = { photon.position.getComponent(0), photon.position.getComponent(1), photon.position.getComponent(2) };
-			photon.flux = photon.flux / caustics_photons.size(); // Scale photon with light intensity for number of light shoots.
+			photon.flux = photon.flux / (global_photons.size() + caustics_photons.size()); // Scale photon with light intensity for number of light shoots.
 			m_caustics_map.store(pos, photon);
 		}
 		m_caustics_map.balance();
@@ -306,6 +306,7 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 	case 9:
 	{
 		// Direct light
+		// ----------------------------------------------------------------
 		if (! it.intersected()->material()->is_delta()) {
 			L = direct_light(it);
 
@@ -333,9 +334,10 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 }
 
 Vector3 PhotonMapping::direct_light(Intersection& it)const {
+	Vector3 incoming_light = world->light(0).get_incoming_light(it.get_position());
 	Vector3 incoming_light_dir = world->light(0).get_incoming_direction(it.get_position());
 	if (world->light(0).is_visible(it.get_position())) {
-		return it.intersected()->material()->get_albedo(it) / M_PI * dot_abs(it.get_normal(), incoming_light_dir);
+		return incoming_light * (it.intersected()->material()->get_albedo(it) / M_PI) * dot_abs(it.get_normal(), incoming_light_dir);
 	}
 	else {
 		return Vector3(0.001f, 0.001f, 0.001f);
