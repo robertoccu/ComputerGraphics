@@ -156,7 +156,8 @@ m_raytraced_direct(raytraced_direct)
 
 void PhotonMapping::preprocess()
 {
-	std::mt19937 random(1); // TODO: Añadir semilla
+	static std::random_device rd;
+	static std::mt19937 random(rd());
 	std::uniform_real_distribution<Real> rs_dist(-1.0, 1.0);
 	std::uniform_int_distribution<int> ls_dist(0, world->nb_lights()-1);
 	bool more_shots = true;
@@ -181,7 +182,7 @@ void PhotonMapping::preprocess()
 	if (!global_photons.empty()) {
 		for (Photon photon : global_photons) {
 			std::vector<Real> pos = { photon.position.getComponent(0), photon.position.getComponent(1), photon.position.getComponent(2) };
-			photon.flux = (photon.flux / ((global_photons.size() + caustics_photons.size()) / world->nb_lights()) * (4 * M_PI)); // Scale photon with light intensity for number of light shoots.
+			photon.flux = (photon.flux / ((global_photons.size() + caustics_photons.size()) / world->nb_lights()) * (4 * M_PI) * (1 / (Real) world->nb_lights())); // Scale photon with light intensity for number of light shoots.
 			m_global_map.store(pos, photon);
 		}
 		m_global_map.balance();
@@ -190,7 +191,7 @@ void PhotonMapping::preprocess()
 	if (!caustics_photons.empty()) {
 		for (Photon photon : caustics_photons) {
 			std::vector<Real> pos = { photon.position.getComponent(0), photon.position.getComponent(1), photon.position.getComponent(2) };
-			photon.flux = (photon.flux / ((global_photons.size() + caustics_photons.size()) / world->nb_lights()) * (4 * M_PI)); // Scale photon with light intensity for number of light shoots.
+			photon.flux = (photon.flux / ((global_photons.size() + caustics_photons.size()) / world->nb_lights()) * (4 * M_PI) * (1 / (Real) world->nb_lights())); // Scale photon with light intensity for number of light shoots.
 			m_caustics_map.store(pos, photon);
 		}
 		m_caustics_map.balance();
@@ -326,8 +327,8 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 			// Direct light at non delta material after bouncing at delta materials
 			L = direct_light(it);
 		}
+		break;
 	}
-
 	case 10:
 	{
 		// Direct and indirect light. Full photon mapping.
@@ -423,8 +424,8 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 			// End of Indirect light
 		}
 		return (directL + globalL + causticsL) * W;
+		break;
 	}
-	break;
 	}
 	// End of exampled code
 	//**********************************************************************
@@ -444,9 +445,6 @@ Vector3 PhotonMapping::direct_light(Intersection& it)const {
 		if (light->is_visible(it.get_position())) {
 			L += incoming_light * (it.intersected()->material()->get_albedo(it) / M_PI) * dot_abs(it.get_normal(), incoming_light_dir); // Le * fr * | n * wi |
 		}
-		else {
-			L += Vector3(0.001f, 0.001f, 0.001f);
-		}
 	}
-	return L;
+	return L/world->nb_lights();
 }
