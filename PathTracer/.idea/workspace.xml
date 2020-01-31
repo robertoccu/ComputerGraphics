@@ -14,6 +14,7 @@
   <component name="ChangeListManager">
     <list default="true" id="314f7fb8-2540-48cf-ad3c-05a077c0c668" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../PhotonMapping/SmallPM/src/PhotonMapping.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../PhotonMapping/SmallPM/src/PhotonMapping.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../PhotonMapping/SmallPM/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../PhotonMapping/SmallPM/src/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../PhotonMapping/VS2015/SmallPM.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/../PhotonMapping/VS2015/SmallPM.vcxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../PhotonMapping/VS2015/name_file.hdr" beforeDir="false" afterPath="$PROJECT_DIR$/../PhotonMapping/VS2015/name_file.hdr" afterDir="false" />
     </list>
@@ -137,7 +138,7 @@
       <workItem from="1580127048077" duration="6447000" />
       <workItem from="1580140540127" duration="211000" />
       <workItem from="1580200271912" duration="322000" />
-      <workItem from="1580454238849" duration="8298000" />
+      <workItem from="1580454238849" duration="13903000" />
     </task>
     <task id="LOCAL-00001" summary="Planetary annihilation alfa">
       <created>1570010720897</created>
