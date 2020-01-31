@@ -173,7 +173,7 @@ void PhotonMapping::preprocess()
 		} while (x* x + y * y + z * z > 1);
 		
 		LightSource* light = world->light_source_list[ls_dist(random)];
-		Ray light_ray(light->get_position(), Vector3(x, y, z));
+		Ray light_ray(light->get_position(), Vector3(x, y, z).normalize());
 
 		more_shots = trace_ray(light_ray, light->get_intensities(), global_photons, caustics_photons, false, false);
 	}
@@ -248,7 +248,7 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 		L = Vector3(it.intersected()->material()->is_delta());
 		break;
 	}
-	case 4: 
+	case 4:
 	{
 		// ----------------------------------------------------------------
 		// Display incoming illumination from light(0)
@@ -270,7 +270,7 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 			L = Vector3(1.);
 		break;
 	}
-	case 7: 
+	case 7:
 	{
 		// ----------------------------------------------------------------
 		// Reflect and refract until a diffuse surface is found, then show its albedo...
@@ -288,7 +288,7 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 		L = it.intersected()->material()->get_albedo(it);
 		break;
 	}
-	case 8: 
+	case 8:
 	{
 		// Photon Map
 		std::list<const KDTree<Photon, 3U>::Node*> global_nodes;
@@ -307,10 +307,11 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 	{
 		// Direct light
 		// ----------------------------------------------------------------
-		if (! it.intersected()->material()->is_delta()) {
+		if (!it.intersected()->material()->is_delta()) {
 			L = direct_light(it);
 
-		} else {
+		}
+		else {
 			int nb_bounces = 0;
 			// Bounce until a non delta material is found.
 			while (it.intersected()->material()->is_delta() && ++nb_bounces < MAX_NB_BOUNCES)
@@ -332,63 +333,68 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 		// Direct and indirect light. Full photon mapping.
 		// ----------------------------------------------------------------
 
-		// Direct light
-		if (!it.intersected()->material()->is_delta()) {
-			L = direct_light(it);
+		Vector3 directL(0);
+		Vector3 globalL(0);
+		Vector3 causticsL(0);
 
-		}
-		else {
-			int nb_bounces = 0;
-			// Bounce until a non delta material is found.
-			while (it.intersected()->material()->is_delta() && ++nb_bounces < MAX_NB_BOUNCES)
-			{
+		// Delta bouncing
+		int nb_bounces = 0;
+		while (it.did_hit() && it.intersected()->material()->is_delta() && ++nb_bounces < MAX_NB_BOUNCES) {
 				Ray r; Real pdf;
 				it.intersected()->material()->get_outgoing_sample_ray(it, r, pdf); // Get outgoing ray (r) and probability distribution function (pdf)
 				W = W * it.intersected()->material()->get_albedo(it) / pdf;
 
 				r.shift();
 				world->first_intersection(r, it);
+		}
+
+		// Direct light
+		if (it.did_hit() && !it.intersected()->material()->is_delta()) {
+			directL = direct_light(it);
+
+			// Indirect light
+			std::vector<const KDTree<Photon, 3U>::Node*> node_vector;
+			std::list<const KDTree<Photon, 3U>::Node*> node_list;
+			std::vector<Real> pos = { it.get_position().getComponent(0), it.get_position().getComponent(1), it.get_position().getComponent(2) };
+
+			// Global
+			Real radius;
+			Real distance;
+			m_global_map.find(pos, m_nb_photons, node_vector, radius);
+			Real area = M_PI * radius * radius;
+			Real Wp = 0;
+			Real k = 2.0f;
+			for each (const KDTree<Photon, 3U>::Node * photon_node in node_vector)
+			{
+				distance = sqrt(
+					pow(photon_node->data().position.getComponent(0) - pos[0], 2) +
+					pow(photon_node->data().position.getComponent(1) - pos[1], 2) +
+					pow(photon_node->data().position.getComponent(2) - pos[2], 2));
+				Wp = std::max(0.0f, 1 - distance / (k * radius));
+				globalL += (it.intersected()->material()->get_albedo(it) / M_PI) * photon_node->data().flux * Wp;
 			}
-			// Direct light at non delta material after bouncing at delta materials
-			L = direct_light(it);
+			globalL = globalL / ((1 - (2 / (3 * k))) * area);
+
+			// Caustics
+			radius = 0.015f;
+			node_vector.clear();
+			m_caustics_map.find(pos, m_nb_photons, node_vector, radius);
+			area = M_PI * radius * radius;
+			for each (const KDTree<Photon, 3U>::Node * photon_node in node_vector)
+			{
+				distance = sqrt(
+					pow(photon_node->data().position.getComponent(0) - pos[0], 2) +
+					pow(photon_node->data().position.getComponent(1) - pos[1], 2) +
+					pow(photon_node->data().position.getComponent(2) - pos[2], 2));
+				Wp = std::max(0.0f, 1 - distance / (k * radius));
+				causticsL += (it.intersected()->material()->get_albedo(it) / M_PI) * photon_node->data().flux * Wp;
+			}
+			causticsL = causticsL / ((1 - (2 / (3 * k))) * area);
+			// End of Indirect light
 		}
-		// End of Direct light
-
-		// Indirect light
-		std::vector<const KDTree<Photon, 3U>::Node*> node_vector;
-		std::list<const KDTree<Photon, 3U>::Node*> node_list;
-		std::vector<Real> pos = { it.get_position().getComponent(0), it.get_position().getComponent(1), it.get_position().getComponent(2) };
-
-		// Global
-		Real radius;
-		Real distance;
-		m_global_map.find(pos, m_nb_photons, node_vector, radius);
-		Real area = M_PI * radius * radius;
-		for each (const KDTree<Photon, 3U>::Node * photon_node in node_vector)
-		{
-			distance = sqrt(
-				pow(photon_node->data().position.getComponent(0) - pos[0], 2) +
-				pow(photon_node->data().position.getComponent(1) - pos[1], 2) +
-				pow(photon_node->data().position.getComponent(2) - pos[2], 2));
-			L += (photon_node->data().flux / area) * abs(distance - radius);
-		}
-
-		// Caustics
-		radius = 0.015f;
-		node_vector.clear();
-		m_caustics_map.find(pos, m_nb_photons, node_vector, radius);
-		area = M_PI * radius * radius;
-		for each (const KDTree<Photon, 3U>::Node * photon_node in node_vector)
-		{
-			distance = sqrt(
-				pow(photon_node->data().position.getComponent(0) - pos[0], 2) +
-				pow(photon_node->data().position.getComponent(1) - pos[1], 2) +
-				pow(photon_node->data().position.getComponent(2) - pos[2], 2));
-			L += (photon_node->data().flux / area) * abs(distance - radius);
-		}
-		// End of Indirect light
-
+		return (directL + globalL + causticsL) * W;
 	}
+	break;
 	}
 	// End of exampled code
 	//**********************************************************************

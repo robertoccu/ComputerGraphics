@@ -34,7 +34,7 @@ namespace {
 	Film *film;
 	RenderEngine *engine;
 	PhotonMapping *pm;
-	int sizex = 512/2, sizey = 512/2;
+	int sizex = 512, sizey = 512;
 }
 
 
