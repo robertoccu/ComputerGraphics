@@ -23,7 +23,7 @@ int main(){
     init_time = clock();
 
     // Run the main program
-    const int PATHS_PER_PIXEL = 12;
+    const int PATHS_PER_PIXEL = 64;
     cout<<"Path tracer: "<<PATHS_PER_PIXEL<<" ppp."<<endl;
     Scene scene;
     scene.load_cornellBox();
@@ -43,7 +43,7 @@ int main(){
     //ToneMapper::equalAndClamp(image, 10);
     //ToneMapper::equalization(image);    // Tone mapping
     //ToneMapper::gamma(image, 0.8);
-    ToneMapper::clampAndGamma(image, 1000, 0.15); // First clamp to light max value.
+    ToneMapper::clampAndGamma(image, 1000, 0.25); // First clamp to light max value.
     //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),0.18, 0.75);
     cout<<"Done!"<<endl;
 

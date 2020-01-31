@@ -40,7 +40,7 @@ public:
     RGB get_BRDF(const Ray& in_ray, const Vector& normal, Ray& out_ray) override{
         // Not in use. See get_outgoing_ray.
         RGB brdf;
-        Vector Wr = reflect(out_ray.getDirection(), normal);
+        Vector Wr = reflect(out_ray.getDirection().negate(), normal);
         Wr = Wr.normalize();
         float cosine = Vector::dot(in_ray.getDirection(), Wr);
         // Parte difusa
