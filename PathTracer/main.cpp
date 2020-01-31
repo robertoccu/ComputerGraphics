@@ -9,8 +9,6 @@
 #include "imaging/ToneMapper.h"
 #include "render/Scene.h"
 #include "render/tracer.h"
-#include "utils/Prng.h"
-#include "material/RefractionPerfect.h"
 
 #ifndef DEBUG_MODE
 #define DEBUG_MODE
@@ -19,7 +17,7 @@
 using namespace std;
 
 // Constantes
-const int PATHS_PER_PIXEL = 64;
+const int PATHS_PER_PIXEL = 100;
 const string IMAGE_PATH = "./data";
 
 int main(){

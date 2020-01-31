@@ -73,11 +73,12 @@ list<Triangle> TriangleMeshes::get_triangles_without_textures(const string &obj_
                 face_normal = face_normal.normalize();
 
                 Triangle triangle(a,b,c); triangle.set_normal(face_normal);
+
                 // DEBUG
-                float red   = Prng::random();
-                float green = Prng::random();
-                float blue  = Prng::random();
-                shared_ptr<Emitter> aleatorio = make_shared<Emitter>(RGB(red, green, blue));
+                float red   = 0.9;
+                float green = 0.6;
+                float blue = 0.0;
+                shared_ptr<Phong> aleatorio = make_shared<Phong>(RGB(red, green, blue), RGB(0,0,0),0);
                 triangle.set_material(aleatorio);
                 triangles.push_back(triangle);
             }
@@ -171,8 +172,9 @@ list<Triangle> TriangleMeshes::get_triangles_with_textures_simple(const string &
 
                 Triangle triangle(a,b,c); triangle.set_normal(face_normal);
                 // TODO: Now only save emitter materials, latter all
-                shared_ptr<Emitter> emitter = make_shared<Emitter>(composite_material.get_emision());
-                triangle.set_material(emitter);
+                shared_ptr<Phong> phong = make_shared<Phong>(composite_material.get_emision(), composite_material.get_Ks(), 1);
+                //shared_ptr<Emitter> emitter = make_shared<Emitter>(composite_material.get_emision());
+                triangle.set_material(phong);
                 triangles.push_back(triangle);
             }
         }

@@ -3,14 +3,12 @@
 //
 
 #include <cmath>
-#include <utility>
 #include "Scene.h"
 #include "../geometry/Sphere.h"
 #include "../geometry/Plane.h"
 #include "../geometry/Disk.h"
 #include "../geometry/Triangle.h"
 #include "../geometry/TriangleMeshes.h"
-#include "../material/SpecularPerfect.h"
 
 Scene::Scene(const std::list<CollisionObject*> &objectsList, const Camera &camera, const Screen &screen,
         const std::list<DotLight> lights)
@@ -67,87 +65,87 @@ const Screen &Scene::getScreen() const {
  * Load the Cornell box scene.
  */
 void Scene::load_cornellBox() {
-    int resolution_X  = 16 * 53;
-    int resolution_Y  =  9 * 53; // 462 for Robert PC
-    int width_screen  = 16 *  4;
-    int height_screen = 9  *  4;
-    int focal_length  =  width_screen / (int)(2* tan(0.26 * M_PI)); // Fish Eye Avoidance Formula
+    // Shared variables for all scenes
+    const int resolution_X  = 16 * 53;
+    const int resolution_Y  =  9 * 53; // 462 for Robert PC
+    const int width_screen  = 16 *  4;
+    const int height_screen = 9  *  4;
+    const int focal_length  =  16*4 / (int)(2* tan(0.26 * M_PI)); // Fish Eye Avoidance Formula
 
     /** Objects **/
     cout<<"Loading objects...";
     list<CollisionObject*> objects;
-
+    /** Cornell box **/
     static Plane left_wall(Vector(0,0,0,PT),Vector(1,0,0,VEC));
     left_wall.set_material(make_shared<Phong>(RGB(0.9, 0.0, 0.0), RGB(0.0, 0.0, 0.0), 1.0));
-    //left_wall.set_material(make_shared<SpecularPerfect>(RGB(0.9,0.9,0.9)));
     objects.push_back(&left_wall);
 
     static Plane right_wall(Vector(30,0,0,PT),Vector(-1,0,0,VEC));
     right_wall.set_material(make_shared<Phong>(RGB(0.0, 0.9, 0.0),RGB(0.00, 0.00, 0.00), 1.0));
-    //right_wall.set_material(make_shared<SpecularPerfect>(RGB(0.9,0.9,0.9)));
     objects.push_back(&right_wall);
 
     static Plane floor(Vector(0,0,0,PT),Vector(0,0,1,VEC));
     floor.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9), RGB(0.00, 0.00, 0.00), 1.0));
-    //floor.set_material(make_shared<Phong>(RGB(0.0, 0.0, 0.0),RGB(0.9, 0.9, 0.9), 20));
     objects.push_back(&floor);
 
     static Plane ceil(Vector(0,0,30,PT),Vector(0,0,-1,VEC));
     ceil.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9), RGB(0.00, 0.00, 0.00), 1.0));
     objects.push_back(&ceil);
 
-    float min = 5, max = 30 - min;    // The minX and maxX point of the square light
+    float min = 0, max = 30 - min;    // The minX and maxX point of the square light
     static Triangle triangle1(Vector(max,min,29,PT), Vector(min,min,29,PT), Vector(min,max,29,PT));
     static Triangle triangle2(Vector(min,max,29,PT), Vector(max,max,29,PT), Vector(max,min,29,PT));
     triangle1.set_material(make_shared<Emitter>(RGB::white));
     triangle2.set_material(make_shared<Emitter>(RGB::white));
-    objects.push_back(&triangle1);objects.push_back(&triangle2);
-
+    //objects.push_back(&triangle1);objects.push_back(&triangle2);
 
     static Plane background(Vector(0,30,0,PT), Vector(0,-1,0,VEC));
     background.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.9), RGB(0.00, 0.00, 0.00), 1.0));
     objects.push_back(&background);
 
-    static Sphere sphere0(Vector(2,25,2,PT),2);
-    sphere0.set_material(make_shared<Phong>(RGB(0.9, 0.9, 0.00),RGB(0.00, 0.00, 0.00), 50));
-    objects.push_back(&sphere0);
+    /** Objects **/
+    static Sphere sphere1(Vector(15,10,7,PT),5);
+    static RefractionPerfect refractionPerfect(RGB(0.45, 0.45, 0.45));
+    refractionPerfect.set_type(refraction_type::DIAMOND);
+    sphere1.set_material(make_shared<Composite>(Emitter(RGB(0,0,0)),
+            Phong(RGB(0.0,0.0,0.0), RGB(0,0,0), 50),
+            refractionPerfect,
+            SpecularPerfect(RGB(0.45,0.45,0.45))
+            ));
+    //objects.push_back(&sphere1);
 
-    static Sphere sphere1(Vector(6,25,3,PT),2);
-    sphere1.set_material(make_shared<Phong>(RGB(0.85, 0.85, 0.00),RGB(0.05, 0.05, 0.05), 50));
-    objects.push_back(&sphere1);
-
-    static Sphere sphere2(Vector(10,25,3,PT),2);
-    sphere2.set_material(make_shared<Phong>(RGB(0.65, 0.65, 0.00),RGB(0.25, 0.25, 0.25), 50));
-    objects.push_back(&sphere2);
-
-    static Sphere sphere3(Vector(14,25,3,PT),2);
-    sphere3.set_material(make_shared<Phong>(RGB(0.45, 0.45, 0.00),RGB(0.45, 0.45, 0.45), 50));
-    objects.push_back(&sphere3);
-
-    static Sphere sphere4(Vector(18,25,3,PT),2);
-    sphere4.set_material(make_shared<Phong>(RGB(0.05, 0.05, 0.00),RGB(0.85, 0.85, 0.00), 50));
-    objects.push_back(&sphere4);
-
-    /*static Sphere sphere3(Vector(23,10,4,PT),4);
-    sphere3.set_material(make_shared<RefractionPerfect>(RGB(0.9, 0.9, 0.9)));
-    objects.push_back(&sphere3);*/
+    static Sphere sphere3(Vector(15,26,4,PT),1);
+    sphere3.set_material(make_shared<Phong>(RGB(0.8,0,0), RGB(0.1,0.1,0.1), 50));
+    //sphere3.set_material(make_shared<RefractionPerfect>(RGB(0.9, 0.9, 0.9)));
+    //objects.push_back(&sphere3);
 
     static Sphere sphere5(Vector(22,25,3,PT),2);
     sphere5.set_material(make_shared<SpecularPerfect>(RGB(0.9,0.9,0.0)));
-    objects.push_back(&sphere5);
+    //objects.push_back(&sphere5);
 
+    Matrix matrix_mesh;
+    matrix_mesh = Matrix::traslation(15, 10, 10);
+    matrix_mesh = matrix_mesh * Matrix::scale(5,5,5);
+
+    static list<Triangle> triangle_mesh =
+            TriangleMeshes::get_triangles_without_textures("../geometry/models/untitled.obj",
+                                                               matrix_mesh);
+    cout<<"Loading objects...";
+    for(auto & iterator : triangle_mesh){
+        objects.push_back(&iterator);
+    }
 
     this->setObjectsList(objects);
     cout<<"Objects loaded successfully"<<endl;
 
     /** Lights **/
     cout<<"Loading lights...";
-    std::list<DotLight> lights;
+    std::list<DotLight> dot_lights;
     // Dot light
-    static DotLight light(Vector(15,10,20,PT), RGB::white, 100);
-    //lights.push_back(light);
+    static DotLight light(Vector(15,5,20,PT), RGB::white, 100);
+    dot_lights.push_back(light);
 
-    this->setLights(lights);
+    this->setLights(dot_lights);
     cout<<"Lights loaded successfully"<<endl;
 
     // Camera
@@ -165,11 +163,12 @@ void Scene::load_cornellBox() {
  * Load the scene1. Consist a white plane and a red sphere in front
  */
 void Scene::load_scene1() {
-    int resolution_X  = 16 * 52;
-    int resolution_Y  = 9  * 52;
-    int width_screen  = 16 *  4;
-    int height_screen = 9  *  4;
-    int focal_length  =  width_screen / (int)(2* tan(0.26 * M_PI)); // Fish Eye Avoidance Formula
+    // Shared variables for all scenes
+    const int resolution_X  = 16 * 53;
+    const int resolution_Y  =  9 * 53; // 462 for Robert PC
+    const int width_screen  = 16 *  4;
+    const int height_screen = 9  *  4;
+    const int focal_length  =  16*4 / (int)(2* tan(0.26 * M_PI)); // Fish Eye Avoidance Formula
 
     // Objects
     static Sphere sphere(Vector(15,10,10,1),5);

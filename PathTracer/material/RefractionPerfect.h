@@ -10,13 +10,24 @@
 #include "Material.h"
 #include "../geometry/Ray.h"
 
+enum refraction_type{WATER, GLASS, AIR, DIAMOND};
 
 class RefractionPerfect : public Material{
 private:
     RGB Kr;
+    float ri;
 public:
     RefractionPerfect(const RGB& color) : Kr(color){
         this->set_material(material_type::REFRACTION);
+    }
+
+    void set_type(refraction_type refraction){
+        switch(refraction){
+            case WATER:     this->ri = 1.333f; break;
+            case GLASS:     this->ri = 1.520f; break;
+            case AIR:       this->ri = 1.000f; break;
+            case DIAMOND:   this->ri = 2.417f; break;
+        }
     }
 
     RefractionPerfect() : Kr(RGB(0,0,0)){
@@ -39,11 +50,11 @@ public:
         bool inside = refracted;
         if (inside) {
             refracted = refracted_direction(in_ray.getDirection().normalize(), collision_normal.normalize(),
-                                                1.333f, 1.000293f, out_dir); // Water: 1.333 | Glass: 1.52 | Air: 1.000293 | Diamond: 2.417
+                                                ri, 1.000293f, out_dir);
             inside = !refracted;
         } else {
             refracted = refracted_direction(in_ray.getDirection().normalize(), collision_normal.normalize(),
-                                                1.000293f, 	1.333f, out_dir);
+                                                1.000293f, 	ri, out_dir);
             inside = refracted;
         }
 

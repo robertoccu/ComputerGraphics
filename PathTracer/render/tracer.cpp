@@ -170,7 +170,7 @@ void tracer::show_progress(const unsigned int rows){
         #endif
         progress = threads_progress.load(std::memory_order_seq_cst);
         // For very long processes, establish a time between progress and progress.
-        std::this_thread::sleep_for (std::chrono::seconds(5));
+        std::this_thread::sleep_for (std::chrono::seconds(1));
     }
 }
 
