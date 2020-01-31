@@ -12,7 +12,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="314f7fb8-2540-48cf-ad3c-05a077c0c668" name="Default Changelist" comment="" />
+    <list default="true" id="314f7fb8-2540-48cf-ad3c-05a077c0c668" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../PhotonMapping/SmallPM/src/PhotonMapping.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../PhotonMapping/SmallPM/src/PhotonMapping.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../PhotonMapping/SmallPM/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../PhotonMapping/SmallPM/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../PhotonMapping/VS2015/SmallPM.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/../PhotonMapping/VS2015/SmallPM.vcxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../PhotonMapping/VS2015/name_file.hdr" beforeDir="false" afterPath="$PROJECT_DIR$/../PhotonMapping/VS2015/name_file.hdr" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -55,24 +61,24 @@
       <recent name="C:\Users\Sergio\Desktop\Universidad\04 - Informatica Grafica\Practises\ComputerGraphics\geometry\models" />
     </key>
   </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
   <component name="RunManager">
     <configuration name="ComputerGraphics" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ComputerGraphics" TARGET_NAME="ComputerGraphics" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ComputerGraphics" RUN_TARGET_NAME="ComputerGraphics">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-  </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -132,6 +138,7 @@
       <workItem from="1580127048077" duration="6447000" />
       <workItem from="1580140540127" duration="211000" />
       <workItem from="1580200271912" duration="322000" />
+      <workItem from="1580454238849" duration="13903000" />
     </task>
     <task id="LOCAL-00001" summary="Planetary annihilation alfa">
       <created>1570010720897</created>
@@ -506,6 +513,11 @@
           <url>file://$PROJECT_DIR$/material/Phong.h</url>
           <line>7</line>
           <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/render/Scene.cpp</url>
+          <line>121</line>
+          <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

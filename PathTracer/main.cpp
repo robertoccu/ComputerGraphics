@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <ctime>
+#include <io.h>
 #include "utils/IOppm.h"
 #include "imaging/ToneMapper.h"
 #include "render/Scene.h"
@@ -16,14 +17,20 @@
 #endif
 
 using namespace std;
-void pruebas_prng();
+
+// Constantes
+const int PATHS_PER_PIXEL = 64;
+const string IMAGE_PATH = "./data";
+
 int main(){
+    // Create if not exist the data directory
+    mkdir(IMAGE_PATH.c_str());
+
     unsigned init_time, finish_time;
     // Obtain the timestamp
     init_time = clock();
 
     // Run the main program
-    const int PATHS_PER_PIXEL = 12;
     cout<<"Path tracer: "<<PATHS_PER_PIXEL<<" ppp."<<endl;
     Scene scene;
     scene.load_cornellBox();
@@ -35,7 +42,7 @@ int main(){
         ToneMapper::clamping(image, 65535);
     }
     cout<<"Saving HDR image..."<<endl;
-    IOppm::store("../data/ray_tracer_hdr.ppm", image, 10000000);
+    IOppm::store(IMAGE_PATH + "/ray_tracer_hdr.ppm", image, 10000000);
     cout<<endl;
 
     cout<<"Tone Mapping image...";
@@ -43,23 +50,13 @@ int main(){
     //ToneMapper::equalAndClamp(image, 10);
     //ToneMapper::equalization(image);    // Tone mapping
     //ToneMapper::gamma(image, 0.8);
-    ToneMapper::clampAndGamma(image, 1000, 0.15); // First clamp to light max value.
+    ToneMapper::clampAndGamma(image, 1000, 0.25); // First clamp to light max value.
     //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),0.18, 0.75);
     cout<<"Done!"<<endl;
 
     cout<<"Saving (8-bit) image...";
-    IOppm::store("../data/ray_tracer.ppm", image, 255);
+    IOppm::store(IMAGE_PATH + "/ray_tracer.ppm", image, 255);
     cout<<"Done!"<<endl;
-
-    /*cout<<"Saving (10-bit) image..."<<endl; // Robert things
-    IOppm::store("../data/ray_tracer_10bit.ppm", image, 1023);
-    cout<<endl;*/
-
-
-    /*cout<<"Saving (10-bit) image..."<<endl; // Robert things
-    IOppm::store("../data/ray_tracer_10bit.ppm", image, 1023);
-    cout<<endl;*/
-
 
     // To finish, obtain the timestamp
     finish_time = clock();
