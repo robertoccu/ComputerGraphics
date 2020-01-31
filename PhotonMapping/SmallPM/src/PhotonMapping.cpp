@@ -353,19 +353,33 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 			directL = direct_light(it);
 
 			// Indirect light
-			std::vector<const KDTree<Photon, 3U>::Node*> node_vector;
-			std::list<const KDTree<Photon, 3U>::Node*> node_list;
+			std::vector<const KDTree<Photon, 3U>::Node*> node_vector, node_vector_2;
 			std::vector<Real> pos = { it.get_position().getComponent(0), it.get_position().getComponent(1), it.get_position().getComponent(2) };
 
 			// Global
 			Real radius;
-			Real distance;
 			m_global_map.find(pos, m_nb_photons, node_vector, radius);
-			Real area = M_PI * radius * radius;
-			Real Wp = 0;
-			Real k = 2.0f;
+
+			radius = 0;
+			Real distance;
 			for each (const KDTree<Photon, 3U>::Node * photon_node in node_vector)
 			{
+				if (dot(photon_node->data().direction, it.get_normal()) < 0) {
+					distance = sqrt(
+						pow(photon_node->data().position.getComponent(0) - pos[0], 2) +
+						pow(photon_node->data().position.getComponent(1) - pos[1], 2) +
+						pow(photon_node->data().position.getComponent(2) - pos[2], 2));
+					if (distance > radius) {
+						radius = distance;
+					}
+					node_vector_2.push_back(photon_node);
+				}
+			}
+			Real area = M_PI * radius * radius;
+
+			Real k = 2.0f;
+			Real Wp;
+			for each (const KDTree<Photon, 3U>::Node* photon_node in node_vector_2) {
 				distance = sqrt(
 					pow(photon_node->data().position.getComponent(0) - pos[0], 2) +
 					pow(photon_node->data().position.getComponent(1) - pos[1], 2) +
@@ -376,12 +390,28 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 			globalL = globalL / ((1 - (2 / (3 * k))) * area);
 
 			// Caustics
-			radius = 0.015f;
 			node_vector.clear();
+			node_vector_2.clear();
 			m_caustics_map.find(pos, m_nb_photons, node_vector, radius);
-			area = M_PI * radius * radius;
-			for each (const KDTree<Photon, 3U>::Node * photon_node in node_vector)
+
+			radius = 0;
+			for each (const KDTree<Photon, 3U>::Node* photon_node in node_vector)
 			{
+				if (dot(photon_node->data().direction, it.get_normal()) < 0) {
+					distance = sqrt(
+						pow(photon_node->data().position.getComponent(0) - pos[0], 2) +
+						pow(photon_node->data().position.getComponent(1) - pos[1], 2) +
+						pow(photon_node->data().position.getComponent(2) - pos[2], 2));
+					if (distance > radius) {
+						radius = distance;
+					}
+					node_vector_2.push_back(photon_node);
+				}
+			}
+			area = M_PI * radius * radius;
+
+			k = 2.0f;
+			for each (const KDTree<Photon, 3U>::Node* photon_node in node_vector_2) {
 				distance = sqrt(
 					pow(photon_node->data().position.getComponent(0) - pos[0], 2) +
 					pow(photon_node->data().position.getComponent(1) - pos[1], 2) +
