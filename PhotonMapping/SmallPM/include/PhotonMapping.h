@@ -46,13 +46,16 @@ class PhotonMapping
 	struct Photon
 	{
 		Vector3 position;
+		Real time;
 		Vector3 direction;
 		Vector3 flux;
 
 		Photon():
-			position(0), direction(0), flux(0) {}
+			position(0), time(0), direction(0), flux(0) {}
 		Photon(const Vector3 &p, const Vector3 &d, const Vector3 &f):
-			position(p), direction(d), flux(f) {}
+			position(p), time(0), direction(d), flux(f) {}
+		Photon(const Vector3& p, const Vector3& d, const Vector3& f, const Real time) :
+			position(p), time(time), direction(d), flux(f) {}
 	};
 
 	KDTree<Photon, 3> m_global_map, m_caustics_map;

@@ -17,7 +17,7 @@
 using namespace std;
 
 // Constantes
-const int PATHS_PER_PIXEL = 100;
+const int PATHS_PER_PIXEL = 1024;
 const string IMAGE_PATH = "./data";
 
 int main(){
@@ -48,7 +48,7 @@ int main(){
     //ToneMapper::equalAndClamp(image, 10);
     //ToneMapper::equalization(image);    // Tone mapping
     //ToneMapper::gamma(image, 0.8);
-    ToneMapper::clampAndGamma(image, 1000, 0.25); // First clamp to light max value.
+    ToneMapper::clampAndGamma(image, 100, 0.45); // First clamp to light max value.
     //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),0.18, 0.75);
     cout<<"Done!"<<endl;
 

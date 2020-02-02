@@ -41,11 +41,11 @@ Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
     cout<<"Launching path tracer with "<<number_threads<<" workers"<<endl;
     // We check if the rows can be divided by the cores.
     // If it is not divisible, there will be some row that is not generated. Program will stop.
-    if((scene.getScreen().getPixelsRow() % number_threads) != 0){
+    /*if((scene.getScreen().getPixelsRow() % number_threads) != 0){
         cerr<<"You can't divide the number of columns by the cores that you have"<<endl;
         cerr<<"Change the number of cores OR the resolution_Y in scene"<<endl;
         exit(1);
-    }
+    }*/
 
     // Obtain the number of rows for worker
     unsigned int rows_for_worker = scene.getScreen().getPixelsRow() / number_threads;
@@ -53,8 +53,13 @@ Image tracer::ray_tracer(const Scene &scene, int paths_per_pixel) {
     std::thread workers[number_threads + 1];
     // We launched all the workers
     for(int i = 0; i < number_threads; i++){
-        workers[i] = std::thread(&worker_tracer, i * rows_for_worker, (i * rows_for_worker) + rows_for_worker - 1,
-                ref(image), ref(scene), paths_per_pixel);
+        if (i == number_threads - 1) {
+            workers[i] = std::thread(&worker_tracer, i * rows_for_worker, scene.getScreen().getPixelsRow() -1,
+                                    ref(image), ref(scene), paths_per_pixel);
+        } else {
+            workers[i] = std::thread(&worker_tracer, i * rows_for_worker, (i * rows_for_worker) + rows_for_worker - 1,
+                                     ref(image), ref(scene), paths_per_pixel);
+        }
     }
     workers[number_threads] = std::thread(&show_progress, scene.getScreen().getPixelsRow());
     // We hope that it will be finished.

@@ -254,7 +254,8 @@ Vector operator*(float scalar, const Vector &v1){
 Vector Vector::operator/(float scalar) const{
     if(scalar == 0){
         std::string message = "ERROR Vector::operator/: division to 0 !";
-        throw std::out_of_range(message);
+        std::cout << message << "\n";
+        //throw std::out_of_range(message);
     }
     Vector divided;
     divided.set(0, this->get(0) / scalar);

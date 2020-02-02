@@ -48,12 +48,12 @@ int main(int argc, char* argv[])
 	char *name_file = NULL, *default_name_file = "name_file";
 	name_file = default_name_file;
 
-	unsigned int scene = 4;
+	unsigned int scene = 2;
 
-	unsigned int photons_global = 100000, 
-				 photons_caustic = 100000, 
-				 max_shots = 1000000, 
-				 nb_nearest_photons = 500;
+	unsigned int photons_global = 10000,
+				 photons_caustic = 10000,
+				 max_shots = 10000, 
+				 nb_nearest_photons = 10;
 
 	// ---------------------------------------------------------------------
 	// Parse input
@@ -199,17 +199,17 @@ int main(int argc, char* argv[])
 		w->add_object(sphere2);
 	}
 	}
-	//LightSource* ls = new PointLightSource(w, Vector3(0,1.9,0), Vector3(5,5,5));
-	//w->add_light(ls);
+	LightSource* ls = new PointLightSource(w, Vector3(0,1.9,0), Vector3(5,5,5));
+	w->add_light(ls);
 
-	LightSource* ls1 = new PointLightSource(w, Vector3(-0.5, 1.9, -0.5), Vector3(5, 5, 5));
+	/*LightSource* ls1 = new PointLightSource(w, Vector3(-0.5, 1.9, -0.5), Vector3(5, 5, 5));
 	LightSource* ls2 = new PointLightSource(w, Vector3(0.5, 1.9, -0.5), Vector3(5, 5, 5));
 	LightSource* ls3 = new PointLightSource(w, Vector3(-0.5, 1.9, 0.5), Vector3(5, 5, 5));
 	LightSource* ls4 = new PointLightSource(w, Vector3(0.5, 1.9, 0.5), Vector3(5, 5, 5));
 	w->add_light(ls1);
 	w->add_light(ls2);
 	w->add_light(ls3);
-	w->add_light(ls4);
+	w->add_light(ls4);*/
 
 	w->fix();
 	// ----------------------------------------------------------------------

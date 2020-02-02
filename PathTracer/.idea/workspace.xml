@@ -12,13 +12,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="314f7fb8-2540-48cf-ad3c-05a077c0c668" name="Default Changelist" comment="">
+    <list default="true" id="314f7fb8-2540-48cf-ad3c-05a077c0c668" name="Default Changelist" comment="Add intersection">
       <change beforePath="$PROJECT_DIR$/../PhotonMapping/SmallPM/src/PhotonMapping.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../PhotonMapping/SmallPM/src/PhotonMapping.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../PhotonMapping/SmallPM/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../PhotonMapping/SmallPM/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../PhotonMapping/VS2015/SmallPM.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/../PhotonMapping/VS2015/SmallPM.vcxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../PhotonMapping/VS2015/name_file.hdr" beforeDir="false" afterPath="$PROJECT_DIR$/../PhotonMapping/VS2015/name_file.hdr" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,6 +32,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="UPDATE_TYPE" value="MERGE" />
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectId" id="1RQLJq5wWTASPWYKtlxA9y3Zaek" />
@@ -52,26 +50,15 @@
     <property name="settings.editor.selected.configurable" value="CMakeSettings" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Sergio\Desktop\Universidad\04 - Informatica Grafica\Practises\ComputerGraphics\geometry\models" />
-      <recent name="C:\Users\Sergio\Desktop\Universidad\04 - Informatica Grafica\Practises\ComputerGraphics\utils" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Sergio\Desktop\Universidad\04 - Informatica Grafica\Practises\ComputerGraphics\material" />
       <recent name="C:\Users\Sergio\Desktop\Universidad\04 - Informatica Grafica\Practises\ComputerGraphics\geometry\models" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\OneDrive - unizar.es\Universidad\5_Quinto\Primer_Cuatrimestre\Informatica_grafica\repo\PathTracer\geometry\models" />
+      <recent name="C:\Users\Sergio\Desktop\Universidad\04 - Informatica Grafica\Practises\ComputerGraphics\geometry\models" />
+      <recent name="C:\Users\Sergio\Desktop\Universidad\04 - Informatica Grafica\Practises\ComputerGraphics\utils" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="ComputerGraphics" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ComputerGraphics" TARGET_NAME="ComputerGraphics" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ComputerGraphics" RUN_TARGET_NAME="ComputerGraphics">
@@ -79,6 +66,18 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -139,6 +138,8 @@
       <workItem from="1580140540127" duration="211000" />
       <workItem from="1580200271912" duration="322000" />
       <workItem from="1580454238849" duration="13903000" />
+      <workItem from="1580513751771" duration="580000" />
+      <workItem from="1580573671787" duration="21361000" />
     </task>
     <task id="LOCAL-00001" summary="Planetary annihilation alfa">
       <created>1570010720897</created>
@@ -489,22 +490,58 @@
     <option name="LAST_COMMIT_MESSAGE" value="Add intersection" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1326" height="249" key="GridCell.Tab.0.bottom" timestamp="1580200606091">
-      <screen x="0" y="0" width="1368" height="872" />
+    <state x="417" y="115" key="CommitChangelistDialog2" timestamp="1580573675659">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="417" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1580573675659" />
+    <state width="1877" height="348" key="GridCell.Tab.0.bottom" timestamp="1580601811322">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1326" height="249" key="GridCell.Tab.0.bottom/0.0.1368.872@0.0.1368.872" timestamp="1580200606091" />
-    <state width="1326" height="249" key="GridCell.Tab.0.center" timestamp="1580200606090">
-      <screen x="0" y="0" width="1368" height="872" />
+    <state width="1877" height="348" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1580601811322" />
+    <state width="1877" height="348" key="GridCell.Tab.0.center" timestamp="1580601811322">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1326" height="249" key="GridCell.Tab.0.center/0.0.1368.872@0.0.1368.872" timestamp="1580200606090" />
-    <state width="1326" height="249" key="GridCell.Tab.0.left" timestamp="1580200606090">
-      <screen x="0" y="0" width="1368" height="872" />
+    <state width="1877" height="348" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1580601811322" />
+    <state width="1877" height="348" key="GridCell.Tab.0.left" timestamp="1580601811322">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1326" height="249" key="GridCell.Tab.0.left/0.0.1368.872@0.0.1368.872" timestamp="1580200606090" />
-    <state width="1326" height="249" key="GridCell.Tab.0.right" timestamp="1580200606091">
-      <screen x="0" y="0" width="1368" height="872" />
+    <state width="1877" height="348" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1580601811322" />
+    <state width="1877" height="348" key="GridCell.Tab.0.right" timestamp="1580601811322">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1326" height="249" key="GridCell.Tab.0.right/0.0.1368.872@0.0.1368.872" timestamp="1580200606091" />
+    <state width="1877" height="348" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1580601811322" />
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1580601811323">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1580601811323" />
+    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1580601811323">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1580601811323" />
+    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1580601811322">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1580601811322" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1580601811323">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1580601811323" />
+    <state x="656" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1580573672112">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="656" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1580573672112" />
+    <state x="769" y="437" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1580573677739">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="769" y="437" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1580573677739" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1580573920308">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1580573920308" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -515,9 +552,9 @@
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/render/Scene.cpp</url>
+          <url>file://$PROJECT_DIR$/render/tracer.cpp</url>
           <line>121</line>
-          <option name="timeStamp" value="23" />
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
