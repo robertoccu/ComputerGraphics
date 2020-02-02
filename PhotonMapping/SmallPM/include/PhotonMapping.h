@@ -92,7 +92,12 @@ public:
 	// radiance.
 	Vector3 shade(Intersection &it0)const;
 
-	Vector3 direct_light(Intersection& it)const;
+	Real distance(const Vector3& v1, const Vector3& v2)const;
+
+	Vector3 cone_kernel(std::vector<const KDTree<Photon, 3U>::Node*> photons, Intersection it, Real radius, Real k, bool BRDF_at_indirect)const;
+
+	void PhotonMapping::fix_near_photons(const std::vector<const KDTree<Photon, 3U>::Node*> photons, const Intersection it,
+		std::vector<const KDTree<Photon, 3U>::Node*>& photons_fix, Real& radius)const;
 };
 
 #endif
