@@ -131,9 +131,9 @@ bool PhotonMapping::trace_ray(const Ray& r, const Vector3 &p,
 }
 
 //*********************************************************************
-// TODO: Implement the preprocess step of photon mapping,
+//                        Preprocess step of photon mapping,
 // where the photons are traced through the scene. To do it,
-// you need to follow these steps for each shoot:
+// these steps are followed for each shoot:
 //  1 - Sample a world's light source in the scene to create
 //		the initial direct photon from the light source.
 //	2 - Trace the photon through the scene storing the inter-
@@ -141,18 +141,8 @@ bool PhotonMapping::trace_ray(const Ray& r, const Vector3 &p,
 //		the function 'trace_ray' for this purpose.
 //	3 - Finally, once all the photons have been shot, you'll
 //		need to build the photon maps, that will be used later
-//		for rendering. 
-//		NOTE: Careful with function
+//		for rendering.
 //---------------------------------------------------------------------
-
-/*
-m_max_nb_shots(max_nb_shots)
-m_nb_current_shots(0)
-m_nb_global_photons(nb_global_photons)
-m_nb_caustic_photons(nb_caustic_photons)
-m_nb_photons(nb_photons)
-m_raytraced_direct(raytraced_direct)
-*/
 
 void PhotonMapping::preprocess()
 {
@@ -213,10 +203,9 @@ void PhotonMapping::preprocess()
 //*********************************************************************
 //                   Function that computes the rendering equation 
 // using radiance estimation with photon mapping, using the photon
-// maps computed as a proprocess. Note that you will need to handle
+// maps computed as a proprocess. Note that in this fuction is handled
 // both direct and global illumination, together with recursive the 
-// recursive evaluation of delta materials. For an optimal implemen-
-// tation you should be able to do it iteratively.
+// recursive evaluation of delta materials.
 // In principle, the class is prepared to perform radiance estimation
 // using k-nearest neighbors ('m_nb_photons') to define the bandwidth
 // of the kernel.
@@ -313,6 +302,7 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 					global_photons_fix = global_photons;
 				}
 
+				// Apply kernel for radiance estimation at this point with the selected photons.
 				globalL = cone_kernel(global_photons_fix, it, radius, 2.0f, BRDF_at_indirect);
 			}
 
@@ -320,6 +310,8 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 			m_caustics_map.find(pos, near_photons, caustics_photons, radius);
 
 			if (!caustics_photons.empty()) {
+
+				// Reject photons from near geometry. Rejection based on incoming direction of photon.
 				if (fix_photons) {
 					fix_near_photons(caustics_photons, it, global_photons_fix, radius);
 				}
