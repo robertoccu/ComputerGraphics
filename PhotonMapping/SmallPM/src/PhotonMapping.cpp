@@ -212,11 +212,19 @@ void PhotonMapping::preprocess()
 //---------------------------------------------------------------------
 Vector3 PhotonMapping::shade(Intersection &it0)const
 {
-	unsigned int mode = 4;
+	unsigned int mode = 0;
 
 	Real near_photons;
 	bool delta_bouncing, raytraced_emitted_light, indirect_light, fix_photons, BRDF_at_indirect;
 	switch (mode) {
+	case 0: // Debug and testing. DIY.
+		delta_bouncing = false;
+		raytraced_emitted_light = false;
+		indirect_light = true;
+		fix_photons = false;
+		BRDF_at_indirect = false;
+		near_photons = 1;
+		break;
 	case 1: // Photon map
 		delta_bouncing = false;
 		raytraced_emitted_light = false;
@@ -241,7 +249,7 @@ Vector3 PhotonMapping::shade(Intersection &it0)const
 		BRDF_at_indirect = false;
 		near_photons = m_nb_photons;
 		break;
-	case 4: // Raytraced emitted (direct) light and Photon map ilumination
+	default: // Raytraced emitted (direct) light and Photon map ilumination
 		delta_bouncing = true;
 		raytraced_emitted_light = true;
 		indirect_light = true;

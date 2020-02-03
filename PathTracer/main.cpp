@@ -17,7 +17,7 @@
 using namespace std;
 
 // Constantes
-const int PATHS_PER_PIXEL = 1024;
+const int PATHS_PER_PIXEL = 64;
 const string IMAGE_PATH = "./data";
 
 int main(){
@@ -68,4 +68,28 @@ int main(){
     }else{
         cout<<"Finish in: "<<time<<" seconds."<<endl;
     }
+}
+
+int main2(){
+    // Image I/O test
+    Image image = IOppm::read(IMAGE_PATH + "/ray_tracer_hdr.ppm");
+    //ToneMapper::clamping(image, 1);
+    //ToneMapper::equalization(image);
+    //ToneMapper::equalAndClamp(image,100)
+    //ToneMapper::gamma(image,0.25);
+    ToneMapper::clampAndGamma(image, 100, 0.30);
+    //ToneMapper::reinhard(image, RGB(image.getMaxValue(),image.getMaxValue(),image.getMaxValue()),0.18, 0.75);
+
+    // Test
+    /*RGB rgb(255,0,0);
+    cout<<endl<<"Testing one color conversion"<<endl;
+    cout<<"RGB: {"<<rgb.get(RED)<<", "<<rgb.get(GREEN)<<", "<<rgb.get(BLUE)<<"}"<<endl;
+    cout<<"xyY: {"<<get<0>(rgb.RGBtoxyY())<<", "<<get<1>(rgb.RGBtoxyY())<<", "<<get<2>(rgb.RGBtoxyY())<<"}"<<endl;
+    cout<<"Coincide con los resultados de alguna herramienta web...??"<<endl;*/
+    // Test
+
+    image.setMaxValue(1);
+    IOppm::store(IMAGE_PATH + "/ray_tracer_hdr_tone-mapper.ppm", image, 255);
+    //IOppm::store("../data/output_gamma_1.5_10.ppm", image, 1023);
+
 }

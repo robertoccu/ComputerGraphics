@@ -80,19 +80,6 @@ public:
      */
     bool refracted_direction(const Vector& v_in, const Vector& normal_surface, float ri_from, float ri_to,
                              Vector& v_out){
-        /*float dt = Vector::dot(v_in, normal_surface);   // Angle between in and normal
-        float ior1_over_ior2 = ior1 / ior2; // Proportion to ior1 and ior2
-        float discriminant = 1.0f - ior1_over_ior2 * ior1_over_ior2 * (1 - dt * dt);
-        if(discriminant > 0){
-            // Return refracted ray
-            v_out = ior1_over_ior2 * (v_in - normal_surface * dt) - normal_surface * sqrtf(discriminant);
-            return true;
-        }else{
-            // Return reflected ray
-            v_out = v_in - 2 * Vector::dot(v_in, normal_surface) * normal_surface;
-            return false;
-        }*/
-
         Vector normal = normal_surface;
         float ior1_over_ior2 = ri_from / ri_to;
         float cos_in_n = Vector::dot(normal.negate(), v_in);
@@ -106,8 +93,18 @@ public:
 
         Vector v_refr = ior1_over_ior2 * v_in + (ior1_over_ior2 * cos_in_n - cos_o2) * normal;
 
-        v_out = v_refr;
-        return true;
+        float R0 = pow((ri_from - ri_to) / (ri_from + ri_to),2);
+        float reflectivity =  R0 + (1 - R0) * pow((1 - cos_in_n),5); // Fresnel
+
+        float rr = Prng::random();
+        if (rr < reflectivity) { // Reflect
+            v_out = v_refl;
+            return false;
+        } else { // Refract
+            v_out = v_refr;
+            return true;
+        }
+
     }
 
     RGB get_Kr() const override {

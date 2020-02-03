@@ -19,8 +19,12 @@ class Composite : public Material{
     RefractionPerfect refraction;
 public:
     Composite(const Emitter &emitter, const Phong &phong, const RefractionPerfect refraction, const SpecularPerfect specular)
-            : emitter(emitter), phong(phong), refraction(refraction), specular(specular) {}
-    Composite() {emitter = Emitter(); phong = Phong(); refraction = RefractionPerfect(); specular = SpecularPerfect();}
+            : emitter(emitter), phong(phong), refraction(refraction), specular(specular) {
+        this->set_material(material_type::REFRACTION);
+    }
+    Composite() {emitter = Emitter(); phong = Phong(); refraction = RefractionPerfect(); specular = SpecularPerfect();
+        this->set_material(material_type::REFRACTION);}
+
     RGB get_emision() override{ return emitter.get_emision(); }
 
     RGB get_BRDF(const Ray& in_ray, const Vector& normal, Ray& out_ray) override{ return RGB();}

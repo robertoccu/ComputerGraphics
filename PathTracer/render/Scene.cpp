@@ -114,28 +114,42 @@ void Scene::load_cornellBox() {
      //       ));
     //objects.push_back(&sphere1);
 
-    static Sphere sphere3(Vector(15,26,4,PT),1);
-    sphere3.set_material(make_shared<Phong>(RGB(0.8,0,0), RGB(0.1,0.1,0.1), 50));
+    static Sphere sphere3(Vector(10,21,4,PT),4);
+    sphere3.set_material(make_shared<Phong>(RGB(0,0.0,0.8), RGB(0.1,0.1,0.1), 50));
     //sphere3.set_material(make_shared<RefractionPerfect>(RGB(0.9, 0.9, 0.9)));
     //objects.push_back(&sphere3);
 
-    static Sphere sphere5(Vector(22,25,3,PT),2);
+    static Sphere sphere5(Vector(24,18,3,PT),3);
     sphere5.set_material(make_shared<SpecularPerfect>(RGB(0.9,0.9,0.0)));
     //objects.push_back(&sphere5);
 
-    static Sphere sphereA(Vector(15,15,5,PT),5);
+    static Sphere sphereA(Vector(16,8,5,PT),5);
     static RefractionPerfect refractionPerfect(RGB(0.9, 0.9, 0.9));
-    refractionPerfect.set_type(refraction_type::WATER);
+    refractionPerfect.set_type(refraction_type::GLASS);
     sphereA.set_material(make_shared<RefractionPerfect>(refractionPerfect));
     //objects.push_back(&sphereA);
 
-    static Sphere sphereB(Vector(15,15,5,PT),5);
-    sphereB.set_material(make_shared<Phong>(RGB(0.80,0.80,0.80), RGB(0.10, 0.10, 0.10), 30));
+    static Sphere sphereB(Vector(15,15,10,PT),5);
+    //static RefractionPerfect refractionPerfectA(RGB(0.9, 0.9, 0.9));
+    //refractionPerfectA.set_type(refraction_type::GLASS);
+    sphereB.set_material(make_shared<Phong>(RGB(0.80,0,0.80),RGB(0.1,0,0.1),50));
     objects.push_back(&sphereB);
 
-    static Sphere sphereC(Vector(15,15,5,PT),5);
-    sphereC.set_material(make_shared<SpecularPerfect>(RGB(0.9,0.9,0.9)));
-    //objects.push_back(&sphereC);
+    static Sphere sphere1(Vector(7,9,4,PT),4);
+    static RefractionPerfect refractionPerfectX(RGB(0.6, 0.6, 0.6));
+    refractionPerfectX.set_type(refraction_type::WATER);
+    sphere1.set_material(make_shared<Composite>(Emitter(RGB(0,0,0)),
+                                                Phong(RGB(0.0,0.0,0.0), RGB(0,0,0), 50),
+                                                refractionPerfectX,
+                                                SpecularPerfect(RGB(0.3,0.3,0.3))
+    ));
+    objects.push_back(&sphere1);
+
+    static Sphere sphereD(Vector(23,9,4,PT),4);
+    static RefractionPerfect refractionPerfectC(RGB(0.9, 0.9, 0.9));
+    refractionPerfectC.set_type(refraction_type::DIAMOND);
+    sphereD.set_material(make_shared<RefractionPerfect>(refractionPerfectC));
+    objects.push_back(&sphereD);
 
     /*Matrix matrix_mesh;
     matrix_mesh = Matrix::traslation(15, 10, 10);
@@ -156,8 +170,17 @@ void Scene::load_cornellBox() {
     cout<<"Loading lights...";
     std::list<DotLight> dot_lights;
     // Dot light
-    static DotLight light(Vector(15,15,25,PT), RGB::white, 100);
-    dot_lights.push_back(light);
+    /*static DotLight light(Vector(15,15,25,PT), RGB::white, 100);
+    dot_lights.push_back(light);*/
+
+    static DotLight light1(Vector(7.5,7.5,25,PT), RGB::white, 25);
+    static DotLight light2(Vector(22.5,22.5,25,PT), RGB::white, 25);
+    static DotLight light3(Vector(22.5,7.5,25,PT), RGB::white, 25);
+    static DotLight light4(Vector(7.5,22.5,25,PT), RGB::white, 25);
+    dot_lights.push_back(light1);
+    dot_lights.push_back(light2);
+    dot_lights.push_back(light3);
+    dot_lights.push_back(light4);
 
     this->setLights(dot_lights);
     cout<<"Lights loaded successfully"<<endl;
